@@ -217,7 +217,6 @@ special_dodge = par[5]
 compute_expectation(print_or_not = 1)
 
 ########################### tests  ####################
-#### hotfish
 wx = 50700000
 basic_dodge = 560
 basic_unarmed = 532
@@ -230,7 +229,7 @@ special_parry = 408
 special_dodge  = 770
 compute_expectation(print_or_not = 1)
 
-#hand wuxing 30?
+#### wuxing 30?
 wx = 8781331
 basic_dodge = 417
 basic_unarmed = 325
