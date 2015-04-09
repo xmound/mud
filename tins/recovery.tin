@@ -1,0 +1,89 @@
+#CLASS recovery OPEN
+
+#VAR nl_is_full 0
+#VAR fl_is_full 0
+#VAR max_hp_is_full 0
+#VAR max_js_is_full 0
+
+#ACTION { 气血：%s%1%s/%s%2%s(%3%)%s内力：%s%4%s/%s%5%s(%6%)} {
+	#VAR current_hp %1;
+	#VAR max_hp %2;
+	#VAR percent_hp %3;
+	#VAR current_nl %4;
+	#VAR max_nl %5;
+	#VAR percent_nl %6;
+	#MATH to_exercise {($max_nl * 2 - $current_nl) /4};
+	#IF {$to_exercise < 50} {#VAR nl_is_full 1};
+	#IF {$percent_hp == 100} {#VAR max_hp_is_full 1};
+}
+	
+#ACTION { 精神：%s%1%s/%s%2%s(%3%)%s法力：%s%4%s/%s%5%s(%6%)} {
+	#VAR current_js %1;
+	#VAR max_js %2;
+	#VAR percent_js %3;
+	#VAR current_fl %4;
+	#VAR max_fl %5;
+	#VAR percent_fl %6;
+	#MATH to_meditate {($max_fl * 2 - $current_fl) /4};
+	#IF {$to_meditate < 50} {#VAR fl_is_full 1};	
+	#IF {$percent_js == 100} {#VAR max_js_is_full 1};
+	do_recovery;
+}
+
+#ALIAS do_recovery {
+	#IF {$max_hp_is_full == 0} {
+		#IF {$percent_hp > 50} {
+			#5 exert heal;
+		};
+		#ELSE {
+			eat $yao_yao;
+		};
+		hp
+	}; #ELSEIF {$max_js_is_full == 0} {
+		eat $yao_dan;
+	}; #ELSEIF {$fl_is_full == 0} {
+		re;
+		#if {$to_meditate > 1000} {
+			meditate 1000;
+		}; #else {
+			meditate $to_meditate;
+		};
+	}; #ELSEIF {$nl_is_full == 0} {
+		er;
+		#if {$to_exercise > 1000} {
+			exercise 1000;
+		}; #else {
+			exercise $to_exercise;
+		};
+	}; #ELSE {
+		#DELAY 3.5 {
+			er;
+			re;
+			#CLASS recovery kill;
+			#SHOWME {RECOVERY FINISHED.};};
+	};
+}
+
+#ACTION {你行功完毕，吸一口气，缓缓站了起来。} {
+	#delay 3.2 {
+		re;
+		hp;
+	};
+}
+#action {你现在的气太少了，无法产生内息运行全身经脉。} {
+	er;
+	exercise $current_hp;
+}
+
+#action {你现在神智不清,不能再想入非非了。} {
+	re;
+	mingsi $current_js;
+}
+#ACTION {你行功完毕，从冥思中回过神来。} {
+	#delay 3.2 {
+		re;
+		hp;
+	};
+}
+
+#CLASS recovery CLOSE

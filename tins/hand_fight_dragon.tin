@@ -1,0 +1,129 @@
+#CLASS {fight_dragon} OPEN
+
+#ACTION {^%?%?%?%?%?重新连线完毕。}
+{
+	stop;
+	start_setup;
+	fly stone;
+	l
+}
+{5}
+
+#ALIAS {reset}
+{
+	stop;
+	tload fight_dragon;
+	start_fight
+}
+{5}
+
+#ALIAS {start}
+{
+	#echo {<fff> 请确认各技能！};
+	#echo {<fff> 请确认各技能！};
+	#echo {<fff> 请确认各技能！};
+	#variable previous_wx $current_wx;
+	stop;
+	enforce 0;
+	set brief_all;
+	wimpy 40;
+	set brief_all;
+	fly changan;
+	#6 s;
+	e;
+	nu;
+	hd;
+	start_setup;
+	#delay 2 {#echo {<fff> 请确认各技能！};#echo {<fff> 请确认各技能！};#echo {<fff> 请确认各技能！};}
+}
+{5}
+
+#ALIAS {start_fight}
+{
+	#class fight_dragon_fight_inner open;
+	#variable count_dragon 0;
+	#action {尸体%*Corpse} {#line {gag};};
+	#action {骸骨%*Skeleton} {#line {gag};};
+	#alias check_dragon_status {#var count_dragon 0;look;hp;set brief check_dragon_number;};
+	#alias turn_on_fight_dragon_tick {#tick fight_dragon {check_dragon_status;} {30.5};};
+	#action {^设定环境变数%*check_dragon_number} {#if {$count_dragon == 0} {#class fight_dragon_fight_inner kill;#untick fight_dragon;#delay 5 {$path_from_fight_to_reset;start_setup;};}; #elseif {$count_dragon < 4} {start_summon;}; #elseif {$current_qn > 95000} {$path_from_fight_to_master;surrender;learn $skill_to_learn for 100;re;$path_from_master_to_fight;#loop 1 $count_dragon cnt {fight dragon $cnt};}; #elseif {$current_drink < 200 || $current_food < 200} {$path_from_fight_to_eat;surrender;chi;$path_from_eat_to_fight;sh;#loop 1 $count_dragon cnt {kill dragon $cnt;fight dragon $cnt};};#if {$previous_wx > 0} {#math wx_gain {$current_wx - $previous_wx};}; #elseif {#var wx_gain 0;};#math previous_wx  {$current_wx};turn_on_fight_dragon_tick;#format fight_dragon_status {%t\t%d} {%Y-%m-%d %H:%M:%S} {$wx_gain};#format filename {logs/fight_dragon_rewards_%s.txt} {$login_id};#line {log} {$filename} {$fight_dragon_status};} {4};
+	#action {^Successfully summoned a dragon.} {#math count_dragon {$count_dragon+1};#delay 7 {ne;surrender;sw;#loop 1 $count_dragon cnt {fight dragon $cnt;kill dragon $cnt;};};turn_on_fight_dragon_tick;#format fight_dragon_status {%t\tSummoned a dragon} {%Y-%m-%d %H:%M:%S};#format filename {logs/fight_dragon_rewards_%s.txt} {$login_id};#line {log} {$filename} {$fight_dragon_status};};
+	#prompt {^设定环境变数%*check_dragon_number} {$status_bar_prefix|<fca>Fighting Dragon|目前共$count_dragon只龙|目前武学$current_wx|目前潜能$current_qn|正学习$skill_to_learn} {2};
+	#action {^%?%?%?%?%*龙%*Dragon} {#math count_dragon {$count_dragon + 1}};
+	#action {^Failed to summon dragon.} {#delay 5 {check_dragon_status;};turn_on_fight_dragon_tick;};
+	#action {^%?%?%?%?你似乎十分疲惫} {ne;surrender;er;sw;#loop 1 $count_dragon cnt {fight dragon $cnt};} {4};
+	#nop action {^%?%?%?%?你气喘嘘嘘} {ne;surrender;er;sw;#loop 1 $count_dragon cnt {fight dragon $cnt};} {4};
+	#action {^%?%?%?%?%?%?%?%?%?%?龙气喘嘘嘘} {#loop 1 $count_dragon cnt {#2 {exert recover dragon $cnt};};};
+	#action {^%?%?%?%?%?%?%你一次输入} {#class fight_dragon_fight_inner kill;#untick fight_dragon;#delay 10 {start_fight;};};
+	#action {^%?%?%?%?%?看来该找机会逃跑了．．．} {random;surrender;stop;start_setup;fly stone;l;};
+	#action {{你对准%*深深吸了几口气运将过去|对准你，深深吸了几口气运将过去}} {#line {gag};};
+	#class fight_dragon_fight_inner close;
+	check_dragon_status
+}
+{5}
+
+#ALIAS {start_learn}
+{
+	#class fight_dragon_learn_inner open;
+	#class fight_dragon_learn_inner close
+}
+{5}
+
+#ALIAS {start_move}
+{
+	#class fight_dragon_move_inner open;
+	#class fight_dragon_move_inner close
+}
+{5}
+
+#ALIAS {start_setup}
+{
+	#class fight_dragon_setup_inner open;
+	#nop action {^{一名马官牵着你的坐骑走了过来。|监副对你说：怎么？骑驴找驴？}} {mm;#delay 5 {$path_to_fight;l};};
+	#nop action {^{你已经%%*在%*上了！|你潇洒地一个纵身，稳稳地%%*在%%*上！}} {};
+	#nop action {^$place_to_fight} {#class fight_dragon_setup_inner kill;start_fight};
+	#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去} {enforce 100;kill guard;};
+	#action {^守门人死了。} {enforce 0;hd;l;};
+	#action {^南天极 -} {enforce 0;kill hd guard;start_summon};
+	#action {^Failed to summon dragon.} {#delay 5 {l;};};
+	#action {^Successfully summoned a dragon.} {enforce 0;#class fight_dragon_setup_inner kill;#delay 6 {$path_from_reset_to_fight;kill dragon;start_fight;};};
+	#action {^%?%?%?%?周围没有一片云，没办法腾云驾雾。} {#delay 1 {random;fly stone;l};};
+	#action {^%?%?仙石 -} {stop;#delay 5 {start;};};
+	#class fight_dragon_setup_inner close;
+	l
+}
+{5}
+
+#ALIAS {start_summon}
+{
+	#class fight_dragon_cast_inner open;
+	#action {^%?%?%?忽然狂风大做，半空现出一条%*龙来！} {#showme {Successfully summoned a dragon.};#class fight_dragon_cast_inner kill;};
+	#action {^%?%?%?只有战斗中才能召唤护法。} {#showme {Failed to summon dragon. Not in fight.};#class fight_dragon_cast_inner kill;};
+	#action {^%?%?%?你现在不能用魔法！} {#showme {Failed to summon dragon. Casting on cooldown.};#class fight_dragon_cast_inner kill;};
+	#action {^%?%?%?你刚叫过护法，他们都被你叫烦了！} {#showme {Failed to summon dragon. Spell on cooldown.};#class fight_dragon_cast_inner kill;};
+	#nop action {你的法力不够了！你的精神无法集中！};
+	#action {^%?%?%?%?你上一个动作还没有完成，不能念咒文。} {#showme {Failed to summon dragon. I am in busy.};#class fight_dragon_cast_inner kill;}#action {但是什么也没有发生。} {#showme {Failed to summon dragon. Invocation failed.};#class fight_dragon_cast_inner kill;};
+	#class fight_dragon_cast_inner close;
+	cast hufa
+}
+{5}
+
+#ALIAS {stop}
+{
+	tkill fight_dragon_fight_inner;
+	tkill fight_dragon_setup_inner;
+	#unticker fight_dragon
+}
+{5}
+
+#VARIABLE         {filename}  {tins/hand_fight_dragon.tin}
+#VARIABLE         {path_from_eat_to_fight}    {w;ne;ne}
+#VARIABLE         {path_from_fight_to_eat}    {sw;sw;e}
+#VARIABLE         {path_from_fight_to_master}       {ne}
+#VARIABLE         {path_from_fight_to_reset}      {#2 sw;#3 se;s}
+#VARIABLE         {path_from_master_to_fight}       {sw}
+#VARIABLE         {path_from_reset_to_fight}      {n;#3 nw;#2 ne}
+#VARIABLE         {previous_wx}  {8781331}
+#VARIABLE         {skill_to_learn}  {parry}
+
+#CLASS {fight_dragon} CLOSE

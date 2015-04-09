@@ -1,0 +1,197 @@
+#CLASS learn OPEN
+
+#SPLIT 1 3
+
+#nop ############# variables ############
+#var master {dongfang cong}
+#var skill_to_learn parry
+#var target_skill_level 600
+#var practice_method dragon
+#var recover_method dazuo
+#var path_to_recover {fly sky;s}
+#var path_to_master {gbb;}
+
+#var path_blocked 0
+#var in_practice 0
+#var in_fight 0
+#var in_recovery 0
+#var in_study 0
+#var practice_needed 0
+
+#nop ############# alias ############
+#alias idle_prevention {#tick {idle_prevention} {rec} {600};}
+#alias learn_done {
+	#ECHO {学习$skill_to_learn完成！};
+	#untick idel_prevention;
+	#untick reset_tick;
+	#class learn kill;}
+#alias do_recover {
+	#if {"$recover_method" == "dazuo"} {
+		rec;	
+	}; #elseif {"$recover_method" == "sleep"} {
+		sleep;
+	};
+}
+#alias do_next {
+	#if {$practice_needed == 0} {
+		#delay 0.5 do_learn;
+	}; #else {
+		#delay 5 {
+			exert shield;
+			perform wuxue;
+			wear all;
+			go_practice;
+			do_fight;
+		};
+	};
+}
+
+#alias do_learn {
+	#1 learn $skill_to_learn from $master for 1000;
+	re;
+}
+#alias go_practice {
+	#if {"$practice_method" == "dragon"} {
+		ne;ne;
+	}; #elseif {"$practice_method" == "daoshi"} {
+		go_pansi_danlu;
+		teleport danlu;
+	}
+}
+#alias do_fight {
+	hp;
+	#var in_fight 1;
+	#if {"$skill_to_learn" == "stick"} {
+		unwield bang;
+		unwield mu bang;
+		wield mu bang;
+		wield bang;
+	}; #elseif {"$skill_to_learn" == "sword"} {
+		unwield bang;
+		unwield mu bang;
+		wield sword;
+	};
+	enforce 0;
+	enable $skill_to_learn none;
+	kill zeroth-jia;
+	kill zeroth-yi;
+	kill zeroth-bing;
+	kill zeroth-ding;
+	kill dao shi;
+	kill tian wang;
+	cast hufa;
+	#delay 1 {kill dragon;};
+	#delay 2 {kill dragon;kill daoshi 2;};
+	#delay 5 {kill dragon;kill daoshi 3;};
+	#nop delay 10 {cast freez;};
+}
+
+#alias go_recover {
+	$path_to_recover;
+	do_recover;
+}
+
+############# actions ############
+#nop actions are primarily triggered by skill
+#prompt {学习状态prompt} {正在学习技能$skill_to_learn|目前$current_skill_level级,目标$target_skill_level级|经验:$current_skill_exp/$exp_to_next_level|潜能:$current_qn} {2};
+
+#action {你一次输入太多命令了。} {#DELAY 10 do_next;}
+#action {你目前掌握了%*项技能：} {#line {gag};}
+#action {^你的龙神心法运行一周天完毕，龙鳞渐渐消去了。} {exert shield;}
+#action {^你渐感气力不支，不得不放慢脚步，放缓剑招。} {enable sword snowsword;perform wuxue;enable sword none;}
+#action {^你的潜能已经发挥到极限了，没有办法再成长了。} {learn_done;}
+#action {%S%s(%3)%s-%*%d/%8} {
+	#if {"%3" == "$skill_to_learn"} {
+		#var skill_to_learn_chinese %1;
+		#var current_skill_level %6;
+		#var current_skill_exp %8;
+		#MATH exp_to_next_level {($current_skill_level + 1 ) * ($current_skill_level + 1)};
+		#SHOWME {学习状态prompt};
+		
+		#if {$current_skill_exp > $exp_to_next_level} {
+			#var practice_needed 1;
+		}; #else {
+			#var practice_needed 0;
+		};
+	
+		#if {$current_skill_level < $target_skill_level} {
+			#if {$path_blocked == 0 && $in_fight == 0} {do_next;};
+		}; #else {
+			learn_done;
+		};
+	}; #else {
+		#line {gag};
+	};
+}
+
+#action {^%*和你切磋了一会儿$skill_to_learn_chinese，你似乎有所领悟} {
+	#if {$practice_needed == 0 } {
+		skills;
+	};
+	#untick reset_tick;
+	idle_prevention;
+}
+
+#action {^你听了%*的指导，似乎有些心得。} {
+	#if {$practice_needed == 0 } {
+		skills;
+	};
+	#untick reset_tick;
+	idle_prevention;
+}
+
+#action {你的「$skill_to_learn_chinese」进步了！} {
+	#var in_fight 0;
+	#var practice_needed 0;
+	#DELAY 5 {
+		random;
+		$path_to_master;
+		#delay 5 {skills;};
+	};	
+}
+#action {^你今天太累了，结果什么也没有学到。} {
+	#var in_recovery 1;
+	#delay 10 {go_recover;
+	};
+}
+#action {^状态回复完毕！} {
+	#var in_recovery 0;
+	#delay 5 {
+		$path_to_master;
+		do_next;
+	};
+}
+
+#action {^你正在战斗，飞不开。} {
+	#delay 1 {
+		random;
+		fly sky;
+	};
+}
+#action {^忽然狂风大做，半空现出一条%*龙来！} {kill dragon;}
+#action {^只有战斗中才能召唤护法。} {#delay 10 {do_fight;};}
+#action {^但是什么也没有发生} {#DELAY 3 {do_fight;};}
+#action {^%*龙死了。} {do_fight;}
+#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去枢密院(smy)休息用餐。} {
+	em;
+	kill guard;
+	#var blocked 1;
+}
+
+#action {^守门人死了。} {
+	#delay 5 {
+		$path_to_master;
+		#var blocked 0;
+		#delay 2 {do_next};
+	};
+}
+
+#action {^你要向谁求教？} {
+	#ECHO {师傅死了，30秒钟之后尝试重置。};
+	#tick reset_tick {
+		$path_to_master;
+		#delay 5 {do_next;};
+	} {30};
+}
+
+#CLASS learn CLOSE

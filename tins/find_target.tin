@@ -1,0 +1,89 @@
+#class find_target open
+#var target_spotified 0;
+#var target_found 0;
+#var target_followed 0;
+#var body_guard_ready 0;
+#var correct_target_found 0;
+#nop var target_name_lower {};
+#format {target_name_upper} {%n} {$target_name_lower};
+#var target_name_chinese {};
+
+
+#nop alias {go_find_target_with_known_location %1 in %2} {
+	#var target_name_lower %1;
+	#format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	
+	go_search_target $target_name_lower in $target_location;
+}
+
+#action {^千里眼告诉你：%1($$target_name_lower)在%2。} {
+	#var target_name_chinese %1;
+	#format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	
+	#if {&{body_guard}} {
+		tell $body_guard TASK:gofindnpcwithknownlocation $target_name_lower, in $target_location;
+	};
+	#delay 3 {go_search_target $target_name_lower in $target_location;}
+}
+
+#alias {go_search_target %1 in %2} {
+	#var target_name_lower %1;
+	#format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	
+	#class search_for_yutu_inner open;
+	
+	#action {设定环境变数%*brief%*path_check} {
+		#if {$target_spotified == 0} {
+			#delay 0.1 {
+				#path walk f;
+				set brief path_check;
+			};
+		}; 
+		#else {#class search_for_yutu_inner kill;};
+	};
+	
+	#event {END OF PATH} {
+		#class search_for_yutu_inner kill;
+		#nop stop;
+		#delay 10 {
+			#showme {FAILED TO FIND TARGET.};
+			
+		};
+	};
+		
+	#class search_for_yutu_inner close;
+	#var target_spotified 0;
+	#var target_found 0;
+	#var target_followed 0;
+	#var body_guard_ready 0;
+	follow none;
+	
+	tload paths;
+	#path load 月宫1;
+	fly moon;
+	set brief path_check;
+};
+
+#action {^%?%?%?$$target_name_chinese($$target_name_upper)} {
+	#var target_spotified 1;
+	#if {$target_followed == 0} {follow $target_name_lower;};
+};
+
+#highlight {^%?%?%?$$target_name_chinese($$target_name_upper)} {white};
+
+#nop action {^这里没有%s$target_name_lower。} {}
+
+#action {^%?%?%?%?你决定开始跟随$$target_name_chinese一起行动。} {
+	#nop var target_found 1;
+	#var target_followed 1;
+	#showme {I FOUND TARGET $target_name_lower};
+	#class paths kill;
+	#class find_target kill;
+}
+
+#alias 
+
+#class find_target close

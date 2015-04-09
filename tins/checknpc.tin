@@ -1,0 +1,72 @@
+#action	{^????一只活泼可爱的小白兔} {#CW White;check yu tu}
+#nop	action	{^????你要看什么？} {#math looknum @looknum+1;#if (@looknum>5) {lunci=2;#T- backup;mying=0;ResetTrigger;#wa 6000;gohhreal};#if (@Found=1 and @looknum<6) {#T- fight;#T- hellbing;#wait 2000;#backup;look yu tu}}
+#nop	action	{^???这里禁止战斗} {cast freez on yu tu;cast tuntian on yu tu}
+
+#class checktarget open;
+#var target_wx 0;
+#var target_nl 0;
+#var target_fl 0;
+#var target_dh 0;
+
+#alias check_target_level {
+	#var target_name_lower %1;
+	check $target_name_lower;
+}
+
+#action {^????顺风耳告诉你：%*的内力修为已有%*的火候。} {
+	#var target_nl %2;
+	convert_target_nl;
+}
+
+#ALIAS convert_target_nl {
+
+	#replace {target_nl} {不到} {""};
+	#replace {target_nl} {年} {""};
+	#replace {target_nl} {甲子又十} {*60+10+};
+	#replace {target_nl} {甲子} {*60};
+	#replace {target_nl} {又} {+};
+	#replace {target_nl} {一} {1};
+	#replace {target_nl} {二} {2};
+	#replace {target_nl} {三} {3};
+	#replace {target_nl} {四} {4};
+	#replace {target_nl} {五} {5};
+	#replace {target_nl} {六} {6};
+	#replace {target_nl} {七} {7};
+	#replace {target_nl} {八} {8};
+	#replace {target_nl} {九} {9};
+	#replace {target_nl} {十} {*10+};
+	#replace {target_nl} {" "} {""};
+	
+	YaoNeili2=%replace(@YaoNeili2,不到,""); 
+	YaoNeili2=%replace(@YaoNeili2,年,""); 
+	YaoNeili2=%replace(@YaoNeili2,甲子又十,*60+10+);
+	YaoNeili2=%replace(@YaoNeili2,甲子,*60);
+	YaoNeili2=%replace(@YaoNeili2,又,+);
+	YaoNeili2=%replace(@YaoNeili2,一,1);
+	YaoNeili2=%replace(@YaoNeili2,二,2);
+	YaoNeili2=%replace(@YaoNeili2,三,3);
+	YaoNeili2=%replace(@YaoNeili2,四,4);
+	YaoNeili2=%replace(@YaoNeili2,五,5);
+	YaoNeili2=%replace(@YaoNeili2,六,6);
+	YaoNeili2=%replace(@YaoNeili2,七,7);
+	YaoNeili2=%replace(@YaoNeili2,八,8);
+	YaoNeili2=%replace(@YaoNeili2,九,9);
+	YaoNeili2=%replace(@YaoNeili2,十,*10+);
+	YaoNeili2=%replace(@YaoNeili2," ","");
+	
+	#if (%ends(@YaoNeili2,+)) {YaoNeili2=%concat(@YaoNeili2,0)};
+	#if (%begins(@YaoNeili2,*)) {YaoNeili2=%concat(1,@YaoNeili2)};
+	
+	#if (%pos(%char(41),@YaoNeili2)) {YaoNeili2=%concat(%char(40),@YaoNeili2)};
+	
+	YaoNeili2=%replace(@YaoNeili2,+~),+0~));
+	YaoNeili2=%eval(@YaoNeili2)
+	
+}
+
+
+
+
+#class checktarget close;
+
+

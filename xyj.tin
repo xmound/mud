@@ -1,0 +1,45 @@
+#!/usr/local/bin/tt++
+#event {SESSION DISCONNECTED} { 
+	#log off;
+    	#gts #delay 1 { 
+		#session $login_id 216.136.9.21 6666;
+		#read tins/login.tin;
+    	} ;
+} 
+
+#nop gts {#list tins_to_load {add} {default}};
+
+#class login_parse_user_id open
+#read /Users/daili/Desktop/personal/mud/characters
+
+#alias {%*} {
+	#var login_id %1;
+	#if {&users[$login_id]} {
+		#delay 2 {#echo {你正准备连接ID: $login_id}};
+		#var login_pwd $users[$login_id];	
+	}; #else {
+		#delay 2 {#echo {没有$login_id的密码记录，请到characters文件中添加}};
+	};
+	#unvar users;
+	#class login_parse_user_id kill;
+	
+	#session $login_id 216.136.9.21 6666;
+	#read tins/login.tin;
+};
+#class login_parse_user_id close;
+
+
+#delay 0.01 {
+	#echo {							   };
+	#echo {							   };
+	#echo {<fff>***********************************************};
+	#echo {<fff>*                                             *};
+	#echo {<fff>*              请输入登陆id                     *};
+	#echo {<fff>*           任意id请直接输入回车                 *};
+	#echo {<fff>*                                             *};
+	#echo {<fff>***********************************************};
+}
+
+
+
+

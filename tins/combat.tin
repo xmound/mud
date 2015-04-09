@@ -1,0 +1,178 @@
+#class combat open
+#nop debug action on
+#nop debug alias on
+
+#nop	parameters:
+#nop yao_types: zhuzi:0 | jisaiguo:1 | changan: 2
+#var yao_type {0} 
+
+
+#var num_yao_to_eat_hp {0}
+#var num_yao_to_eat_js {0}
+#var num_yao_to_eat_hp2 {0}
+#var num_yao_to_eat_js2 {0}
+#var yaon {tianxiang duanxu jiao}
+#var dann {baiyun xiongdan wan}
+#var eat_yao_needed {0}
+#var yaoname {test}
+#var userid {test}
+
+#alias txx {}
+#alias txx2 {}
+#alias QuitAction {quit;}
+#alias QuitAction2 {quit;}
+#alias #nop kg {}
+#alias hpp {
+	#var num_yao_to_eat_hp 0;
+	#var num_yao_to_eat_js 0;
+	#var eat_yao_needed 0;
+	hp;
+	set brief hphp;
+}
+
+#alias eat_yao {
+	#nop #var yao_type 1;
+	#if {$yao_type == 0} {
+		#if {%1>0} {
+			#loop 1 %1 temp {fu $yaon};
+		};
+		#if {%2>0} {
+			#loop 1 %2 temp {eat $dann};
+		};
+	};
+	#if {$yao_type == 1} {
+		#if {%1>0} {
+			#if {$num_yao_to_eat_hp2>5} {
+				#loop 1 2 temp {fu $yaon};
+			} {
+				#loop 1 1 temp {fu $yaon};
+			};
+		};
+		#if {%2>0} {
+			#if {$num_yao_to_eat_js2>5} {
+				#loop 1 2 temp {eat $dann};
+			} {
+				#loop 1 1 temp {eat $dann};
+			};
+		};
+	};
+	#if {$yao_type == 2} {
+		#if {%1>0} {
+			#loop 1 %1 temp {eat $yaon};
+		};
+		#if {%2>0} {
+			#loop 1 %2 temp {eat $dann};
+		};
+	};
+}
+
+#action	{设定环境变数%?%?brief%*hphp} {
+	#if {$eat_yao_needed > 0} {
+		#if {$num_yao_to_eat_hp>4} {num_yao_to_eat_hp=4};
+		#if ($num_yao_to_eat_js>4) {num_yao_to_eat_js=4};
+		eat_yao $num_yao_to_eat_hp $num_yao_to_eat_js;
+		#if {$num_yao_to_eat_hp>0} {er};
+		#if {$num_yao_to_eat_js>0} {ef};
+		hpp;
+	};
+}
+
+#action	{^%?%?%?气血：%s%1%s/%s%2%s(%3%)%s} {#if {%3<20} {QuitAction}}
+#action {^%?%?%?精神：%s%1%s/%s%2%s(%3%)%s} {#if {%3<20} {QuitAction}}
+#action	{^%?%?%?气血：%s%1%s/%s%2%s(%3%)%s} {
+	#var nocast 1;
+	#var hp %1;
+	#var hp_max %2;
+	#var hp_percent %3;
+	
+	#if {$yao_type == 0} {#var heal_amount 500;}; 
+		#elseif {$yao_type == 1} {#var heal_amount 100;}; 
+		#else {#var heal_amount 50;};
+	
+	#if {$hp_percent < 100} {
+		#math temp {$hp_max / $hp_percent};
+		#math hp_to_recover { ($hp_max / $hp_percent) * 100 -$hp_max};
+		#math num_yao_to_eat_hp {$hp_to_recover / $heal_amount + 1};
+		#var num_yao_to_eat_hp2 $num_yao_to_eat_hp;
+		#var eat_yao_needed 1;
+	}; #else {
+		#math hp_to_full {($hp_max - $hp) * 100 / $hp_max};
+		#if {$hp_to_full > 8} {er};
+	};
+}
+
+#action	{^%?%?%?精神：%s%1%s/%s%2%s(%3%)%s} {
+	#var nocast 1;
+	#var js %1;
+	#var js_max %2;
+	#var js_percent %3;
+	
+	#if {$yao_type == 0} {#var heal_amount 500;}; 
+		#elseif {$yao_type == 1} {#var heal_amount 100;}; 
+		#else {#var heal_amount 50;};
+	
+	#if {$js_percent < 100} {
+		#math temp {$js_max / $js_percent};
+		#math js_to_recover { ($js_max / $js_percent) * 100 -$js_max};
+		#math num_yao_to_eat_js {$js_to_recover / $heal_amount + 1};
+		#var num_yao_to_eat_js2 $num_yao_to_eat_js;
+		#var eat_yao_needed 1;
+	} {
+		#math js_to_full {($js_max - $js) * 100 / $js_max};
+		#if {$js_to_full > 4} {re;};
+	};
+}
+
+#action	{^%?%?%?你两眼发直} {eat_yao 0 1;exert refresh;hpp;#nop kg}
+#action	{^%?%?%?你伤重之下已经难以支撑} {eat_yao 4 0;exert recover;hpp;#nop kg}
+#action	{^%?%?%?你似乎十分疲惫} {exert recover;#nop kg}
+#action	{^%?%?%?你似乎受了点轻伤} {eat_yao 1 0;#nop kg}
+#nop action	{^%?%?%?你似乎有些疲惫} {exert recover;#nop kg}
+#nop action	{^%?%?%?你动作似乎开始有点不太灵光} {exert recover;#nop kg}
+#action	{^%?%?%?你受了几处伤} {eat_yao 1 0;er;#nop kg}
+#action	{^%?%?%?你受了相当重的伤} {eat_yao 4 0;exert recover;hpp;#nop kg}
+#action	{^%?%?%?你受伤不轻} {eat_yao 3 0;exert recover;hpp;#nop kg}
+#action	{^%?%?%?你受伤过重_noquit} {exert recover;eat_yao 4 0;exert recover;hpp;#nop kg}
+#action	{^%?%?%?你受伤过重} {eat_yao 4 0;random;QuitAction;#nop auto log should turned off if this happens}
+#action	{^%?%?%?你已经一副头重脚轻的模样} {exert recover;#nop kg}
+#action	{^%?%?%?你已经伤痕累累} {eat_yao 3 0;exert recover;hpp;#nop kg}
+#action	{^%?%?%?你已经陷入半昏迷状态} {exert recover;#nop kg}
+#action	{^%?%?%?你心智已经完全迷失} {exert refresh;eat_yao 0 3;hpp;#nop kg}
+#action	{^%?%?%?你拍了拍自己的脑} {eat_yao 0 1;ef;hpp;#nop kg}
+#action	{^%?%?%?你摇头晃脑} {exert recover;#nop kg}
+#action	{^%?%?%?你气喘嘘} {exert recover;#nop kg}
+#action	{^%?%?%?你气息粗重} {eat_yao 2 0;exert recover;hpp;#nop kg}
+#action	{^%?%?%?你的确有点迷糊了} {eat_yao 0 1;exert refresh;hpp;#nop kg}
+#action	{^%?%?%?你看起来可能受了点轻伤} {eat_yao 1 0;exert recover;#nop kg}
+#nop action	{^%?%?%?你看起来可能有些累了} {exert recover;#nop kg}
+#action	{^%?%?%?你看起来已经力不从心了} {exert recover;#nop kg}
+#action	{^%?%?%?你看起来有些迷糊了} {eat_yao 0 1;ef;#nop kg}
+#action	{^%?%?%?你神智已经处在极度混乱中} {eat_yao 0 2;exert refresh;hpp;#nop kg}
+
+#action	{^%?%?%?你被%*以内力一震%*} {eat_yao 2 0;exert recover;#log append {logs/$userid-mieyaoreport.txt};timenow;#line {log} {logs/$userid-mieyaoreport.txt} {怪反击： $Location  $yaoidd  $YaoNeili 年内力 };#line {log} {logs/$userid-mieyaoreport.txt} {#echo 你被$yaoname的内力一震%1};#log off;hpp;#nop kg;}
+#action	{^%?%?%?你被%*以内力反震%*} {eat_yao 2 0;exert recover;#log append {logs/$userid-mieyaoreport.txt};timenow;#line {log} {logs/$userid-mieyaoreport.txt} {怪反击： $Location  $yaoidd  $YaoNeili 年内力 };#line {log} {logs/$userid-mieyaoreport.txt} {#echo 你被$yaoname的内力一震%1};#log off;hpp;#nop kg;}
+#action	{^%?%?%?你被%*的内力一震%*} {eat_yao 2 0;exert recover;#log append {logs/$userid-mieyaoreport.txt};timenow;#line {log} {logs/$userid-mieyaoreport.txt} {怪反击： $Location  $yaoidd  $YaoNeili 年内力 };#line {log} {logs/$userid-mieyaoreport.txt} {#echo 你被$yaoname的内力一震%1};#log off;hpp;#nop kg;}
+#action	{^%?%?%?你迷迷糊糊} {eat_yao 0 1;exert refresh;hpp;#nop kg}
+#action	{^%?%?%?结果砸个正着，差点没把你砸扁！} {eat_yao 1 0}
+#action	{^%?%?%?你%*被%*的长鼻高高卷起} {#delay 2 er;#delay 4 er;#delay 6 er;#delay 8 er;#delay 10 er;}
+#action	{^%?%?%?你受到%*影响，显然有点魂不守舍了} {eat_yao 0 1}
+#action	{^%?%?%?你听到「喀啦」一声轻响，竟似是骨碎的声音！} {hpp;#nop kg}
+
+#action	{^%?%?%?你将天香断续胶敷在创伤处} {#math num_yao_hp {$num_yao_hp - 1}}
+#action {^%?%?%?你服下一颗白云熊胆丸} {#math num_yao_js {$num_yao_js -1}}
+
+#nop	action	{你一次输入太多命令了。} {#wait 6000;exert recover;#wait 2000;exert refresh;hp}
+#nop 	action	{^%?%?%?看来该找机会逃跑了_bak} {#t- BackUp;mying4=1;mying=1;#if {$location=金兜山} {bian me};#if {$location=无底洞} {bian me};#if {$location=宝象国} {bian me};#math nescape $nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#if ($usermp=gouhun) {#2 release};#t+ Escape;randomwalk;#t- BackUp;#T+ fight1;#T+ Fight3;gohh}
+
+#class combat close
+#nop	action	{你只有在战斗中才能使用复活术} {#wa 2000;cmm}
+#nop	action	{你上一个动作还没有完成，不能念咒文。} {#wa 2000;#if ($castmark=1) {#wa 1000;cmm};#if ($castmark=2) {tx;ResetTrigger;$escape1;gohh}}
+#nop 	action	{和你的*相击，冒出点点的火星} {#CW White;mbreak=1;1enable stick none}
+#nop	action	{你的%*和%*相击，冒出点点的火星} {#CW White;mbreak=1;1enable stick none}
+#nop	action	{只听见%*地一声，$yaoname手中的} {#CW White;ek;mbreak=0}
+#nop	action	{^%?%?%?你只觉得手中*把持不定，脱手飞出！} {mbreak=1;remove dun;unwield zhua;wield zhua;wield $Weapon;wear dun;#math sticknum $sticknum-1;#if ($sticknum<1) {mying4=1;mbreak=1;sticknum=0;drop $weapon;unwield zhua;#t- BackUp;mying4=1;mying=1;#if ($location=金兜山) {bian me};#if ($location=无底洞) {bian me};#if ($location=宝象国) {bian me};#math nescape $nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 release;#3 $escape1;tx;#t- BackUp;#t+ fight1;gohh;precover}}
+#nop	action	{你略一凝神，吸了口气，精bak神看起来清醒多了。} {#al DoExert {exert recover};#wa 1000;DoExert;#nop kg}
+#nop	action	{你现在不能用魔法} {#if ($castmark=1) {#wa 2000;cmm};#if ($castmark=2) {#wa 2000;gghell}}
+#nop	action	{你拿起一根%*，顺手舞了个棍花} {ek;#if ($mbreak=1) {1enable stick none}}
+#nop	action	{这里不准念111咒文。} {#if ($castmark=2) {%item($escape1|$escape2|$escape3|$escape4|$escape5|$escape6,%random(1,6));gohhreal}}
+

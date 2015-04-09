@@ -1,0 +1,207 @@
+#nop VSOF
+#CLASS default OPEN
+
+#nop config charset {big5}
+
+#MACRO {\e[1;2A} {#buffer {up}}
+#MACRO {\e[1;2B} {#buffer {down}}
+#MACRO {\e[1;2C} {#buffer {end}}
+#MACRO {\e[1;2D} {#buffer {home}}
+
+#VAR yao_yao yao
+#VAR yao_dan dan
+
+#nop ########## fight ##########
+#ALIAS er {exert recover;}
+#ALIAS re {exert refresh;}
+#ALIAS ef {exert refresh;}
+#alias ct {cast transfer;}
+#ALIAS eh {exert heal;}
+#alias es {exert shield;}
+#ALIAS dt {decode tianshu;}
+#ALIAS rl {accept rulai fo;}
+#alias wx {remove dun;unwield bang;unwield fork;unwield whip;wield sword;enable sword snowsword;enable dodge moondance;
+		perform wuxue;unwield sword;wield $weapon;wield bang;wield sword;wield fork;wear all;}
+
+#alias fb {remove dun;unwield bang;unwield sword;wield fork;perform fengbo;unwield fork;wield sword;wield bang;wear all}
+#alias pz {remove dun;unwield bang;unwield sword;wield blade;perform pozhan;unwield blade;wield sword;wield bang;wear all}
+#alias pf {enable stick qianjun-bang;perform pili;enable stick kusang-bang;perform three}
+#alias pp {perform daoda;pf}
+#alias cm {cast mihun;}
+
+#nop ########   misc ##########
+#alias tm {fly sky;#13 n;#4 w;#3 n;#2 w;ask jian fu about 天马;e}
+#alias mm {mount horse-$login_id}
+
+
+#nop ########## system #########
+#alias {debug on} {#debug action on;#debug class on;#debug alias on;}
+#alias {debug off} {#debug action off;#debug class off;#debug alias off;}
+
+
+#alias tload {
+	#class %1 kill;
+	#read tins/%1.tin;
+	#gts {#list tins_to_load {add} {%1}};
+}
+
+#alias tkill {
+	#gts {#list tins_to_load {delete} {%1}};
+	#class %1 kill;
+}
+
+#alias tsave {
+	#unvar class_to_save;
+	#nop var class_to_save none;
+	#var class_to_save %1;
+	#if {&class_to_save} {
+		#nop format filename {tmp/%s_%s_%t.tin} {$login_id} {$class_to_save} {%Y-%m-%d};
+		#format filename {tins/%s_%s.tin} {$class_to_save} {$login_id};
+		#alias mywrite {
+			#echo {<fff>设置文件存入了%%1};
+			#class $class_to_save write %%1;
+		};
+		mywrite $filename;
+	}; #else {
+		#echo {<fff>存储失败，class名为空。};
+	};
+}
+#alias qq {
+	quit;
+	#delay 0.1 {#end};
+}
+
+#nop function {time}
+{
+	#if {"%0" == ""}
+	{
+		#format {epoch} {%T}
+	};
+	#else
+	{
+		#var epoch %0
+	};
+	#nop #echo {当前时间为：%t 。} {%Y-%m-%d %H:%M:%S}
+	#format {result} {%t} {{%T}{$epoch}}
+}
+
+#alias timenow {#echo {当前时间为：%t.} {%Y-%m-%d %H:%M:%S};}
+
+
+#nop ######### route #########
+#ALIAS al {fly sky;#13 n;#4 e;#2 s;#2 e;open door;n;u;ask li jing about newkill;}
+#ALIAS ca {fly changan;}
+#ALIAS kf {fly kaifeng;}
+#ALIAS spr {ca;#2 s;w;#2 u;s;team with cubuyi;team;}
+#ALIAS rulai {fly lingshan;#5 w;s;wu;sw;nu;wu;nw;n;nw;wu;#5 s;};
+#alias go_pansi_danlu {fly zhuzi;#9 n;#2 w;#2 nw;sw;w;wu;#3 se;e;}
+#alias get_out_from_shelita {tload shelita;start_moving_out_shelita;}
+#alias ysd {fly tianzhu;#10 w;s;s;e;buy dan;eat dan;w}
+#ALIAS gbb {fly changan;#6 s;e;nu;hd;n;#3 nw;};
+
+
+#nop ########## task specific ######
+#ALIAS learn_skill {
+	#delay 1 {#ECHO {标准格式：learn_skill stick 500 dongfang dragon dazuo {gbb} {fly sky};};}
+	#CLASS learn kill;
+	#CLASS learn read tins/learn.tin;
+
+	#var skill_to_learn %1;
+	#var target_skill_level %2;
+	#var master %3;
+	#var practice_method %4;
+	#var recover_method %5;
+	#var path_to_master %6;
+	#var path_to_recover %7;
+	
+	idle_prevention;
+}
+
+#ALIAS practice_skill {
+	#delay 1 {#ECHO {格式：practice_skill parry qianjun-bang 500 dazuo noyutu};};
+	#delay 1 {#echo 输入start开始练习。};
+	#CLASS practice kill;
+	#CLASS practice read tins/practice.tin;
+
+	#var skill_to_practice %1;
+	#var skill_to_upgrade %2;
+	#var target_skill_level %3;
+	#var recover_method %4; 
+	#var fight_yutu %5;
+	
+	idle_prevention 120;
+}
+
+#alias check_status {
+	tload status_check;
+	score;
+	skills;
+	enable;
+	i;
+	hp;
+	set brief status_check;
+}
+
+#alias {check_target_level}{
+	tload check_target;
+	check $target_name_lower;
+	set brief CHECKED TARGET LEVEL;
+}
+#ALIAS rec {
+	#showme {RECOVERY STARTED.};
+	#class recovery read tins/recovery.tin;
+	er;
+	re;
+	hp;
+};
+
+#alias {go_find_target} {
+	tload find_target;
+	find $target_name_lower;
+}
+
+#alias idle_prevention {#tick {idle_prevention} {#showme {LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?};} {%1};}
+
+#ALIAS st {
+	#CLASS recovery KILL;
+	exercise 0;
+	mingsi 0;
+	#DELAY 5 {er;re;};
+};
+
+#NOP ############### actions##################
+
+#action {^%?%?%?%?潜能：%s%1%s杀气：%s%2} {
+	#var current_qn %1;
+	#var current_sq %2;
+} {8};
+
+#ACTION {^%?%?%?%?气血：%s%1%s/%s%2%s(%3%)%s内力：%s%4%s/%s%5%s(%6%)} {
+	#VAR current_hp %1;
+	#VAR max_hp %2;
+	#VAR percent_hp %3;
+	#VAR current_nl %4;
+	#VAR max_nl %5;
+	#VAR percent_nl %6;
+} {8};
+	
+#ACTION {^%?%?%?%?精神：%s%1%s/%s%2%s(%3%)%s法力：%s%4%s/%s%5%s(%6%)} {
+	#VAR current_js %1;
+	#VAR max_js %2;
+	#VAR percent_js %3;
+	#VAR current_fl %4;
+	#VAR max_fl %5;
+	#VAR percent_fl %6;
+} {8};
+
+#action {^%?%?%?%?食物：%s%1%s/%s%2%s武学：%s%3$} {
+	#var current_food %1;
+	#var current_wx %3;
+} {8};
+
+#action {^%?%?%?%?饮水：%s%1%s/%s%2%s道行：%s%3$} {
+	#var current_drink %1;
+	#var current_dh %3;
+} {8};
+
+#CLASS default CLOSE

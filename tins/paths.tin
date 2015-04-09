@@ -1,0 +1,7 @@
+#class paths open
+
+#var	{ÔÂ¹¬1}	{n;n;s;e;w;w;e;s;w;w;w;e;e;e;e;w;sd;ed;ed;nd;nd;ed;e;n;n;s;s;se;se;se;sw;se;e;e;e;e;w;w;w;w;nw;w;w}
+#var	{ÔÂ¹¬2}	{n;n;s;e;w;w;e;s}
+#var	{ÔÂ¹¬3}	{climb tree;u;u}
+
+#class paths close

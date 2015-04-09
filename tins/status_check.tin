@@ -1,0 +1,45 @@
+#class status_check open
+
+
+
+
+#action {潜能：%s%1%s杀气：%s%2} {
+	#var current_qn %1;
+	#var current_sq %2;
+};
+
+
+#ACTION { 气血：%s%1%s/%s%2%s(%3%)%s内力：%s%4%s/%s%5%s(%6%)} {
+	#VAR current_hp %1;
+	#VAR max_hp %2;
+	#VAR percent_hp %3;
+	#VAR current_nl %4;
+	#VAR max_nl %5;
+	#VAR percent_nl %6;
+	#MATH to_exercise {($max_nl * 2 - $current_nl) /4};
+	#IF {$to_exercise < 50} {#VAR nl_is_full 1};
+	#IF {$percent_hp == 100} {#VAR max_hp_is_full 1};
+}
+	
+#ACTION { 精神：%s%1%s/%s%2%s(%3%)%s法力：%s%4%s/%s%5%s(%6%)} {
+	#VAR current_js %1;
+	#VAR max_js %2;
+	#VAR percent_js %3;
+	#VAR current_fl %4;
+	#VAR max_fl %5;
+	#VAR percent_fl %6;
+	#MATH to_meditate {($max_fl * 2 - $current_fl) /4};
+	#IF {$to_meditate < 50} {#VAR fl_is_full 1};	
+	#IF {$percent_js == 100} {#VAR max_js_is_full 1};
+}
+
+#action {设定环境变数%*status_check} {
+	#var num_status_passed 0;
+	#nop if {$current_sq > $status_check_sq_threshold} {} {};
+	#if {$current_nl > $status_check_nl_threshold} { #math num_status_passed {$num_status_passed + 1};} {#showme {STATUS CHECK: NEILI TOO LOW.};};
+	#if {$current_fl > $status_check_fl_threshold} { #math num_status_passed {$num_status_passed + 1};} {#showme {STATUS CHECK: FALI TOO LOW.};};
+	#if {$num_status_passed >= $num_status_to_pass} {#showme {STATUS CHECK PASSED.};} {#showme {STATUS CHECK FAILED.};};
+	#class status_check kill;
+};
+
+#class status_check close

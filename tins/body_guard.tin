@@ -1,0 +1,101 @@
+#read tins/default.tin
+#read tins/combat.tin
+#read tins/find_target.tin
+
+#class body_guard open
+
+#var id_to_protect {hotfish}
+#var id_to_protect_chinese {追梦人}
+#var following_id_to_protect 0
+
+
+#action {^>%s$} {#line {gag};}
+
+#action {$$id_to_protect_chinese($$id_to_protect)告诉你：TASK:gofindnpcwithknownlocation %1, in %2} {
+	#var target_name_lower %1;
+	#format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	go_find_target;
+	#nop go_search_target $target_name_lower in $target_location;
+};
+#action {$$id_to_protect_chinese($$id_to_protect)告诉你：I need your protection for fighting yu tu.} {
+	rec;
+}
+
+#action {^I FOUND TARGET $$target_name_lower} {
+	tell $id_to_protect BODY GUARD READY FOR $target_name_lower;
+	start_body_guard_tick;
+}
+#action {^%?%?%?桂花树后转出吴刚，伸出一把大板斧拦住你道：} {
+	tell $id_to_protect BODY GUARD READY FOR $target_name_lower;
+}
+
+#alias start_body_guard_tick {
+	#tick body_guard_tick {
+	#if {$following_id_to_protect == 0} {follow $id_to_protect};
+	#2 exert recover $id_to_protect;
+	get $id_to_protect;
+	} {1};
+}
+#action {^你决定开始跟随$$id_to_protect_chinese一起行动。} {
+	#var following_id_to_protect 1;
+	start_body_guard_tick;
+}
+
+#action {^安全区内不能用天眼通。} {
+	random;
+	go_find_target;
+}
+
+#action {^这里没有%s$$id_to_protect。} {#line {gag};}
+#action {你附近没有这样东西。} {#line {gag};}
+
+#action {$$id_to_protect_chinese脚下一} {
+	#2 exert recover $id_to_protect;
+	get $id_to_protect;
+}
+
+#action {^FAILED TO FIND TARGET.} {
+	#untick body_guard_tick;
+	random;
+	fly stone;
+}
+
+#action {周围没有一片云，没办法腾云驾雾。} {
+	stop;
+	#delay 1 {start_move;random;fly stone;};
+};
+
+#action {告诉你%*RELOCATION IS NEEDED FOR YOU.} {
+	follow none;
+	#untick body_guard_tick;
+	#untick tick_relocation;
+	relocate;
+}
+
+#alias relocate {
+	#untick body_guard_tick;
+	#untick tick_relocation;
+	#tick tick_relocation {
+		random;
+		fly stone;
+	} {3};
+}
+
+#action {^你一次输入太多命令了。} {
+	killclass body_guard;
+	killclass find_target;
+	#untick tick_relocation;
+	#delay 10 {
+		load body_guard;
+		relocate;
+	};
+};
+
+#action {^仙石 -} {
+	#var following_id_to_protect 0;
+	#untick tick_relocation;
+	#delay 10 {fly sky;s;s;s};
+}
+
+#class body_guard close

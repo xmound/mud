@@ -1,0 +1,36 @@
+#class shelita open
+
+#alias start_moving_out_shelita {
+	zuan;
+	#tick move_out_from_shelita {
+		zuan;
+		random;
+		get sheli zi;
+		out;
+	} {2};
+}
+
+#action {^%?%?%?%?舍利塔} {
+	bury sheli zi;
+	#delay 2 {wd};
+	#untick move_out_from_shelita;
+	#class shelita kill;
+	#delay 5 {
+		#showme {SUCCESSFULLY GOT OUT FROM SHELITA.};
+	};
+}
+
+#action {^你只觉得天地仿佛都塌陷下来，你被猛地甩了出去} {
+	bury sheli zi;
+	#untick move_out_from_shelita;
+	#class shelita kill;
+	#delay 5 {
+		#showme {SUCCESSFULLY GOT OUT FROM SHELITA.};
+	};
+}
+
+#action	{囚洞 -} {zuan}
+#action	{你大叫一声，从天而降！} {l}
+#action	{你一个跟头从杂草中飞了过来，满脸的迷茫。} {l}
+
+#class shelita close

@@ -1,0 +1,473 @@
+#read tins/combat.tin
+#read tins/default.tin
+#class practice open
+
+#log append logs/practice-$login_id.txt
+
+#SPLIT 1 3
+
+#nop ########## variables ############
+
+#var skill_to_practice unarmed
+#var skill_to_upgrade dragonfight
+#var target_skill_level 770
+
+#var skill_to_practice_2nd dodge
+#var skill_to_upgrade_2nd dragonstep
+#var target_skill_level_2nd 420
+
+#var recover_method sleep
+#var fight_yutu yutu
+#var path_to_practice {gbb;#3 ne;#3 se}
+#var path_to_recover {w}
+#var path_after_recover {e}
+#var body_guard {zeroth}
+
+#nop ###### misc ######
+#gag {^>%s$}
+#prompt {练习状态prompt} {$status_bar_prefix|<fca>练$skill_to_upgrade|
+						$current_skill_level/$target_skill_level级|
+						经验$current_skill_exp/$exp_to_next_level|
+						休息$recover_method|玉兔$fight_yutu|保镖$body_guard} {2};		
+
+#action {^%?%?%?%?%?重新连线完毕。} {
+	relocate;
+}
+
+#alias relocate {
+	stop;
+	start_move;
+	set brief_all;
+	$path_to_practice;
+	unset brief_all;
+	#delay 5 {l};
+}
+#alias start_practice {
+	stop;
+	practice_practise;
+	#if {"$skill_to_upgrade" == "jueqingbian"} {#var weapon whip};
+	#if {"$skill_to_upgrade" == "hellfire-whip"} {#var weapon whip};
+	#if {"$skill_to_upgrade" == "qianjun-bang"} {#var weapon bang};
+	#if {"$skill_to_upgrade" == "kusang-bang"} {#var weapon bang};
+	#if {"$skill_to_upgrade" == "bainiao-jian"} {#var weapon sword};
+	#if {"$skill_to_upgrade" == "zhuihun-jian"} {#var weapon sword};
+	#if {"$skill_to_upgrade" == "liangyi-sword"} {#var weapon sword};
+	#if {"$skill_to_upgrade" == "skyriver-rake"} {#var weapon rake};
+	#if {"$skill_to_upgrade" == "fengbo-cha"} {#var weapon fork};
+
+	#if {"$skill_to_upgrade" == "jinghun-zhang"} {#var weapon {}};
+	#if {"$skill_to_upgrade" == "qianshou"} {#var weapon {}};
+	#if {"$skill_to_upgrade" == "dragon-fight"} {#var weapon {}};
+	#if {"$skill_to_upgrade" == "qianshou"} {#var weapon {}};
+
+	#if {"$skill_to_upgrade" == "moondance"} {#var weapon bang};
+	#if {"$skill_to_upgrade" == "ghost-steps"} {#var weapon bang};
+	#if {"$skill_to_upgrade" == "dragon-steps"} {#var weapon bang};
+	#if {"$skill_to_upgrade" == "lingfu-steps"} {#var weapon bang};
+	skills;
+	idle_prevention 120;
+}
+
+#alias practice_task_completed {
+	stop;
+	#showme {练习$skill_to_upgrade完成了};
+	localtime;
+	#class practice kill;
+};
+
+#alias start_recover {
+	stop;
+	practice_recover;
+	do_recover;
+	idle_prevention 300;
+}
+
+#alias start_yutu {
+	stop;
+	practice_yutu;
+	check_status_for_yutu;
+	check_status;
+	idle_prevention 300;
+	set wimpy 50;
+}
+
+#alias start_move {
+	stop;
+	practice_move;
+}
+
+#alias stop_practice {
+	#class practice_practise_inner kill;
+	idle_prevention 120;
+}
+
+#alias stop_yutu {
+	#class practice_yutu_inner kill;
+	idle_prevention 120;
+}
+
+#alias stop_move {
+	#class practice_move_inner kill;
+	idle_prevention 120;
+}
+
+#alias stop_recover {
+	#class practice_recover_inner kill;
+	idle_prevention 120;
+}
+
+#alias start {
+	start_practice;
+	tell $body_guard I need your protection for fighting yu tu.;
+}
+
+#alias stop {
+	stop_practice;
+	stop_yutu;
+	stop_recover;
+	stop_move;
+}
+
+#alias practice_practise {
+	#class practice_practise_inner open;
+	#var in_practice 1;
+	
+	#alias do_practice {
+		#20 practice $skill_to_practice;
+		#if {"$recover_method" == "sleep"} {ct};
+		er;
+		re;
+		#delay 4 {skills};
+	};
+	
+	#action {^你目前掌握了%*项技能} {#line {gag};};
+	
+	#action {{^□|}%S%s(%S)%s-%*%d/%*} {
+		#if {"%%4" == "$skill_to_upgrade"} {
+			#var skill_to_upgrade_chinese %%2;
+			#var current_skill_level %%7;
+			#var current_skill_exp %%8;
+			#MATH exp_to_next_level {($current_skill_level + 1 ) * ($current_skill_level + 1)};
+			
+			#SHOWME {练习状态prompt};
+			
+			#if {$current_skill_exp > $exp_to_next_level} {
+				#if {"$fight_yutu" == "yutu"} {
+					start_yutu;
+				}; #else {
+					#nop do_practice;
+					#system {afplay sound/alert.wav};
+				};
+			}; #elseif {$current_skill_level < $target_skill_level} {
+				do_practice;
+			}; #else {
+				#if {&{skill_to_practice_2nd}} {
+					hi;
+					#var skill_to_practice $skill_to_practice_2nd;
+					#var skill_to_upgrade $skill_to_upgrade_2nd;
+					#var target_skill_level $target_skill_level_2nd;
+					
+					#unvar skill_to_practice_2nd;
+					#unvar skill_to_upgrade_2nd;
+					#unvar target_skill_level_2nd;
+					
+					do_practice;
+				}; #else {
+					practice_task_completed;
+				};
+			};
+		}; #else {
+			#line {gag};
+		};
+	};
+	
+	#action {^{你按着所学练了一遍|你按照所学练了一遍}} {#line {gag};};
+	#action {你的$$skill_to_upgrade_chinese进步了} {
+		#line {gag};
+		idle_prevention 120;
+	};
+		
+	#action {^你的内力不够。} {
+		stop;
+		start_recover;
+	};
+	
+	#action {^你一次输入太多命令了。} {
+		stop;
+		#delay 10 {start_practice};
+	};
+	
+	#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {
+		start;
+	};
+	
+	#action {^忽然一阵黄风呼啸而来，你身不由己被卷了进去！} {
+		stop;
+		start_move;
+		#delay 10 #showme {YOU HAVE ENTERED SHELITA.};
+	};
+	
+	#action {^这里不是练功的地方。} {
+		restart_practice;
+	};
+	
+	#class practice_practise_inner close;
+}
+
+#alias practice_recover {
+	#class practice_recover_inner open;
+
+	#alias do_recover {
+		#if {"$recover_method" == "sleep"} {
+			$path_to_recover;
+			sleep;
+		}; #elseif {"$recover_method" == "dazuo"} {
+			rec;
+		};
+	};
+	
+	#action {^你刚睡过一觉, 先活动活动吧。} {#delay 5 {$path_after_recover;cast transfer;$path_to_recover;sleep};};
+	
+	#action {^这里不是睡觉的地方。} {
+		#var dazuo_method {dazuo};
+		rec;
+	};
+	
+	#action {^你一觉醒来，只觉精力充沛。该活动一下了。} {
+		mm;
+		stop_recover;
+		$path_after_recover;
+		start;
+	};
+	
+	#action {^RECOVERY FINISHED.} {
+		stop_recover;
+		$path_after_recover;
+		start;
+	};
+	
+	#action {^荡悠悠三更梦 -} {
+		stop_recover;
+		start_move;
+		#showme {YOU HAVE ENTERED HONGLOU YIMENG.};
+	};
+	
+	#action {^你一次输入太多命令了。} {
+		stop;
+		#delay 10 {start};
+	};
+	
+	#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {
+		start;
+	};
+	
+	#class practice_recover_inner close;
+}
+
+
+#alias practice_yutu {
+	#class practice_yutu_inner open;
+	
+	#alias check_status_for_yutu {
+		#class practice_yutu_inner_check_status_inner open;
+		#var status_check_nl_threshold 3000;
+		#var status_check_fl_threshold 500;
+		#var num_status_to_pass 2;
+		
+		#action {你行功完毕，从冥思中回过神来。} {#delay 4 {re;check_status};};
+		#action {你行功完毕，吸一口气，缓缓站了起来。} {#delay 4 {er;check_status};};
+		
+		#action {STATUS CHECK: NEILI TOO LOW.} {dazuo 500};
+		#action {STATUS CHECK: FALI TOO LOW.} {mingsi 200};
+		
+		#action {STATUS CHECK PASSED.} {
+			#class practice_yutu_inner_check_status_inner kill;
+			wx;
+			exert shield;
+			exert tonsillit;
+			remove all;
+			unwield bang;
+			unwield zhua;
+			unwield sword;
+			unwield whip;
+			unwield fork;
+			unwield rake;
+			unwield all;
+			wield $weapon;
+			wear all;
+			enable $skill_to_practice $skill_to_upgrade;
+			#if {"$weapon" == "" } {em;}; #else {enforce 1};
+			#delay 5 {find_yutu;};
+		};
+		#class practice_yutu_inner_check_status_inner close;
+	};
+	
+	#alias find_yutu {
+		#var target_name_lower {yu tu};
+		#var target_name_upper {Yu tu};
+		#var target_name_chinese {玉兔};
+		#var target_location 月宫;
+		#var body_guard_ready = 0;
+		go_find_target;
+		prepare_to_kill_yutu;
+	};
+		
+	#action {^I FOUND TARGET $target_name_lower} {
+		check_target_level;
+		#system {afplay sound/alert.wav};
+	};
+	
+	#alias prepare_to_kill_yutu {
+		set wimpy 50;
+	};
+	
+	#action {^I FOUND TARGET $$target_name_lower} {
+		check_target_level;
+	};
+	
+	#action {^FAILED TO FIND TARGET.} {
+		#delay 5 {
+			#untick prepare_to_kill_tick;
+			stop_yutu;
+			start_move;
+			#showme {RELOCATION IS NEEDED.}
+		};
+	};
+	
+	#action {$$body_guard%*告诉你%*BODY GUARD READY FOR $$target_name_lower} {
+		#var body_guard_ready 1;
+	};
+	
+	#action {^TARGET 武学 %%1, TARGET 内力 %%2} {
+		#var target_nl %%2;
+		#if {$target_nl < 140} {
+			#showme {怪物内力 $target_nl 年， 我准备开始打了。};
+			#var target_found 1;
+			#system {afplay sound/alert.wav};
+			#tick {prepare_to_kill_tick} {tick_kill_target_ready_check} {2};
+		};
+	};
+	
+	#alias tick_kill_target_ready_check {
+		#if {&{body_guard}} {
+			#if {$body_guard_ready == 1} {kill $target_name_lower;};
+		}; 
+		#else {kill $target_name_lower;};
+	};
+
+	#action {^玉兔说道：「不打了，不打了，我投降。」} {
+		follow yu tu;
+		check_target_level;
+	};
+	
+	#action {^玉兔往%*落荒而逃了} {
+		tick_kill_target_ready_check;
+	};
+	
+	#action {^你对着玉兔喝道：} {
+		#untick prepare_to_kill_tick;
+	};
+	
+	#action {^看来该找机会逃跑了．．．} {
+		#delay 1 {
+			#untick prepare_to_kill_tick;
+			stop_yutu;
+			start_move;
+			#showme {RELOCATION IS NEEDED.}
+		};
+	};
+	
+	#action {你的「$$skill_to_upgrade_chinese」进步了！} {
+		#delay 0.1 {
+			#untick prepare_to_kill_tick;
+			stop_yutu;
+			start_move;
+			#showme {RELOCATION IS NEEDED.}
+		};
+	};
+	
+	#action {^你一次输入太多命令了。} {
+		#delay 0.1 {
+			#untick prepare_to_kill_tick;
+			stop_yutu;
+			start_move;
+			#showme {RELOCATION IS NEEDED.}
+		};
+	};
+	
+	#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {
+		stop;
+		relocate;
+	};
+	
+	#action	{^%?%?%?这里禁止战斗} {cast mihun on $target_name_lower;};
+	
+	#nop action	{^%?%?%?一只活泼可爱的小白兔} {#CW White;check yu tu};
+	#nop	action	{^????你要看什么？} {#math looknum @looknum+1;#if (@looknum>5) {lunci=2;#T- backup;mying=0;ResetTrigger;#wa 6000;gohhreal};#if (@Found=1 and @looknum<6) {#T- fight;#T- hellbing;#wait 2000;#backup;look yu tu}};
+	
+	
+	#class practice_yutu_inner close;
+}
+
+#alias practice_move {
+	#class practice_move_inner open;
+	
+	#action {^YOU HAVE ENTERED SHELITA.} {get_out_from_shelita;};
+	
+	#action {^YOU HAVE ENTERED HONGLOU YIMENG.} {
+		up;
+		#5 n;
+		up;
+		ask girl about back;
+		$path_after_recover;
+		stop;
+		start;
+	};
+	
+	#action {^你一次输入太多命令了。} {
+		stop;
+		#delay 10 {#showme {RELOCATION IS NEEDED.};};
+	};
+	
+	#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {stop;relocate};
+	
+	#action {^RELOCATION IS NEEDED.} {
+		random;
+		#tick relocation_tick {surrender;random;fly stone;} {2};
+		#if {&{body_guard}} {tell $body_guard RELOCATION IS NEEDED FOR YOU.};
+	};
+	
+	#action {^SUCCESSFULLY GOT OUT FROM SHELITA.} {
+		#delay 10 {relocate};
+	};
+	
+	#action {周围没有一片云，没办法腾云驾雾。} {
+		stop;
+		#delay 1 {start_move;random;fly stone;};
+	};
+	
+	#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去} {
+		enforce 100;
+		er;
+		re;
+		kill guard;;
+	};
+
+	#action {^守门人死了。} {
+		#delay 5 {relocate;};
+	};
+	
+	#action {^仙石 -} {
+		#untick relocation_tick;
+		#delay 5 {relocate;};
+	};
+	
+	#action {^狮子宫 -} {
+		stop;
+		#delay 5 {start;};
+	};
+	
+	#class practice_move_inner close;
+}
+
+#class practice close
