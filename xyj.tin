@@ -10,7 +10,7 @@
 #nop gts {#list tins_to_load {add} {default}};
 
 #class login_parse_user_id open
-#read /Users/daili/Desktop/personal/mud/characters
+#read characters
 
 #alias {%*} {
 	#var login_id %1;
