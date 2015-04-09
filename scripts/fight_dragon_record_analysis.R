@@ -1,10 +1,10 @@
 df <- read.csv("/Users/daili/Desktop/personal/mud/xyj/logs/fight_dragon_rewards_hotfish.txt",sep = '\t',header= FALSE,
          col.names = c('ts','data'), colClasses = c('POSIXct','character'))
 
-df$time_1min <- as.POSIXct(floor(as.numeric(df$ts)/(60))*(60), origin = strptime("1970-01-01", "%Y-%m-%d", tz="PDT"))
-df$time_5mins <- as.POSIXct(floor(as.numeric(df$ts)/(5*60))*(5*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz="PDT"))
-df$time_15mins <- as.POSIXct(floor(as.numeric(df$ts)/(15*60))*(15*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz="PDT"))
-df$time_1hr <- as.POSIXct(floor(as.numeric(df$ts)/(60*60))*(60*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz="PDT"))
+df$time_1min <- as.POSIXct(floor(as.numeric(df$ts)/(60))*(60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
+df$time_5mins <- as.POSIXct(floor(as.numeric(df$ts)/(5*60))*(5*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
+df$time_15mins <- as.POSIXct(floor(as.numeric(df$ts)/(15*60))*(15*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
+df$time_1hr <- as.POSIXct(floor(as.numeric(df$ts)/(60*60))*(60*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
 
 number_indecies <- as.numeric(df$data) > 0
 df_events <- df[is.na(number_indecies),]
