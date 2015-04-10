@@ -1,0 +1,32 @@
+#class relocation open
+
+#tick relocation_tick {fly stone} {1};
+
+#action {^%?%?%?你正在战斗，飞不开。} {
+	random;
+};
+
+#action {^%?%?你奋力望上一跳，似乎想飞起来。结果离地不到三尺就一个倒栽葱摔了下来。} {
+	er;re;mingsi 20;
+};
+
+#action {^%?%?%?%?周围没有一片云，没办法腾云驾雾。} {
+	random;
+};
+
+#action {^%?%?仙石} {
+	#untick relocation_tick;
+	tkill relocation;
+	#delay 1 {
+		#showme {<fff>RELOCATED TO STONE SUCCESSFULLY.}	;
+	};
+};
+
+#action {^%?%?%?%?%?%?%你一次输入} {
+	#untick relocation_tick;
+	#delay 5 {
+		#tick relocation_tick {fly stone} {2};
+	};
+};
+
+#class relocation close

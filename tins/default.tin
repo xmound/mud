@@ -1,15 +1,17 @@
 #nop VSOF
 #CLASS default OPEN
 
-#nop config charset {big5}
+#CONFIG {REPEAT ENTER} {ON}
+#CONFIG {PACKET PATCH} {0.5}
+#CONFIG {COMMAND ECHO} {OFF}
+#CONFIG {LOG} {plain}
+#DEBUG action off
+#DEBUG variable off
 
 #MACRO {\e[1;2A} {#buffer {up}}
 #MACRO {\e[1;2B} {#buffer {down}}
 #MACRO {\e[1;2C} {#buffer {end}}
 #MACRO {\e[1;2D} {#buffer {home}}
-
-#VAR yao_yao yao
-#VAR yao_dan dan
 
 #nop ########## fight ##########
 #ALIAS er {exert recover;}
@@ -17,7 +19,7 @@
 #ALIAS ef {exert refresh;}
 #alias ct {cast transfer;}
 #ALIAS eh {exert heal;}
-#alias es {exert shield;}
+#alias sh {exert shield;}
 #ALIAS dt {decode tianshu;}
 #ALIAS rl {accept rulai fo;}
 #alias wx {remove dun;unwield bang;unwield fork;unwield whip;wield sword;enable sword snowsword;enable dodge moondance;
@@ -29,18 +31,39 @@
 #alias pp {perform daoda;pf}
 #alias cm {cast mihun;}
 
-#nop ########   misc ##########
+#nop ######### route #########
+#ALIAS al {fly sky;#13 n;#4 e;#2 s;#2 e;open door;n;u;ask li jing about newkill;}
+#ALIAS ca {fly changan;}
+#ALIAS kf {fly kaifeng;}
+#ALIAS spr {ca;#2 s;w;#2 u;s;team with cubuyi;team;}
+#ALIAS rulai {fly lingshan;#5 w;s;wu;sw;nu;wu;nw;n;nw;wu;#5 s;};
+#alias go_pansi_danlu {fly zhuzi;#9 n;#2 w;#2 nw;sw;w;wu;#3 se;e;}
+#alias get_out_from_shelita {tload shelita;start_moving_out_shelita;}
+#alias ysd {fly tianzhu;#10 w;s;s;e;buy dan;eat dan;w}
+#alias gbb {fly changan;#6 s;e;nu;hd;n;#3 nw}
+#alias gchi {fly changan;#6 s;e;nu;hd;n;#3 nw;e;chi}
+#alias zhou {fly changan;s;e;buy jiudai;w;n;w;w;w;n;us;give zhou to yuan;ss;s;tear book}
 #alias tm {fly sky;#13 n;#4 w;#3 n;#2 w;ask jian fu about 天马;e}
 #alias mm {mount horse-$login_id}
+#alias us {unset no_accept}
+#alias ss {set no_accept notify}
 
 
 #nop ########## system #########
-#alias {debug on} {#debug action on;#debug class on;#debug alias on;}
-#alias {debug off} {#debug action off;#debug class off;#debug alias off;}
-
+#action {密码$login_pwd请执行%*} {%1}; 
+#alias {debugon} {#debug action on;#debug class on;#debug alias on;}
+#alias {debugoff} {#debug action off;#debug class off;#debug alias off;}
+#alias qq {quit;#delay 0.1 {#end};}
 
 #alias tload {
 	#class %1 kill;
+	#echo {<fff>正在尝试读取文件%1，请注意提示。如果未成功会有提示；如无提示表示已读取成功。};
+	#read tins/%1.tin;
+}
+
+#alias treload {
+	#class %1 kill;
+	#echo {<fff>将在自动重连后读取%1.tin};
 	#read tins/%1.tin;
 	#gts {#list tins_to_load {add} {%1}};
 }
@@ -66,10 +89,6 @@
 		#echo {<fff>存储失败，class名为空。};
 	};
 }
-#alias qq {
-	quit;
-	#delay 0.1 {#end};
-}
 
 #nop function {time}
 {
@@ -87,20 +106,13 @@
 
 #alias timenow {#echo {当前时间为：%t.} {%Y-%m-%d %H:%M:%S};}
 
-
-#nop ######### route #########
-#ALIAS al {fly sky;#13 n;#4 e;#2 s;#2 e;open door;n;u;ask li jing about newkill;}
-#ALIAS ca {fly changan;}
-#ALIAS kf {fly kaifeng;}
-#ALIAS spr {ca;#2 s;w;#2 u;s;team with cubuyi;team;}
-#ALIAS rulai {fly lingshan;#5 w;s;wu;sw;nu;wu;nw;n;nw;wu;#5 s;};
-#alias go_pansi_danlu {fly zhuzi;#9 n;#2 w;#2 nw;sw;w;wu;#3 se;e;}
-#alias get_out_from_shelita {tload shelita;start_moving_out_shelita;}
-#alias ysd {fly tianzhu;#10 w;s;s;e;buy dan;eat dan;w}
-#ALIAS gbb {fly changan;#6 s;e;nu;hd;n;#3 nw;};
-
-
 #nop ########## task specific ######
+#alias relocate {
+	tload relocation;
+	fly stone;
+	l;
+}
+
 #ALIAS learn_skill {
 	#delay 1 {#ECHO {标准格式：learn_skill stick 500 dongfang dragon dazuo {gbb} {fly sky};};}
 	#CLASS learn kill;
@@ -174,7 +186,7 @@
 #action {^%?%?%?%?潜能：%s%1%s杀气：%s%2} {
 	#var current_qn %1;
 	#var current_sq %2;
-} {8};
+};
 
 #ACTION {^%?%?%?%?气血：%s%1%s/%s%2%s(%3%)%s内力：%s%4%s/%s%5%s(%6%)} {
 	#VAR current_hp %1;
@@ -183,7 +195,8 @@
 	#VAR current_nl %4;
 	#VAR max_nl %5;
 	#VAR percent_nl %6;
-} {8};
+	#MATH current_nl_percent {$current_nl * 100 / $max_nl}
+};
 	
 #ACTION {^%?%?%?%?精神：%s%1%s/%s%2%s(%3%)%s法力：%s%4%s/%s%5%s(%6%)} {
 	#VAR current_js %1;
@@ -192,16 +205,17 @@
 	#VAR current_fl %4;
 	#VAR max_fl %5;
 	#VAR percent_fl %6;
-} {8};
+	#MATH current_fl_percent {$current_fl * 100 / $max_fl}
+};
 
 #action {^%?%?%?%?食物：%s%1%s/%s%2%s武学：%s%3$} {
 	#var current_food %1;
 	#var current_wx %3;
-} {8};
+};
 
 #action {^%?%?%?%?饮水：%s%1%s/%s%2%s道行：%s%3$} {
 	#var current_drink %1;
 	#var current_dh %3;
-} {8};
+};
 
 #CLASS default CLOSE

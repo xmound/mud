@@ -1,20 +1,14 @@
-#CONFIG {REPEAT ENTER} {ON}
-#CONFIG {PACKET PATCH} {0.5}
-#CONFIG {COMMAND ECHO} {OFF}
-#CONFIG {LOG} {plain}
-
-#DEBUG action off
-#DEBUG variable off
-#class main open
-#var auto_reconnect 0
-
-#nop act {^#THERE'S NO ACTIVE SESSION NOW.} { 
-    #gts #delay 1 #ses $login_id 216.136.9.21 6666 
-}
-
-#TICK idle_tick {random semote} 600
-#class main close
-
 #READ tins/default.tin
 #READ tins/combat.tin
+
+#class main open
+
+#var auto_login 1
+#var auto_reconnect 0
+
+#TICK idle_tick {random semote} 600
+
+#class main close
+
+
 

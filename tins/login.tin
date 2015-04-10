@@ -6,14 +6,9 @@
 #read tins/main.tin;
 
 
-#foreach {$tins_to_load[%*]} {class_to_load} {
-	#nop tload $class_to_load;
-	
-	#nop the following reads in the settings (variables, configs, actions) in the /tmp;
-	#nop it will look for @login_id_currentdate.tin;
-	#nop it will only read if it is reconnecting;
-	
-	#format filename {tins/%s_%s.tin} {$class_to_load} {$login_id} ;
+#foreach {$tins_to_load[%*]} {file_to_load} {	
+	#nop format filename {tins/%s_%s.tin} {$class_to_load} {$login_id} ;
+	#format filename {tins/%s.tin} {$file_to_load};
 	#read $filename;
 };
 
@@ -26,7 +21,7 @@
 	}; #elseif {$auto_login == 1 && $auto_relogin == 0 && &{login_id} && &{login_pwd}} {
 		$login_id;
 		$login_pwd;
-		#delay 60 {idle;};
+		#delay 60 {random semote};
 	}; #else {
 		$login_id;
 	}
@@ -44,17 +39,26 @@
 	};
 	#delay 0.01 {
 		#split 1 3;
-		#var status_bar_prefix {<fff>$relogin_or_not|ID:$login_id};
+		#nop var status_bar_prefix {<fff>$relogin_or_not|ID:$login_id};
+		#var status_bar_prefix {<fff> $login_id |};
 		#echo {{$status_bar_prefix} {2}};
 	};
 }
 
 #ACTION {Welcome to Xi You Ji! Select GB or BIG5 (gb/big5):} {
 	gb;no;
-};
+}
 
 #nop action {^%?%?有人从别处(%*)连线取代您所控制的人物。} {
 	#var auo_relogin 0;
-};
+}
+
+#action {^%?%?%?%?%?欢迎您加入西游记游戏，谢谢您的理解和配合。} {
+	#showme {<fff>XYJ NEW CONNECTION ESTABLISHED.};
+}
+
+#action {^%?%?%?%?%?重新连线完毕。} {
+	#showme {<fff>XYJ RECONNECTION DONE.};
+}
 
 #class login close

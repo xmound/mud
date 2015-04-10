@@ -6,60 +6,52 @@
 #log append {$filename} 
 
 #nop settings
-#var skill_to_learn {parry}
-#var auto_relogin 0
+#var skill_to_learn {force}
+#var skill_to_learn2 {unarmed}
+#var auto_reconnect 0
 #var previous_wx 0
+#var master {cong}
 
-#var path_from_fight_to_reset {sw;#3 se;s}
+#var path_from_fight_to_reset {#3 sw;#3 se;s}
 #var path_from_reset_to_fight {n;#3 nw;ne}
 
-#var path_from_fight_to_eat {sw;e}
+#var path_from_fight_to_eat {#3 sw;e}
 #var path_from_eat_to_fight {w;ne}
 
-#var path_from_fight_to_master {#2 ne}
-#var path_from_master_to_fight {#2 sw}
+#var path_from_fight_to_master {#3 sw}
+#var path_from_master_to_fight {ne}
 
-#action {^%?%?%?%?%?重新连线完毕。} {
+#var path_one_step_move {#3 sw}
+#var path_one_step_back {ne}
+
+#action {{XYJ RECONNECTION DONE.|XYJ NEW CONNECTION ESTABLISHED.}} {
 	stop;
 	start_setup;
-	fly stone;
-	l;
 }
 
 #alias start {
 	#echo {<fff> 请确认各技能！};
 	#echo {<fff> 请确认各技能！};
-	#echo {<fff> 请确认各技能！};
-
-	#var previous_wx 0;
-
-	stop;
-	enforce 0;
-	set brief_all;
-	wimpy 40;
-	set brief_all;
-	fly changan;
-	#6 s;
-	e;
-	nu;
-	hd;
-	start_setup;
 	#delay 2 {
 		#echo {<fff> 请确认各技能！};
 		#echo {<fff> 请确认各技能！};
-		#echo {<fff> 请确认各技能！};
 	};
+	start_setup;
 }
 
 #alias reset {
 	stop;
 	tload fight_dragon_$login_id;
+	#var previous_wx 0;
 	start_fight;
 }
 
 #alias stop {
 	tkill fight_dragon_fight_inner;
 	tkill fight_dragon_setup_inner;
+	tkill fight_dragon_cast_inner;
+	tkill fight_dragon_move_inner;
+	tkill fight_dragon_learn_inner;
 	#untick fight_dragon;
 }
 
@@ -100,21 +92,22 @@
 		};
 	};
 
-	#action {^%?%?%?你正在战斗，飞不开。} {
-		#delay 1 {random;fly stone;l};
+	#action {^RELOCATED TO STONE SUCCESSFULLY.} {
+		#delay 2 {
+			#var previous_wx 0;
+			enforce 0;
+			set brief_all;
+			wimpy 40;
+			fly changan;
+			#6 s;
+			e;
+			nu;
+			hd;
+			l;
+		};
 	};
-	
-	#action {^%?%?%?%?周围没有一片云，没办法腾云驾雾。} {
-		#delay 1 {random;fly stone;l};
-	};
-	
-	#action {^%?%?仙石 -} {
-		stop;
-		#delay 5 {start;};
-	};
-	
 	#class fight_dragon_setup_inner close;
-	l;
+	relocate;
 }
 
 #alias start_summon {
@@ -184,10 +177,12 @@
 			};
 		}; #elseif {$count_dragon < 4} {
 			start_summon;
-		}; #elseif {$current_qn > 95000} {
+		}; #elseif {$current_qn > 9999999} {
 			$path_from_fight_to_master;
 			surrender;
-			learn $skill_to_learn for 100;
+			#3 learn $skill_to_learn for 10000;
+			re;
+			#3 learn $skill_to_learn2 for 10000;
 			re;
 			$path_from_master_to_fight;
 			#loop 1 $count_dragon cnt {fight dragon $cnt};
@@ -209,7 +204,18 @@
 		
 		#math previous_wx  {$current_wx};
 		
-		turn_on_fight_dragon_tick;
+		#nop turn_on_fight_dragon_tick;
+		
+		#if {$current_nl_percent > 20} {
+			turn_on_fight_dragon_tick;
+		}; #else {
+			random;
+			surrender;
+			er;
+			fly sky;
+			stop;
+			start_setup;
+		};
 		
 		#format fight_dragon_status {%t\t%d} {%Y-%m-%d %H:%M:%S} {$wx_gain};
 		#format filename {logs/fight_dragon_rewards_%s.txt} {$login_id};
@@ -243,18 +249,19 @@
 	};
 	
 	#action {^%?%?%?%?你似乎十分疲惫} {
-		ne;
+		$path_one_step_move;
 		surrender;
 		er;
-		sw;
+		re;
+		#path_one_step_back;
 		#loop 1 $count_dragon cnt {fight dragon $cnt};
 	} {4};
 
 	#nop action {^%?%?%?%?你气喘嘘嘘} {
-		ne;
+		$path_one_step_move;
 		surrender;
 		er;
-		sw;
+		#path_one_step_back;
 		#loop 1 $count_dragon cnt {fight dragon $cnt};
 	} {4};
 
@@ -263,10 +270,12 @@
 	};
 	
 	#action {^%?%?%?%?%?%?%你一次输入} {
-		#class fight_dragon_fight_inner kill;
+		stop;
+		#ignore actions on;
 		#untick fight_dragon;
-		#delay 10 {
-			start_fight;
+		#delay 5 {
+			#ignore actions off;
+			start;
 		};
 	};
 	
@@ -274,10 +283,9 @@
 		random;
 		surrender;
 		er;
-		fly stone;
+		fly sky;
 		stop;
 		start_setup;
-		l;
 	};
 	
 	#action {{你对准%*深深吸了几口气运将过去|对准你，深深吸了几口气运将过去}} {
@@ -289,15 +297,9 @@
 	check_dragon_status;
 }
 
-#alias start_learn {
+#nop alias start_learn {
 	#class fight_dragon_learn_inner open;
 	#class fight_dragon_learn_inner close;
-}
-
-
-#alias start_move {
-	#class fight_dragon_move_inner open;
-	#class fight_dragon_move_inner close;
 }
 
 #class fight_dragon close
