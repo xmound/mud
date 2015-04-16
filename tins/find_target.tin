@@ -1,89 +1,963 @@
 #class find_target open
+#read tins/pathdir.tin
 #var target_spotified 0;
 #var target_found 0;
 #var target_followed 0;
 #var body_guard_ready 0;
-#var correct_target_found 0;
+#nop var correct_target_found 0;
 #nop var target_name_lower {};
-#format {target_name_upper} {%n} {$target_name_lower};
-#var target_name_chinese {};
+#nop format {target_name_upper} {%n} {$target_name_lower};
+#nop var target_name_chinese {};
 
+#var target_found 0;
+#nop var target_name_lower hand
+#nop var target_name_upper Hand
+#nop var target_name_chinese 寒笛
 
 #nop alias {go_find_target_with_known_location %1 in %2} {
 	#var target_name_lower %1;
 	#format {target_name_upper} {%n} {$target_name_lower};
 	#var target_location %2;
-	
-	go_search_target $target_name_lower in $target_location;
+	turn_on_search_target_inner_class $target_name_lower in $target_location;
 }
 
-#action {^千里眼告诉你：%1($$target_name_lower)在%2。} {
-	#var target_name_chinese %1;
+#action {^%?%?%?千里眼告诉你：奇怪，找不到这个人．．．} {
+	#showme {<fff>TARGET $target_name_lower DISAPPEARED};
+	tkill find_target;
+}
+#highlight {$target_name_chinese($target_name_upper)} {white};
+
+
+
+#action {^千里眼告诉你：%1($target_name_lower)在%2。} {
+	#nop #var target_name_chinese %1;
 	#format {target_name_upper} {%n} {$target_name_lower};
 	#var target_location %2;
 	
-	#if {&{body_guard}} {
-		tell $body_guard TASK:gofindnpcwithknownlocation $target_name_lower, in $target_location;
-	};
-	#delay 3 {go_search_target $target_name_lower in $target_location;}
+	#nop if {&{body_guard}} ;
+	#nop {tell $body_guard TASK:gofindnpcwithknownlocation $target_name_lower, in $target_location;};
+	#nop delay 2 {turn_on_search_target_inner_class $target_name_chinese $target_name_lower $target_location};
+	#nop delay 2 {turn_on_search_target_inner_class};
+	#echo {<fff>开始找怪};
+	prepare_guai_locations;
 }
 
-#alias {go_search_target %1 in %2} {
-	#var target_name_lower %1;
-	#format {target_name_upper} {%n} {$target_name_lower};
-	#var target_location %2;
+#alias fguai {
+	#nop var target_name_chinese {%1};
+	#nop var target_name_lower {%2};
+	#nop var target_location {%3};
+	#nop format {target_name_upper} {%n} {$target_name_lower};
+	#nop var GLpath {$target_location};
+	#var GLslowrun 0;
+	#math mfg {$mfg + 1};
+	#var FGcount 0;
+	#var FGfound 0;
+	#var FGsum 0;
 	
-	#class search_for_yutu_inner open;
+	turn_on_search_target_inner_class;
 	
-	#action {设定环境变数%*brief%*path_check} {
-		#if {$target_spotified == 0} {
-			#delay 0.1 {
-				#path walk f;
-				set brief path_check;
-			};
-		}; 
-		#else {#class search_for_yutu_inner kill;};
+	#if {$GLslowrun == 1} {
+		#nop #path load $GLpath;
+		#nop #foreach $GLpath;
+	}; #else {
+		#path load $GLpath;
+		#path run;
+		set brief path_check;
+		#echo {<fff>开始执行$GLpath路径}；
+	};	
+};
+
+#alias turn_on_search_target_inner_class {
+	#class find_target_search_inner open;
+	
+	#action	{$target_name_chinese($target_name_upper)} {
+		#if {$FGfound == 1} {
+			#var FGcount 0;
+		}; #else {
+			#var FGfound 1;
+		};
+		#echo {<fff>看到目标啦！！};
 	};
 	
-	#event {END OF PATH} {
-		#class search_for_yutu_inner kill;
-		#nop stop;
-		#delay 10 {
-			#showme {FAILED TO FIND TARGET.};
-			
+	#action	{{这里唯一的出口是|这里明显的出口是|你将%*打开。|什么？|%*已经是开着的了。|这个方向没有出路|这里没有任何明显的出|乌鸦先生说道：请吧}} {
+		#math FGsum {$FGsum + 1};
+		#if {$FGfound == 1} {
+			#nop {FGcound means that after you found guai, how many steps you have moved away};
+			#math FGcount {$FGcount + 1};
+		}; #else {
+			#var FGcount 0;
 		};
 	};
-		
-	#class search_for_yutu_inner close;
-	#var target_spotified 0;
-	#var target_found 0;
-	#var target_followed 0;
-	#var body_guard_ready 0;
-	follow none;
 	
-	tload paths;
-	#path load 月宫1;
-	fly moon;
-	set brief path_check;
+	#action	{设定环境变数%*brief%*path_check} {
+		#line {gag};
+		#nop var mtime=1;
+		#nop math mfg2 {$mfg2 + 1};
+		#delay 1 {
+			#if {$FGfound == 0} {
+				$GLexecNO;
+			}; #else {
+				#nop FGcount=[$FGcount];
+				#if {$FGcount > 0} {
+					#path load $GLpath;
+					#LOOP 1 {$FGcount+1} cnt {#path walk backwards};
+					#var FGfound 0;
+				}; 
+				
+				attempt_to_follow_target;
+				#var FGcount 0;
+				#nop #T+ Fight1;
+				#nop #T+ fight3;
+				#nop ResetTrigger2;
+				#nop #T+ backup;
+			};
+		};
+		tkill find_target_search_inner;
+	};
+	
+	#action	{看起来$target_name_chinese想杀死你} {
+		#if {$FGfound == 1} {
+			#var FGcount {0};
+		}; #else {
+			#var FGfound {1};
+		};
+		#if { $GLslowrun == 1} {
+			#nop path end;
+			#nop fguaia;
+		};
+	};
+	
+	#action	{你手捻口诀，念动真言，摇身一变，变得和%*一模一样！} {#var bian {1}};
+	#class find_target_search_inner close;
 };
 
-#action {^%?%?%?$$target_name_chinese($$target_name_upper)} {
-	#var target_spotified 1;
-	#if {$target_followed == 0} {follow $target_name_lower;};
-};
+#alias attempt_to_follow_target {
+	#class find_target_follow_inner open;
+	#var follow_attempts {0};
+	#action {^这里没有%s$target_name_lower。} {
+		#math follow_attempts {$follow_attempts + 1};
+		#if {$follow_attempts > 10} {
+			#class find_target_follow_inner kill;
+			#class find_target kill;
+			#showme {<fff>FAILED TO FIND TARGET $target_name_lower};
+		}; #else {
+			#delay 1 {
+				random;
+				follow $target_name_lower;
+			};
+		};
+	};
 
-#highlight {^%?%?%?$$target_name_chinese($$target_name_upper)} {white};
+	#action {^%?%?%?%?你决定开始跟随$target_name_chinese一起行动。} {
+		#var target_found 1;
+		#var target_followed 1;
+		#showme {<fff>SUCCESSFULLY FOUND TARGET $target_name_lower};
+		#nop class paths kill;
+		#class find_target_follow_inner kill;
+		#class find_target kill;
+	};
 
-#nop action {^这里没有%s$target_name_lower。} {}
-
-#action {^%?%?%?%?你决定开始跟随$$target_name_chinese一起行动。} {
-	#nop var target_found 1;
-	#var target_followed 1;
-	#showme {I FOUND TARGET $target_name_lower};
-	#class paths kill;
-	#class find_target kill;
+	#class find_target_follow_inner close;
+	follow $target_name_lower;
 }
 
-#alias 
+#nop below are the alias for running the paths
+#alias prepare_guai_locations {
+	#if {"$target_location" == "蓬莱仙岛"} {findpl};
+	#if {"$target_location" == "白虎岭"} {findbaihu};
+	#if {"$target_location" == "毒敌山"} {finddd};
+	#if {"$target_location" == "开封城"} {findkf};
+	#if {"$target_location" == "豹头山"} {findbt};
+	#if {"$target_location" == "荆棘岭"} {findjjl};
+	#if {"$target_location" == "红楼一梦"} {findhl};
+	#if {"$target_location" == "月宫"} {findmoon};
+	#if {"$target_location" == "碧波潭"} {findbbt};
+	#if {"$target_location" == "凤仙郡"} {findfx};
+	#if {"$target_location" == "长安城西"} {findcax};
+	#if {"$target_location" == "火焰山"} {findhys};
+	#if {"$target_location" == "麒麟山"} {findqilin};
+	#if {"$target_location" == "平顶山"} {findpds};
+	#if {"$target_location" == "祭赛国"} {findjsg};
+	#if {"$target_location" == "积雷山"} {findjilei};
+	#if {"$target_location" == "五庄观"} {findwzg};
+	#if {"$target_location" == "龙宫"} {findsea};
+	#if {"$target_location" == "青龙山"} {findql};
+	#if {"$target_location" == "金平府"} {findjp};
+	#if {"$target_location" == "竹节山"} {findzj};
+	#if {"$target_location" == "金兜山"} {findjindou};
+	#if {"$target_location" == "方寸山"} {findfc};
+	#if {"$target_location" == "天竺国"} {findtz};
+	#if {"$target_location" == "通天河"} {findtth};
+	#if {"$target_location" == "钦法国"} {findqf};
+	#if {"$target_location" == "高老庄"} {findgao};
+	#if {"$target_location" == "车迟国"} {findchechi};
+	#if {"$target_location" == "黑松林"} {findchechi};
+	#if {"$target_location" == "大雪山"} {findxs};
+	#if {"$target_location" == "无底洞"} {findwdd};
+	#if {"$target_location" == "毛颖山"} {findmy};
+	#if {"$target_location" == "比丘国"} {findbiqiu};
+	#if {"$target_location" == "盘丝岭"} {findps};
+	#if {"$target_location" == "女儿国"} {findneg};
+	#if {"$target_location" == "小西天"} {findxxt};
+	#if {"$target_location" == "乌鸡国"} {findwuji};
+	#if {"$target_location" == "朱紫国"} {findzz};
+	#if {"$target_location" == "隐雾山"} {findyw};
+	#if {"$target_location" == "长安城"} {findca};
+	#if {"$target_location" == "观礼台"} {findca};
+	#if {"$target_location" == "长安城南"} {findcan};
+	#if {"$target_location" == "宝象国"} {findbx};
+	#if {"$target_location" == "玉华县"} {findyh};
+	#if {"$target_location" == "普陀山"} {findpt};
+	#if {"$target_location" == "梅山"} {findms};
+	#if {"$target_location" == "灵山"} {findls};
+	#if {"$target_location" == "阴曹地府"} {e;findhell};
+	#if {"$target_location" == "黑水河"} {heishuihe};
+};
+
+#nop alias findout {
+	#if {$location==竹节山} {findzjout};
+	#if {$location==金兜山} {findjindouout};
+	#if {$location==长安城} {findcaout};
+	#if {$location==麒麟山} {findqilinout};
+	#if {$location==平顶山} {findpdsout};
+	#if {$location==毒敌山} {findddout};
+	#if {$location==开封城} {findkfout};
+	#if {$location==祭赛国} {findjsgout};
+	#if {$location==积雷山} {findjileiout};
+	#if {$location==五庄观} {findwzgout};
+	#if {$location==蓬莱仙岛} {findplout};
+	#if {$location==天竺国} {findtzout};
+	#if {$location==钦法国} {findqfout};
+	#if {$location==红楼一梦} {findhlout};
+	#if {$location==凤仙郡} {findfxout};
+	#if {$location==方寸山} {findfcout};
+	#if {$location==车迟国} {findchechiout};
+	#if {$location==无底洞 && $mwddpush==1} {findwddout};
+	#if {$location==毛颖山} {findmyout};
+	#if {$location==盘丝岭} {findpsout};
+	#if {$location==女儿国} {findnegout};
+	#if {$location==小西天} {findxxtout};
+	#if {$location==灵山} {findlsout};
+	#if {$location==乌鸡国} {findwujiout};
+	#if {$location==阴曹地府} {findhellout};
+	#if {$location==碧波潭 || $location==龙宫} {
+		#if {$usermp==fly} {
+			#va usermp2 flyinsea;
+			#var usermp sea;
+			l;
+		};
+	};
+}
+#alias findnext {relocate}
+#alias End1 {#class findpath kill;#class temp kill}
+#alias End2 {#nop t+ findpath;#nop exec fly $GLfly;relocate}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 长安城 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_changan	{u;d;d;u;n;w;e;e;e;w;w;n;n;s;s;s;}
+#VARIABLE	my_changan1	{w;s;n;n;s;w;s;s;e;w;n;n;n;s;w;n;s;w;w;e;e;}
+#VARIABLE	my_changan2	{s;e;w;se;e;w;w;w;e;e;s;e;e;w;w;w;e;s;n;e;}
+#VARIABLE	my_changan3	{se;s;n;w;e;e;e;ne;n;n;n;s;s;w;enter;}
+#VARIABLE	my_changan4	{u;u;u;u;u;u;u;u;u;u;u;u;u;u;d;}
+#VARIABLE	my_changan5	{d;d;d;d;d;d;d;d;d;d;d;d;d;out;e;s;sw;se;s;enter;}
+#VARIABLE	my_changan6	{e;enter;u;u;u;u;u;u;d;d;d;d;d;d;out;}
+#VARIABLE	my_changan7	{w;out;n;nw;ne;e;n;ne;e;w;sw;s;se;ne;e;e;w;w;se;enter;out;}
+#VARIABLE	my_changan8	{nw;sw;nw;n;ne;n;n;n;s;s;e;w;w;s;n;n;s;w;s;n;n;}
+#VARIABLE	my_changan80	{n;s;e;w;s;w;s;w;e;s;e;w;s;w;e;e;w;s;n;n;}
+#VARIABLE	my_changan9	{w;w;e;s;n;u;w;e;e;w;s;n;n;s;u;w;e;e;}
+#VARIABLE	my_changan90	{w;s;n;n;s;u;w;e;e;w;s;n;n;s;u;w;}
+#VARIABLE	my_changan91	{e;d;d;d;d;e;s;w;e;e;w;s;s;s;}
+#VARIABLE	my_changan99	{s;w;w;w;w;w;w;w;e;e;e;e;e;e;e;e;e;e;e;e;w;w;w;nu;enter;out;sd;w;w;s;s;s;e;w;s;s;s;nw;w;w;e;e;se;se;e;w;nw;s;s;s;s;e;e;e;}
+
+#ALIAS findca {fly changan;#var GLexectrig ca_end;#var GLpath my_changan;#var GLexecNO findca1;fguai}
+#ALIAS findca1 {#delay 2 {#var GLpath my_changan1;#var GLexecNO findca2;fguai}}
+#ALIAS findca2 {#delay 3 {#var GLpath my_changan2;#var GLexecNO findca3;fguai}}
+#ALIAS findca3 {#delay 3 {#var GLpath my_changan3;#var GLexecNO findca4;fguai}}
+#ALIAS findca4 {#delay 3 {#var GLpath my_changan4;#var GLexecNO findca5;fguai}}
+#ALIAS findca5 {#delay 3 {#var GLpath my_changan5;#var GLexecNO findca6;fguai}}
+#ALIAS findca6 {#delay 2 {#var GLpath my_changan6;#var GLexecNO findca7;fguai}}
+#ALIAS findca7 {#delay 3 {#var GLpath my_changan7;#var GLexecNO findca8;fguai}}
+#ALIAS findca8 {#delay 3 {#var GLpath my_changan8;#var GLexecNO findca80;fguai}}
+#ALIAS findca80 {#delay 3 {#var GLpath my_changan80;#var GLexecNO findca9;fguai}}
+#ALIAS findca9 {#delay 3 {#var GLpath my_changan9;#var GLexecNO findca90;fguai}}
+#ALIAS findca90 {#delay 3 {#var GLpath my_changan90;#var GLexecNO findca91;fguai}}
+#ALIAS findca91 {#delay 3 {#var GLpath my_changan91;#var GLexecNO findnext;fguai}}
+#ALIAS ca_end {#class temp open;#action {小雁塔内} {End1;#13 d;out;e;End2};#action {大雁塔内} {End1;#6 d;out;End2};#class temp close;}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 豹头山 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_baotou	{nw;nu;nw;nw;nw;nu;nu;sd;sd;wu;wu;nw;}
+#alias findbt {fly yinwu;sw;#4 w;sw;sw;#6 s;sw;w;nw;w;w;nw;#var GLpath {};#var GLexecNO findbt1;fguai}
+#alias findbt1 {#var GLpath my_baotou;#var GLexecNO findnext;fguai}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 车迟国 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_chechi	{sw;sw;n;nw;w;s;s;s;w;w;w;nu;nu;nu;w;e;}
+#VARIABLE	my_chechi1	{e;w;n;ne;e;e;w;w;sw;n;nw;}
+#VARIABLE	my_chechi2	{se;s;s;sd;sd;sd;w;w;w;n;n;n;w;sw;sw;nw;se;ne;ne;e;n;n;n;e;}
+#VARIABLE	my_chechi3	{e;e;e;e;e;s;s;s;n;n;n;w;w;w;}
+#VARIABLE	my_chechi4	{su;eu;sw;su;se;e;n;n;s;s;se;nw;e;e;nu;sd;w;w;w;nw;nd;ne;wd;nd;}
+#VARIABLE	my_chechi5	{e;e;e;s;s;s;w;s;s;e;w;s;e;w;n;n;w;w;w;w;s;s;n;w;e;n;w;e;n;}
+#VARIABLE	my_chechi6	{n;w;e;n;w;e;s;e;e;e;n;n;w;e;s;w;e;s;w;w;w;s;s;e;e;}
+#VARIABLE	my_chechi7	{n;w;w;n;n;n;n;e;e;e;e;s;s;s;s;w;w;n;}
+#VARIABLE	my_chechi8	{n;e;n;w;s;s;w;n;e;n;e;w;w;e;s;s;s;s;s;s;n;s;}
+
+#ALIAS findchechi {#var GLpath my_chechi;fly wuji;#5 e;sw;w;sw;#var GLexecNO findchechi1;fguai}
+#ALIAS findchechi1 {open door;#var GLpath my_chechi1;#var GLexecNO findchechi2;fguai}
+#ALIAS findchechi2 {spell shugui;#var GLpath {};#var GLexecNO findchechi3;fguai}
+#ALIAS findchechi3 {s;spell shugui1;#var GLexecNO findchechi4;fguai}
+#ALIAS findchechi4 {s;spell shugui2;#var GLexecNO findchechi5;fguai}
+#ALIAS findchechi5 {s;spell shugui3;#var GLexecNO findchechi6;fguai}
+#ALIAS findchechi6 {s;spell shugui4;#var GLexecNO findchechi7;fguai}
+#ALIAS findchechi7 {s;spell shugui5;#var GLexecNO findchechi8;fguai}
+#ALIAS findchechi8 {s;spell shugui6;#var GLexecNO findchechi9;fguai}
+#ALIAS findchechi9 {s;spell shugui7;#var GLexecNO findchechi10;fguai}
+#ALIAS findchechi10 {s;spell shugui8;#var GLexecNO findchechi11;fguai}
+#ALIAS findchechi11 {s;spell shugui9;#var GLpath {};#var GLexecNO findchechi12;fguai}
+#ALIAS findchechi12 {#delay 2 {s;#var GLpath my_chechi2;#var GLexecNO findchechi13;fguai};}
+#ALIAS findchechi13 {#delay 2 {#var GLpath my_chechi3;#var GLexecNO findchechi14;fguai};}
+#ALIAS findchechi14 {#delay 2 {#var GLpath my_chechi4;#var GLexecNO findchechi15;fguai};}
+#ALIAS findchechi15 {#delay 2 {#var GLpath my_chechi5;#var GLexecNO findchechi16;fguai};}
+#ALIAS findchechi16 {#delay 2 {#var GLpath my_chechi6;#var GLexecNO findchechi17;fguai};}
+#ALIAS findchechi17 {#delay 2 {#var GLpath my_chechi7;#var GLexecNO findchechi18;fguai};}
+#ALIAS findchechi18 {
+	#class temp open;
+	#ALIAS tempnext {tkill temp;#var GLpath my_chechi8;#var GLexecNO findnext;fguai};
+	#action {护宫卫士喝道：禁行！} {kill wei shi};
+	#action {坛场} {s;tempnext};
+	#action {护宫卫士死了} {n};
+	#class temp close;
+	n;
+}
+
+#ALIAS findchechiout {}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 毒敌山 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_dudi	{sw;ne;sw;sw;se;sd;se;wd;se;ed;sw;se;ne;e;w;sw;}
+#VARIABLE	my_dudi0	{nw;w;nw;nw;se;se;e;ne;wu;nw;eu;nw;nu;nw;ne;}
+#VARIABLE	my_dudi1	{se;enter;}
+#VARIABLE	my_dudi3	{se;s;e;w;n;}
+#VARIABLE	my_dudi_bak	{sw;ne;sw;sw;se;sd;se;wd;se;ed;sw;se;ne;e;se;nw;w;sw;}
+#alias finddd {#var GLpath my_dudi;#var GLexectrig dd_end;fly dudi;nw;#2 ne;#var GLexecNO finddd0;fguai}
+#alias finddd0 {#var GLpath my_dudi0;#var GLexecNO finddd00;fguai}
+#alias finddd00 {#var GLpath my_dudi1;#var GLexecNO finddd5;fguai}
+#alias finddd1 {
+	#class temp open;
+	#action {111这里没有这个人} {em;remove dun;wield $weapon;wield $weapon2;wield all;exert recover;exert refresh;break;exert recover;exert refresh;sw;tempnext};
+	#action {精死了} {enforce 1;kill yao jing};
+	#alias tempnext {#class temp kill;#var GLpath {};#var GLexecNO finddd2;fguai};
+	#class temp close;
+	kill yao jing;
+}
+#alias finddd2 {
+	#class temp open;
+	#action {111这里没有这个人} {em;remove dun;wield $weapon;wield $weapon2;wield all;exert recover;exert refresh;break;exert recover;exert refresh;sw;tempnext};
+	#action {精死了} {enforce 1;kill yao jing};
+	#alias tempnext {#class temp kill;#var GLpath {};#var GLexecNO finddd3;fguai};
+	#class temp close;
+	kill yao jing;
+}
+#alias finddd3 {
+	#class temp open;
+	#action {111这里没有这个人} {em;remove dun;wield $weapon;wield $weapon2;wield all;exert recover;exert refresh;break;exert recover;exert refresh;sw;tempnext};
+	#action {精死了} {enforce 1;kill yao jing};
+	#alias tempnext {#class temp kill;#var GLpath {};#var GLexecNO finddd4;fguai};
+	#class temp close;
+	kill yao jing;
+}
+#alias finddd4 {#var GLpath my_dudi3;#var GLexecNO findnext;fguai}
+#alias finddd5 {
+	#class temp open;
+	#action {一洞门 -} {
+		#var mdudi 1;
+		#if {$mdudi == 1} {#if {$target_found == 0} {#var GLpath {};#var GLexecNO finddd1;fguai;enforce 1;kill yao jing};};
+		#if {$mdudi == 0} {cmm;#if {$target_found == 0} {ResetTrigger;#nop wa 6000;#2 release;gohh};};
+	};
+	#class temp close;
+	out;
+	enter
+}
+#alias findddout {w;n;nw;n;ne;out}
+#alias dd_end {#action {洞厅} {End1;nw;n;ne;out;End2};}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 祭赛国 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_jsg	{se;e;e;e;e;n;s;s;n;e;nu;sd;}
+#VARIABLE	my_jsg0	{s;n;e;s;n;e;e;e;ne;e;eu;se;e;}
+#VARIABLE	my_jsg1	{w;s;s;s;s;w;w;w;w;n;n;n;n;s;s;s;s;e;e;open door;}
+#VARIABLE	my_jsg2	{n;n;e;w;w;e;n;w;e;e;w;nu;}
+#VARIABLE	my_jsg3	{u;u;u;u;u;u;u;u;u;u;u;u;d;}
+
+#alias findjsg {#var GLpath my_jsg;#var GLexectrig jsg_end;fly xiaoxitian;nw;nw;e;ne;e;e;#delay 3 {e;#var GLexecNO findjsg0;fguai};}
+#alias findjsg0 {#var GLpath my_jsg0;#var GLexecNO findjsg1;fguai}
+#alias findjsg1 {#delay 2 {#var GLpath my_jsg1;w;nw;wd;w;sw;w;#var GLexecNO findjsg2;fguai};}
+#alias findjsg2 {#delay 2 {#var GLpath my_jsg2;#var GLexecNO findjsg3;fguai};}
+#alias findjsg3 {
+	tkill temp;
+	#class temp open;
+	#alias tempnext {tkil temp;#var GLpath my_jsg3;#var GLexecNO findjsg4;fguai};
+	#action {苦宿禅师说道：%*是好人呐。} {enter;tempnext};
+	#class temp close;
+	#var GLexecTMP $GLexecEND;
+	#var GLexecEND $findjsg5;
+	#delay 3 {ask chanshi about 扫塔;};
+}
+#alias findjsg4 {
+	tkill temp;
+	#class temp open;
+	#alias tempnext {tkill temp;out;sd;#2 s;open door;s;findnext};
+	#action {小门被人打开了。} {tempnext};
+	#class temp close;
+	#12 d;knock door;
+}
+#alias findjsg5 {
+	tkill temp;
+	#class temp open;
+	#alias tempnext {tkill temp;out;sd;#2 s;open door;s;#exec $GLexecTMP};
+	#action {小门被人打开了。} {tempnext};
+	#class temp close;
+	#delay 2 {#12 d;knock door;};
+}
+#alias findjsgout {#12 d;knock door;out};
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 盘丝岭 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_pansi	{nw;sw;w;wu;se;se;se;e;s;e;ne;sw;s;n;w;w;e;n;w;nw;}
+#VARIABLE	my_pansi1	{nw;w;w;nw;w;s;s;w;e;s;sw;ne;}
+#VARIABLE	my_pansi10	{n;n;n;e;se;e;sw;se;e;sd;nu;w;nw;sw;}
+#VARIABLE	my_pansi2	{ne;ne;e;nw;nw;nw;wd;nw;w;e;se;eu;ne;ed;ed;d;d;d;d;d;u;u;u;u;u;wu;}
+#VARIABLE	my_pansi3	{e;w;e;nu;ne;nu;se;s;ne;e;enter;out;se;e;e;n;nw;w;sw;w;}
+
+#alias findps {#var GLpath {};fly xiaoxitian;#2 nw;n;w;sw;w;w;sw;se;s;sw;w;w;nw;#var GLexecNO findps0;fguai}
+#alias findps0 {#var GLpath my_pansi;#var GLexecNO findps1;fguai}
+#alias findps1 {#delay 2 {#var GLpath my_pansi1;#var GLexecNO findps10;fguai};}
+#alias findps10 {#delay 2 {#var GLpath my_pansi10;#var GLexecNO findps2;fguai};}
+#alias findps2 {
+	tkill temp;
+	#class temp open;
+	#action {一张祭奠时的烧纸黄钱} {#delay 2{tempnext};};
+	#alias tempnext {tkill temp;#var GLpath my_pansi2;#var GLexecNO findps3;fguai};
+	#action {你要看什么} {us;#delay 2 {ask furen about 黄钱};};
+	#action {断肠妇人给你一张黄钱} {ss;look huang qian};
+	#class temp close;
+	#delay 2 {get huang qian from $bag;look huang qian;};
+}
+#alias findps3 {
+	tkill temp;
+	#class temp open;
+	#alias tempnext {tkill temp;#var GLpath my_pansi3;#var GLexecNO findnext;fguai};
+	#action {你胆颤心惊地掂脚一跳，嗖地一声跃了过去。} {put huang qian in $bag;tempnext};
+	#class temp close;
+	#delay 2 {jump};
+}
+#alias findps4 {enter danlu;#var GLpath {};#var GLexecNO findps1;fguai}
+#alias findps98 {fly zhuzi;#8 n;#2 w;#2 nw;sw;w;wu;se;se;se;e}
+#alias findps99 {
+		#showme {可以去寺里进danlu看看，方法有：findps98, then};
+		#showme {penetrate danlu};
+		#showme {enter danlu};
+		#showme {fly danlu};
+		#showme {dive danlu};
+		#showme {teleport danlu};
+		#showme {jump danlu};
+		#showme {sink danlu};
+		#showme {plunge danlu};
+}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 普陀 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_putuo	{sd;sd;s;s;n;n;nu;nu;n;e;s;n;w;w;s;}
+#VARIABLE	my_putuo0	{n;e;n;enter;out;e;nd;n;nw;sw;s;su;nd;n;ne;n;}
+#VARIABLE	my_putuo1	{s;se;s;su;w;s;e;}
+#VARIABLE	my_putuo10	{e;}
+#VARIABLE	my_putuo2	{w;w;w;w;}
+#VARIABLE	my_putuo20	{w;}
+#VARIABLE	my_putuo3	{e;e;n;w;nd;n;ne;s;n;n;}
+
+#alias findpt {#t- 紫竹林;#var GLpath my_putuo;GLexectrig=pt_end;fly putuo;open door;#var GLexecNO findpt0;fguai}
+#alias findpt0 {#t- 紫竹林;#var GLpath my_putuo0;#var GLexecNO findpt1;fguai}
+#alias findpt1 {#var GLpath my_putuo1;#var GLexecNO findpt10;fguai}
+#alias findpt10 {#action {掌厨僧死了} {#if {$target_found=0} {findpt10}} temp;#action {掌厨僧伸手拦住你：里面是本派厨房} {enforce 0;kill zhangchu seng;ff} temp;#action {斋房 -} {tkill temp;#var GLpath my_baoxiang13;#var GLexecNO findpt2;fguai} temp;#t+ temp;e}
+#alias findpt2 {#action {惠岸行者伸手拦住你：你往本门书院里走干什么呀} {enforce 1;#stop;#t+ fight1;kill huian xingzhe;ff} temp;#action {惠岸行者死了} {w} temp;#action {书院 -} {tkill temp;#var GLpath my_baoxiang13;#var GLexecNO findpt3;fguai} temp;#t+ temp;#4 w}
+#alias findpt20 {#var GLpath my_putuo20;#var GLexecNO ;fguai}
+#alias findpt3 {tkill temp;#var GLpath my_putuo3;#var GLexecNO findpt4;fguai}
+#alias findpt4 {#t+ 紫竹林;#t- findguai;#t+ nextmove;#T- Escape;Zzlnum=0;l;wink $target_name_lower}
+
+#alias turn_on_zizhulin_class {
+	#class find_target_zizhulin_inner open;
+	
+	#action	{出口是} {#math Zzlnum {$Zzlnum+1}};
+	#action	{这里明显的出口是 southwest、north、south 和 southeast} {n}
+	#action	{这里明显的出口是 southwest、southeast 和 north} {n}
+	#action	{这里明显的出口是%*} {
+		#if (%pos(southwest,%1)) {
+		}; #else {
+			#if (%pos(south,%1) and %pos(northeast,%1) and %pos(northwest,%1)) {mwink=1}
+		};
+	};
+	#action	{你要对谁做这个动作} {
+		#line {gag};
+		#class find_target_zizhulin_inner kill;
+		dirList=;
+		#LOOP @GLmv #exec dirList=%additem([@{f%i}],@dirList);
+		dirmove=%item(@dirlist,%random(1,@GLmv));
+		#wa100;#t+ 紫竹林;#if (@mwink=0) {#exec @dirmove};#if (@mwink=1) {mwink=0;#exec %item(nw|ne,%random(1,2))};#wait 500;#if (@Zzlnum>99) {Zzlnum=0;#t- 紫竹林;zaonext} {wink @KGid}}
+	
+	#action	{你用迷人的眼眸对} {
+		#class temp kill;
+		#class find_target_baihuagu_inner kill;
+		#class find_target_zizhulin_inner kill;
+		#class find_target_manglin_inner kill;
+		follow $target_name_lower;
+	};
+	
+	#class find_target_zizhulin_inner close;
+};
+
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 青龙山 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_ql	{sw;ne;sw;se;sd;se;s;}
+#VARIABLE	my_ql1	{n;nw;nu;nw;ne;}
+#VARIABLE	my_ql4	{ne;sw;e;w;se;nw;w;}
+#VARIABLE	my_ql5	{wu;wu;nw;nu;ne;ne;n;nw;se;}
+#VARIABLE	my_ql_back	{nw;wu;wu;nw;nu;ne;ne;n;ne;nw;se;s;sw;sw;sd;se;ed;ed;se;sw;se;sd;se;s;}
+
+#ALIAS findql {#var GLpath my_ql;fly qinglong;#var GLexecNO findql1;fguai}
+#ALIAS findql1 {#var GLpath my_ql1;#var GLexecNO findql2;fguai}
+#ALIAS findql2 {jump;#var GLpath {};#var GLexecNO findql3;fguai}
+#ALIAS findql3 {jump;#var GLpath {};#var GLexecNO findql4;fguai}
+#ALIAS findql4 {u;u;.my_ql;findnext}
+#ALIAS findql4_bak {#action {东山凹 -} {wink $KGid} temp;#action {山涧早已将通向山凹的路淹没，很久就没人能过涧了} {#delc temp;findnext} temp;#action {你用迷人的眼眸对} {#delc temp;FGcount=0;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $KGid;look $KGid} temp;#action {你要对谁做这个动作} {findql5} temp;#t+ temp;u;nw}
+#ALIAS findql5 {#var GLpath my_ql5;#var GLexecNO findql6;fguai}
+#ALIAS findql6 {
+	tkill temp;
+	#class temp open;
+	#alias tempnext {tkill temp;#var GLpath my_ql4;#var GLexecNO findnext;fguai};
+	#action {守门牛精一晃两只大牛角抵住你：想溜到哪儿去？} {tkill temp;s;sw;sw;findnext};
+	#action {通道} {tempnext};
+	#class temp close;
+	e;
+}
+
+#ALIAS findql_bak {#var GLpath my_ql;GLexectrig=qinglong_end;fly qinglong;#var GLexecNO findql1;fguai}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 天竺 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_tianzhu	{w;w;w;w;w;w;w;w;s;w;e;e;w;s;e;w;s;w;e;}
+#VARIABLE	my_tianzhu0	{s;w;w;e;e;s;e;w;s;w;e;s;w;e;s;s;n;}
+#VARIABLE	my_tianzhu00	{e;e;e;e;n;n;n;n;e;e;e;e;e;e;e;e;}
+#VARIABLE	my_tianzhu1	{e;n;s;e;s;n;e;se;s;s;s;s;sw;s;se;nw;n;ne;n;n;n;n;ne;e;}
+#VARIABLE	my_tianzhu2	{n;s;s;n;e;n;s;e;n;n;w;e;n;w;e;n;w;w;s;n;w;}
+#VARIABLE	my_tianzhu3	{n;n;s;s;s;w;e;s;w;e;e;w;s;n;n;n;w;n;s;w;w;n;n;}
+#VARIABLE	my_tianzhu4	{n;n;e;e;n;s;e;e;e;n;s;e;e;e;w;s;w;e;s;w;e;s;s;}
+#VARIABLE	my_tianzhu5	{e;se;s;se;se;s;s;e;w;n;sw;sw;s;w;w;e;se;s;n;n;n;ne;}
+#VARIABLE	my_tianzhu6	{e;e;w;w;n;n;e;n;e;w;w;w;w;e;s;e;s;s;}
+#ALIAS findtz {#var GLpath my_tianzhu00;fly lingshan;#4 w;#delay 3 {#var GLexecNO findtz00;fguai};}
+#ALIAS findtz00 {#var GLpath my_tianzhu;#var GLexecNO findtz0;fguai}
+#ALIAS findtz0 {#var GLpath my_tianzhu0;#var GLexecNO findtz1;fguai}
+#ALIAS findtz1 {#delay 2 {#var GLpath my_tianzhu1;#var GLexecNO findtz2;fguai};}
+#ALIAS findtz2 {#delay 2 {#var GLpath my_tianzhu2;#var GLexecNO findtz3;fguai};}
+#ALIAS findtz3 {#delay 2 {#var GLpath my_tianzhu3;#var GLexecNO findtz4;fguai};}
+#ALIAS findtz4 {#delay 2 {#var GLpath my_tianzhu4;#var GLexecNO findtz5;fguai};}
+#ALIAS findtz5 {#delay 2 {#var GLpath my_tianzhu5;#var GLexecNO findtz6;fguai};}
+#ALIAS findtz6 {tkill temp;#class temp open;#action {白玉阶} {tkill temp;findtz7};#action {阁门大使向你摇了摇手。} {kill da shi};#action {大使死了。} {su};#class temp close;fly baoxiang;#5 s;su}
+#ALIAS findtz7 {tkill temp;#class temp open;#action {你手捻口诀，念动真言，摇身一变，变得和国王一模一样} {tkill temp;bian=1;#7 nd;n;n;#delay 2 {findtz8};};#action {你想变成谁} {tkill temp;#7 nd;n;findnext};#class temp close;#7 su;bian guo wang}
+#ALIAS findtz8 {tkill temp;#class temp open;fly tianzhu;#7 w;#4 s;e;e;e;n;n;n;bian;#var GLpath {};#var GLexecNO findtz9;fguai}
+#ALIAS findtz9 {#delay 3 {#var GLpath my_tianzhu6;#var GLexecNO findnext;fguai};}
+#ALIAS findtzout {}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 龙宫 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#nop 未完成
+#VARIABLE	my_sea	{e;w;e;e;ne;e;e;eu;wd;}
+#VARIABLE	my_sea0	{e;e;e;dive;put bishui zhou in $bag;}
+#VARIABLE	my_sea00	{e;w;nw;nw;eu;}
+#VARIABLE	my_sea01	{ne;ne;n;s;e;w;}
+#VARIABLE	my_sea02	{sw;sw;se;se;s;n;}
+#VARIABLE	my_sea1	{e;w;n;n;ne;e;w;sw;nw;se;s;s;s;s;sw;ne;se;e;w;nw;n;n;}
+#VARIABLE	my_sea2	{e;eu;eu;e;n;n;s;s;s;s;n;n;e;n;s;s;n;}
+#VARIABLE	my_sea3	{e;s;s;w;w;w;w;n;n;s;s;e;e;e;e;n;n;n;n;w;w;w;w;s;s;}
+
+#alias findsea {tkill temp;fly putuo;sd;sd;s;s;swim;get zhou from $bag;#var GLpath my_sea0;#var GLexecNO findsea0;fguai}
+#alias findsea0 {#var GLpath my_sea;#var GLexecNO findsea01;#delay 5 {fguai};}
+#alias findsea00 {tkill temp;#var GLpath my_sea00;#var GLexecNO findsea1;fguai}
+#alias findsea01 {#var GLpath my_sea01;#var GLexecNO findsea02;fguai}
+#alias findsea02 {#var GLpath my_sea02;#var GLexecNO findsea00;fguai}
+#alias findsea1 {
+	tkill temp;
+	#class temp open;
+	#action {龙宫前厅} {tempnext};
+	#action {宫前护卫伸手挡住了你的去路} {kill li shi};
+	#action {力士死了} {e};
+	#alias tempnext {tkill temp;#var GLpath my_sea1;#var GLexecNO findsea2;fguai};
+	#class temp close;
+	e;
+}
+#alias findsea2 {#delay 2 {#var GLpath my_sea2;#var GLexecNO findsea3;fguai};}
+#alias findsea3 {#delay 2 {#var GLpath my_sea3;#var GLexecNO findsea4;fguai};}
+#alias findsea4 {
+	turn_on_manglin_class;
+	#t+ 莽林;#t+ nextmove;#wait 1000;s;wd;w;w;sw;sw;#t+ nextmove;#t- findguai;#t- Escape;Zzlnum=0;wink $target_name_lower}
+#alias findsea99 {#action {^????突然一阵暗流涌来，把你冲到了莽林深处} {tkill temp;#wa 5000;gohh} temp;#T- temp}
+#alias findsea999 {fly putuo;sd;sd;s;s;swim;e;e;e;GLexectrig=lg_end;#alias tempnext {tkill temp;#var GLpath my_sea;#var GLexecNO findsea1;fguai} temp;#action {你一个猛子扎到水中，然后不见了．} {#wait 6000;tempnext} temp;#t+ temp;get zhou from $bag;dive;put zhou in $bag;;;;#action {你潜了过来} {#wa 6000;#if {$found=0} {findsea0}} temp;#t+ temp}
+#alias findsea_bak {#action {^????你潜了过来} {tkill temp;#wa 5000;#if {$found=0} {findsea0}} temp;fly putuo;sd;sd;s;s;swim;e;e;e;#t+ temp;get zhou from $bag;#var GLpath my_sea0;#var GLexecNO ;fguai}
+#alias turn_on_manglin_class {
+	#class find_target_manglin_inner open;
+	#action	{你要对谁做这个动作} {#gag;dirList=;#LOOP @GLmv #exec dirList=%additem([@{f%i}],@dirList);dirmove=%item(@dirlist,%random(1,@GLmv));#wa100;#if (@mwink=0) {#exec @dirmove};#if (@mwink=1) {s;mwink=0};#wait 500;#if (@Zzlnum>79) {Zzlnum=0;#t- 莽林;zaonext} {wink @KGid}}
+	#action	{你用迷人的眼眸对} {#delc temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow @KGid;look @KGid}
+	#action	{这里明显的出口是%*} {#if (%pos(south,%1) and %pos(northeast,%1)) {mwink=1}}
+	#action	{出口是} {#math Zzlnum {$Zzlnum+1}};
+	
+	#action	{zzl这里明显的出口是 southwest、north、south 和 southeast} {n}
+	#action	{zzl这里明显的出口是 southwest、southeast 和 north} {n}
+	#action	{zzl这里明显的出口是%*} {
+		#if (%pos(southwest,%1)) {
+		}; #else {
+			#if (%pos(south,%1) and %pos(northeast,%1) and %pos(northwest,%1)) {mwink=1}
+		};
+	};
+	#action	{zzl你要对谁做这个动作} {
+		#line {gag};
+		#class find_target_zizhulin_inner kill;
+		dirList=;
+		#LOOP @GLmv #exec dirList=%additem([@{f%i}],@dirList);
+		dirmove=%item(@dirlist,%random(1,@GLmv));
+		#wa100;#t+ 紫竹林;#if (@mwink=0) {#exec @dirmove};#if (@mwink=1) {mwink=0;#exec %item(nw|ne,%random(1,2))};#wait 500;#if (@Zzlnum>99) {Zzlnum=0;#t- 紫竹林;zaonext} {wink @KGid}}
+	
+	#action	{zzl你用迷人的眼眸对} {
+		#class temp kill;
+		#class find_target_baihuagu_inner kill;
+		#class find_target_zizhulin_inner kill;
+		#class find_target_manglin_inner kill;
+		follow $target_name_lower;
+	};
+	
+	#class find_target_manglin_inner close;
+};
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 雪山 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_xs	{nu;sd;nu;nu;nu;w;e;e;e;e;w;w;w;n;}
+#VARIABLE	my_xs1	{jump shi bi;w;e;e;n;w;w;n;e;e;w;n;}
+#VARIABLE	my_xs2	{jump shi bi;open door;e;w;w;n;s;}
+#VARIABLE	my_xs20	{s;}
+#VARIABLE	my_xs200	{bed;}
+#VARIABLE	my_xs2000	{out;n;e;open door;e;w;n;n;}
+#VARIABLE	my_xs3	{jump shi bi;e;w;w;w;n;e;}
+#VARIABLE	my_xs30	{w;s;e;n;s;e;e;}
+#VARIABLE	my_xs4	{e;e;s;}
+#VARIABLE	my_xs40	{n;e;}
+#VARIABLE	my_xs41	{n;s;w;w;e;e;e;}
+#VARIABLE	my_xs43	{nu;sd;nu;nu;nu;n;s;w;e;e;e;e;w;}
+#VARIABLE	my_xs5	{climb up;climb left;climb up;climb up;climb left;climb left;climb up;climb up;}
+#VARIABLE	my_xs6	{s;s;s;w;e;s;}
+#VARIABLE	my_xs7	{sd;ed;ed;nd;nd;ed;e;n;n;answer 1;}
+#VARIABLE	my_xs70	{nw;}
+#VARIABLE	my_xs8	{n;e;e;n;w;w;n;e;e;n;}
+#VARIABLE	my_xue	{n;n;answer 1;nw;n;e;e;n;w;w;n;e;e;n;n;n;e;s;s;n;n;w;w;n;climb down;climb down;climb down;climb right;climb right;climb down;climb right;climb down;climb down;climb right;climb down;w;w;w;sd;sd;sd;nu;nu;nu;w;e;n;}
+#alias findsx2 {jump shi bi;#var GLpath my_xue2;#var GLexecNO findxs3;fguai}
+#alias findxs {#var GLslowrun 2;#var GLpath my_xs;get xueshan map from $bag;fly xueshan;put map in $bag;#var GLexecNO findxs1;fguai}
+#alias findxs1 {exert recover;#var GLpath my_xs1;#var GLexecNO findxs2;fguai}
+#alias findxs2 {
+	tkill temp;
+	#class temp open;
+	#action {冰谷巡使喝道：女弟子卧房，男子严禁入内！} {#stop;#if {$target_found=0} {enforce 1;kill xunshi}};
+	#action {冰谷巡使死了。} {#delay 2 {#if {$target_found=0} {findxs20}};};
+	#action {冰谷巡使脚下一个不稳，跌在地上一动也不动了} {#stop;#if {$target_found=0} {enforce 1;kill xunshi}};
+	#action {女弟子卧房 -} {tkill temp;#delay 3 {#var GLpath my_baoxiang13;#var GLexecNO findxs200;fguai};};
+	#class temp close;
+	exert recover;#var GLpath my_xs2;#var GLexecNO findxs20;fguai
+}
+#alias findxs20 {s}
+#alias findxs200 {tkill temp;#delay 2 {bed;#var GLpath my_baoxiang13;#var GLexecNO findxs2000;fguai};}
+#alias findxs2000 {#var GLpath my_xs2000;#var GLexecNO findxs3;fguai}
+#alias findxs20_bak {#T+ temp;#var GLpath my_xs20;#var GLexecNO ;fguai}
+#alias findxs3 {exert recover;#var GLpath my_xs3;#var GLexecNO findxs30;fguai}
+#alias findxs30 {#var GLpath my_xs30;#var GLexecNO findxs4;fguai}
+#alias findxs4 {
+	tkill temp;
+	#class temp open;
+	#action {小木屋 -} {tkill temp;#delay 2{#var GLpath my_baoxiang13;#var GLexecNO findxs40;fguai};};
+	#action {侍儿死了。} {#if {$target_found == 0} {s};};
+	#action {侍儿把你一拦道} {#if {$target_found == 0} {#stop;enforce 1;kill shi er}};
+	#action {侍儿脚下一个不稳，跌在地上一动也不动了} {#if {$target_found == 0} {#stop;enforce 1;kill shi er}};
+	#class temp close;
+	#delay 2 {get xueshan map from $bag;fly xueshan;put map in $bag;#var GLpath my_xs43;#var GLexecNO findxs41;fguai};
+}
+#alias findxs40 {#var GLpath my_xs40;#var GLexecNO findxs5;fguai}
+#alias findxs41 {s}
+#alias findxs4_bakk {#action {小木屋 -} {tkill temp;#wait 1000;#var GLpath my_baoxiang13;#var GLexecNO findxs40;fguai} temp;#action {侍儿死了。} {#wait 2000;s} temp;#action {侍儿把你一拦道} {#wait 2000;#stop;enforce 1;kill shi er} temp;#action {侍儿脚下一个不稳，跌在地上一动也不动了} {#stop;enforce 1;kill shi er} temp;get xueshan map from $bag;fly xueshan;put map in $bag;#T+ temp;#3 nu;#2 e;s}
+#alias findxs5 {
+	tkill temp;
+	#var temppl 0;
+	#class temp open;
+	#action {你用11迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower};
+	#action	{你用迷人的眼眸对} {
+		#class temp kill;
+		#class find_target_baihuagu_inner kill;
+		#class find_target_zizhulin_inner kill;
+		#class find_target_manglin_inner kill;
+		follow $target_name_lower;
+	};
+	#action {你要对谁做这个动作} {
+		#math temppl {$temppl + 1};
+		#if {$temppl == 1} {climb left;wink $target_name_lower};
+		#if {$temppl == 2 || $temppl == 3} {climb up;wink $target_name_lower};
+		#if {$temppl == 4 || $temppl == 5} {climb left;wink $target_name_lower};
+		#if {$temppl == 6 || $temppl == 7} {climb up;wink $target_name_lower};
+		#if {$temppl == 8} {idle;wink $target_name_lower};
+		#if {$temppl > 8} {tkill temp;#delay 2 {findxs6};};
+	};
+	#class temp close;
+	climb up;wink $target_name_lower;
+}
+#alias findxs5_bak {#var GLpath my_xs5;GLslowrun=1;FGslowsum=8;#var GLexecNO findxs6;fguai}
+#alias findxs6 {#var GLpath my_xs6;#var GLexecNO findxs7;fguai}
+#alias findxs7 {fly moon;#var GLpath my_xs7;#var GLexecNO findxs70;fguai}
+#alias findxs70 {#var GLpath my_xs70;#var GLexecNO findxs8;fguai}
+#alias findxs8 {
+	tkill temp;
+	#var tempxs {1};
+	#class temp open;
+	#action	{你用迷人的眼眸对} {
+		#class temp kill;
+		#class find_target_baihuagu_inner kill;
+		#class find_target_zizhulin_inner kill;
+		#class find_target_manglin_inner kill;
+		follow $target_name_lower;
+	};
+	#action {你要对谁做这个动作} {
+		#math tempxs {#tempxs + 1};
+		#delay 1 {
+			#switch {tempxs} {
+				#case 1 {n};
+				#case 2 {w};
+				#case 3 {w};
+				#case 4 {n};
+				#case 5 {w};
+				#case 6 {w};
+				#case 7 {n};
+				#case 8 {w};
+				#case 9 {w};
+				#case 10 {tkill temp;findnext};
+			}; 
+			wink $target_name_lower;
+		};
+	};
+	#class temp close;
+	n;wink $target_name_lower;
+}
+
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 路径变量 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 路径变量 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#nop ~~~~~~~~~~~~~~~~~~~~~~~~~~~ 路径变量 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#VARIABLE	my_baihu	{sw;s;se;sw;se;s;ed;ed;se;ne;ne;se;se;se;nu;ed;e;e;ne;ne;}
+#VARIABLE	my_baihu1	{ne;e;e;se;se;ne;se;}
+#VARIABLE	my_baihu2	{ne;e;e;se;se;ne;se;s;eu;ne;ne;nd;ne;}
+#VARIABLE	my_baoxiang	{s;s;e;w;s;e;w;s;s;}
+#VARIABLE	my_baoxiang0	{sw;s;se;sw;se;s;ed;ed;se;ne;ne;se;se;se;su;se;sd;sw;}
+#VARIABLE	my_baoxiang1	{su;nd;su;su;su;su;su;su;}
+#VARIABLE	my_baoxiang11	{sw;sw;w;e;}
+#VARIABLE	my_baoxiang12	{se;}
+#VARIABLE	my_baoxiang13	{look;look;}
+#VARIABLE	my_baoxiang1_bak	{w;e;e;w;su;w;e;e;w;su;w;e;e;w;su;w;e;e;}
+#VARIABLE	my_baoxiang2	{nd;n;sw;n;s;w;w;s;n;w;nw;}
+#VARIABLE	my_baoxiang20	{nd;nd;nd;nd;nd;nd;}
+#VARIABLE	my_baoxiang20_bak	{w;su;w;e;e;w;su;w;e;e;w;su;nd;nd;nd;nd;nd;nd;}
+#VARIABLE	my_baoxiang3	{n;ne;nu;nw;ne;se;s;se;}
+#VARIABLE	my_baoxiang4	{se;nw;}
+#VARIABLE	my_baoxiang5	{nw;n;nw;nw;ed;e;e;w;w;wu;sd;nw;nw;nw;sw;sw;}
+#VARIABLE	my_baoxiang6	{ne;ne;se;se;nu;ne;e;e;}
+#VARIABLE	my_baoxiang7	{sink;}
+#VARIABLE	my_baoxiang7_bak	{sink;w;d;w;d;}
+#VARIABLE	my_baoxiang9	{nw;w;w;w;w;}
+#VARIABLE	my_bibotan	{e;nw;n;ne;sw;s;se;s;sw;su;wd;sd;s;n;se;ed;se;e;}
+#VARIABLE	my_bibotan1	{ne;ne;e;n;n;e;n;n;n;s;s;e;n;n;e;s;s;w;sw;sw;}
+#VARIABLE	my_bibotan2	{dive;put bishui zhou in $bag;n;n;nu;n;}
+#VARIABLE	my_bibotan3	{nu;e;w;w;e;n;e;w;n;e;e;enter;out;w;w;}
+#VARIABLE	my_bibotan4	{nw;nw;ne;ne;se;se;sw;sw;}
+#VARIABLE	my_biqiu	{se;e;e;e;s;sw;s;w;w;s;n;e;e;sw;ne;n;ne;se;nw;n;}
+#VARIABLE	my_biqiu1	{e;n;w;nw;se;ne;e;e;s;n;e;w;se;e;e;}
+#VARIABLE	my_biqiu2	{e;}
+#VARIABLE	my_biqiu20	{e;se;nw;w;nw;}
+#VARIABLE	my_biqiu200	{w;}
+#VARIABLE	my_biqiu2000	{w;w;}
+#VARIABLE	my_biqiu3	{s;sw;e;w;se;w;e;se;s;sw;s;sw;}
+#VARIABLE	my_biqiu4	{s;e;sw;se;s;s;sw;e;sw;w;nw;sw;nw;e;e;w;}
+#VARIABLE	my_cad	{e;ne;n;n;n;s;s;w;enter;u;u;u;u;u;u;u;u;u;u;u;u;u;u;}
+#VARIABLE	my_cad1	{d;d;d;d;d;d;d;d;d;d;d;d;d;d;out;e;s;sw;s;n;se;}
+#VARIABLE	my_cad2	{s;enter;e;enter;u;u;u;u;u;u;d;d;d;d;d;d;out;w;out;n;nw;}
+#VARIABLE	my_cad3	{ne;e;se;ne;se;enter;out;nw;e;e;w;w;sw;nw;n;ne;e;w;n;n;s;w;s;n;n;s;w;s;n;n;e;w;s;}
+#VARIABLE	my_can	{s;s;s;e;e;e;e;e;w;w;w;nu;enter;out;sd;w;w;w;}
+#VARIABLE	my_can0	{w;w;w;w;w;e;e;e;e;e;e;s;s;s;}
+#VARIABLE	my_can1	{e;w;s;s;s;s;w;w;w;w;e;e;e;e;s;s;s;e;e;e;w;}
+#VARIABLE	my_can2	{w;s;n;w;}
+#VARIABLE	my_cax	{w;w;w;nw;ne;sw;w;w;sw;su;nd;w;}
+#VARIABLE	my_cax0	{sd;ed;ed;nd;nd;ed;e;se;se;se;sw;se;e;e;e;}
+#VARIABLE	my_cax1	{nw;w;nu;n;nu;nw;se;sd;s;sd;w;w;e;}
+#VARIABLE	my_cax2	{n;n;s;s;}
+#VARIABLE	my_cax3	{nd;e;e;e;se;e;su;su;}
+#VARIABLE	my_cax4	{su;}
+
+#VARIABLE	my_fangcun	{sd;sd;sw;e;w;sw;nw;nw;su;wu;ed;s;sd;w;w;e;e;s;n;e;}
+#VARIABLE	my_fangcun1	{d;s;sd;se;e;w;nw;nu;n;nu;ne;ne;nu;nu;n;w;e;e;}
+#VARIABLE	my_fangcun2	{e;w;n;s;w;n;w;e;ne;s;n;e;w;n;}
+#VARIABLE	my_fangcun3	{u;d;s;sw;w;e;nu;}
+#VARIABLE	my_fangcun4	{n;nw;ne;nw;ne;enter;out;}
+#VARIABLE	my_fengxian	{sw;sw;s;s;s;s;s;s;sw;w;nw;w;w;e;e;se;e;ne;}
+#VARIABLE	my_fengxian1	{n;n;n;n;n;w;n;n;s;s;s;s;n;w;n;w;s;n;n;s;}
+#VARIABLE	my_fengxian2	{w;n;n;s;s;u;d;s;s;sw;se;ne;nw;n;n;w;n;s;s;w;}
+#VARIABLE	my_fengxian3	{s;n;n;n;s;w;n;s;s;w;e;n;}
+#VARIABLE	my_firemount	{w;nw;nw;w;n;s;s;n;w;w;w;wu;ed;sw;sw;su;su;}
+#VARIABLE	my_firemount0	{wu;sd;sd;se;sw;s;wu;su;wu;su;e;e;w;w;}
+#VARIABLE	my_firemount1	{ne;ne;nd;w;nw;ne;nd;ne;se;ne;e;su;nd;w;}
+#VARIABLE	my_gao	{w;w;w;w;w;w;w;s;n;w;s;n;n;s;w;w;n;s;nw;se;}
+#VARIABLE	my_gao1	{s;s;s;sw;ne;e;w;n;n;n;e;e;e;e;n;w;e;e;w;n;}
+#VARIABLE	my_gao2	{w;e;e;w;n;w;open door;u;}
+#VARIABLE	my_gao20	{bed;}
+#VARIABLE	my_gao200	{out;}
+#VARIABLE	my_gao2000	{d;e;e;w;n;}
+#VARIABLE	my_gao3	{n;n;e;nu;}
+#VARIABLE	my_gao4	{e;}
+#VARIABLE	my_hell1	{w;n;n;e;e;s;s;w;n;}
+#VARIABLE	my_hell2	{n;s;n;w;w;e;n;s;s;w;e;e;w;n;e;e;w;n;s;e;}
+#VARIABLE	my_hell3	{n;s;s;w;e;e;w;n;e;e;s;s;s;se;nw;n;n;n;w;w;w;n;}
+#VARIABLE	my_hell4	{n;w;e;e;w;n;e;w;w;e;n;e;w;w;e;n;e;w;w;}
+#VARIABLE	my_hell5	{e;n;w;e;n;nu;sd;s;w;e;s;e;w;w;e;s;e;w;w;}
+#VARIABLE	my_hell6	{e;s;e;w;w;e;s;e;w;w;e;s;s;s;e;e;e;s;s;s;se;}
+#VARIABLE	my_hell7	{out;}
+#VARIABLE	my_honglou	{u;d;n;d;u;n;backyard;frontyard;s;s;w;e;e;w;s;w;e;e;w;}
+#VARIABLE	my_honglou0	{s;s;s;s;s;d;u;n;n;n;n;n;}
+#VARIABLE	my_honglou1	{s;u;d;s;w;e;e;w;enter;out;s;e;w;s;d;u;w;e;s;w;e;e;w;out;enter;}
+#VARIABLE	my_jilei	{sw;n;s;se;sw;w;sw;ne;e;se;nw;}
+#VARIABLE	my_jilei0	{ne;nw;ne;nw;sw;ne;ne;nd;}
+#VARIABLE	my_jilei1	{w;nw;ne;nd;ne;w;nw;w;e;se;e;se;ne;sw;}
+#VARIABLE	my_jindou	{nw;w;w;sw;wu;sw;n;nw;nw;n;sw;w;sw;sd;wd;nw;w;}
+#VARIABLE	my_jindou1	{s;sw;sw;n;e;ne;n;}
+#VARIABLE	my_jindou2	{ne;nw;}
+#VARIABLE	my_jjf	{s;s;e;w;sw;e;e;w;s;w;e;e;se;se;s;sw;w;}
+#VARIABLE	my_jjf1	{nw;w;e;ne;n;s;sw;se;se;se;n;s;nw;w;sw;s;w;e;e;w;n;}
+#VARIABLE	my_jjl	{wu;sw;w;nw;wu;nw;wu;s;}
+#VARIABLE	my_jjl0	{e;s;sw;ne;n;nw;n;s;se;w;}
+#VARIABLE	my_jjl1	{se;sw;nw;sw;nw;ne;}
+#VARIABLE	my_jp	{s;w;e;se;se;s;s;s;e;w;s;w;s;n;e;e;s;n;e;}
+#VARIABLE	my_jp1	{n;s;e;n;n;n;s;e;w;s;e;w;s;se;se;se;s;}
+#VARIABLE	my_jp2	{eu;e;e;n;e;s;e;se;nw;w;w;w;w;wd;s;se;se;se;}
+
+#VARIABLE	my_kf	{w;w;w;w;w;w;w;w;w;e;e;e;e;e;e;e;e;s;n;e;}
+#VARIABLE	my_kf0	{nw;w;e;n;w;e;n;n;w;w;n;}
+#VARIABLE	my_kf1	{s;s;n;e;e;n;ne;se;e;e;w;w;s;s;e;w;s;e;e;n;n;s;}
+#VARIABLE	my_kf2	{s;w;w;s;e;w;n;n;n;n;nw;n;w;sw;nw;n;ne;e;se;e;nu;}
+#VARIABLE	my_kf3	{n;n;w;e;e;w;s;}
+#VARIABLE	my_kf30	{s;sd;e;e;se;se;ne;nw;nw;w;}
+#VARIABLE	my_kf4	{s;w;s;s;se;s;s;s;s;sw;se;e;e;w;w;s;eu;s;su;s;}
+#VARIABLE	my_kf5	{e;s;e;w;s;w;s;n;w;n;w;e;n;e;n;nd;s;w;e;e;w;n;}
+#VARIABLE	my_kunlun	{nu;nu;wu;n;se;nw;n;n;nw;n;s;se;s;s;s;ed;sd;}
+#VARIABLE	my_lingshan	{n;e;e;e;e;w;w;w;w;s;wu;sw;nu;wu;nw;n;nw;wu;s;}
+#VARIABLE	my_lingshan1	{s;n;s;s;s;s;n;e;u;d;w;w;u;d;}
+#VARIABLE	my_lingshan10	{n;w;w;w;s;s;s;s;e;e;e;e;e;e;}
+#VARIABLE	my_lingshan2	{n;w;w;w;w;w;w;n;n;n;}
+#VARIABLE	my_lingshan20	{e;e;e;e;e;e;n;n;}
+#VARIABLE	my_lingshan3	{w;w;w;w;w;w;s;e;e;e;}
+#VARIABLE	my_lingshan30	{e;e;e;e;n;w;w;w;n;n;}
+#VARIABLE	my_lingshan40	{n;n;n;w;w;w;e;e;e;e;e;e;s;w;w;w;w;w;w;s;e;e;e;e;e;e;s;s;s;s;w;w;w;w;w;w;n;e;e;e;e;e;e;w;w;w;w;w;w;n;n;n;n;e;e;e;n;n;n;}
+#VARIABLE	my_lingshan41	{e;n;n;n;w;w;w;e;e;e;e;e;e;}
+#VARIABLE	my_lingshan42	{s;w;w;w;w;w;w;s;e;e;e;e;e;e;}
+#VARIABLE	my_lingshan43	{s;s;s;s;w;w;w;w;w;w;n;e;e;}
+#VARIABLE	my_lingshan44	{e;e;e;e;w;w;w;w;w;w;n;n;n;}
+#VARIABLE	my_lingshan45	{n;e;e;e;n;n;n;}
+#VARIABLE	my_maoying	{s;s;s;s;sw;s;}
+#VARIABLE	my_maoying0	{su;se;se;e;e;e;nd;ne;nw;nw;wd;nw;wd;}
+#VARIABLE	my_maoying00	{se;}
+#VARIABLE	my_maoying000	{se;sw;su;nd;sw;sw;}
+#VARIABLE	my_moon	{ne;nw;nw;nw;w;wu;su;su;wu;wu;nu;e;enter;out;w;w;w;w;e;e;e;}
+#VARIABLE	my_moon1	{n;e;w;n;s;w;e;s;}
+#VARIABLE	my_moon2	{u;u;enter;n;n;e;w;w;s;n;u;d;e;n;}
+#VARIABLE	my_moon3	{w;w;e;n;w;e;e;se;s;e;w;w;s;}
+#VARIABLE	my_ms	{n;se;e;e;se;e;n;n;s;s;e;ne;n;}
+#VARIABLE	my_ms0	{s;e;e;ne;se;nw;e;w;nu;nw;}
+#VARIABLE	my_ms1	{nu;nu;}
+#VARIABLE	my_neg	{nw;w;s;s;}
+#VARIABLE	my_neg1	{e;w;e;e;s;w;w;s;e;e;n;w;n;nu;n;w;e;e;w;n;}
+#VARIABLE	my_neg11	{s;s;sd;e;s;w;w;n;s;s;e;e;}
+#VARIABLE	my_neg2	{se;e;n;s;w;s;su;open door;enter;out;nd;w;wu;nd;nu;nu;ed;wu;nw;se;sd;}
+
+#VARIABLE	my_pds	{nw;ne;sw;ne;se;nw;se;se;se;s;n;ne;sw;e;}
+#VARIABLE	my_pds0	{s;nw;sw;wd;sw;sw;sw;sw;ne;ne;ne;ne;eu;ne;s;se;}
+#VARIABLE	my_pds00	{e;w;w;nw;nw;}
+#VARIABLE	my_pds1	{sw;se;s;ed;ed;se;ne;ne;sw;sw;}
+#VARIABLE	my_pds10	{nw;wu;wu;sw;su;se;sw;sw;}
+#VARIABLE	my_pds2	{se;wu;sw;se;s;sw;e;w;}
+#VARIABLE	my_pds20	{sw;ne;ne;n;nw;ne;nd;ne;}
+#VARIABLE	my_penglai	{nu;sd;su;nd;nu;}
+#VARIABLE	my_penglai1	{ne;ne;ne;ne;ne;nw;nw;nw;nw;nw;nw;nw;n;n;n;ne;ne;nw;n;n;}
+#VARIABLE	my_penglai2	{s;n;out;}
+
+#VARIABLE	my_qilin	{right;right;right;right;right;right;right;}
+#VARIABLE	my_qilin1	{climb up;right;right;right;right;right;}
+#VARIABLE	my_qilin2	{climb up;nw;wu;}
+#VARIABLE	my_qilin3	{e;w;nw;nw;se;e;ne;sw;se;w;}
+#VARIABLE	my_qilin4	{ne;eu;eu;se;}
+#VARIABLE	my_qinfa	{e;e;e;ne;e;e;e;e;e;e;n;n;n;n;e;e;w;w;w;w;}
+#VARIABLE	my_qinfa1	{w;s;s;s;s;n;n;e;w;w;w;e;e;n;n;n;s;w;w;}
+#VARIABLE	my_qinfa2	{w;s;n;n;s;w;n;s;w;w;e;e;e;e;e;w;n;e;w;n;}
+#VARIABLE	my_qinfa3	{e;n;s;e;e;n;s;e;e;se;n;n;sw;w;w;w;w;}
+
+#VARIABLE	my_shushan	{n;nu;nu;n;e;w;n;ne;sw;n;ne;eu;wd;sw;s;s;}
+#VARIABLE	my_tth	{n;n;n;n;n;s;s;s;s;s;n;n;n;n;n;}
+#VARIABLE	my_tth0	{s;w;s;w;n;w;s;s;s;n;n;n;n;n;s;nw;}
+#VARIABLE	my_tth00	{w;e;se;s;e;e;e;s;s;s;s;n;n;}
+#VARIABLE	my_tth1	{e;ne;e;n;e;se;ne;}
+#VARIABLE	my_wdd	{ne;nu;ed;se;nw;wu;sd;sw;w;n;s;s;}
+#VARIABLE	my_wdd0	{s;s;n;w;w;w;w;w;e;e;s;s;}
+#VARIABLE	my_wdd00	{n;n;w;n;s;s;n;w;w;e;e;e;e;s;s;}
+#VARIABLE	my_wdd000	{s;look;look;}
+#VARIABLE	my_wdd0000	{s;n;n;w;n;s;s;n;w;n;}
+#VARIABLE	my_wdd01	{s;s;n;n;n;n;e;e;e;e;s;}
+#VARIABLE	my_wdd1	{se;nw;w;s;}
+#VARIABLE	my_wdd2	{sw;ne;sw;}
+#VARIABLE	my_wdd20	{su;su;wu;}
+#VARIABLE	my_wdd3	{dive dong;n;w;e;e;w;n;e;w;w;}
+#VARIABLE	my_wdd4	{e;n;e;e;w;w;n;}
+#VARIABLE	my_wdd5	{}
+#VARIABLE	my_wuji	{n;n;n;w;e;s;e;ne;s;s;n;e;w;w;w;s;s;e;s;}
+#VARIABLE	my_wuji1	{n;e;s;n;e;e;e;ne;ne;ne;ne;eu;ne;sw;wd;sw;sw;sw;sw;}
+#VARIABLE	my_wuji2	{sw;w;sw;nw;se;ne;e;ne;eu;se;eu;su;nd;e;se;ed;e;w;wu;nw;nw;}
+#VARIABLE	my_wuji3	{enter;n;w;e;e;n;s;w;s;}
+#VARIABLE	my_wuji4	{n;w;}
+#VARIABLE	my_wuji5	{n;e;n;s;e;s;n;n;w;e;enter;}
+#VARIABLE	my_wuji8	{d;d;u;u;}
+#VARIABLE	my_wzg	{sd;s;se;sd;s;n;nu;nw;n;nu;nu;nu;n;nu;enter;e;n;wu;u;d;wd;s;e;out;}
+#VARIABLE	my_wzg1	{e;su;nd;n;n;e;w;n;n;w;e;n;w;w;s;e;w;s;s;w;e;s;s;su;nd;}
+#VARIABLE	my_wzg2	{n;n;n;n;n;e;n;open door;n;ne;open door;d;u;sw;nw;}
+#VARIABLE	my_wzg3	{n;nw;n;ne;se;s;sw;s;}
+#VARIABLE	my_wzg4	{s;}
+#VARIABLE	my_wzg5	{jump bridge;}
+#VARIABLE	my_wzg6	{u;}
+#VARIABLE	my_wzgout	{sd;s;sd;sd;sd;s;se;sd;s;sd;e;se;e;ne;e;e;}
+
+#VARIABLE	my_xxt	{s;n;s;sw;s;n;ne;e;n;}
+#VARIABLE	my_xxt0	{s;s;n;e;w;w;n;nw;}
+#VARIABLE	my_xxt1	{nw;n;w;sw;w;sw;ne;e;ne;e;s;e;ne;e;e;e;se;}
+#VARIABLE	my_yinwu	{se;sw;se;nw;ne;e;e;w;w;nw;ne;sw;sw;w;w;w;w;}
+#VARIABLE	my_yinwu0	{sw;ne;e;e;e;e;ne;nw;nw;nw;sw;nw;se;sw;ne;ne;se;se;}
+#VARIABLE	my_yinwu1	{nu;w;sw;sd;nu;ne;e;sd;}
+#VARIABLE	my_yinwu2	{e;w;e;se;sd;nu;}
+#VARIABLE	my_yinwu3	{w;n;s;se;nw;}
+#VARIABLE	my_yinwu4	{w;}
+#VARIABLE	my_yinwu5	{nw;}
+#VARIABLE	my_yuhua	{w;nw;w;w;nw;nw;se;ne;ne;sw;sw;se;}
+#VARIABLE	my_yuhua0	{sw;w;w;w;w;sw;sw;s;s;s;s;s;s;sw;}
+#VARIABLE	my_yuhua1	{w;w;w;nw;nw;se;se;e;e;e;s;s;s;e;e;w;w;w;w;e;e;}
+#VARIABLE	my_yuhua2	{s;e;w;s;w;e;s;e;w;w;e;s;s;e;s;n;e;e;}
+#VARIABLE	my_yuhua3	{w;w;w;w;s;n;w;w;e;e;e;s;s;s;sw;ne;n;e;e;e;w;w;w;n;}
+#VARIABLE	my_zhujie	{ne;ne;nu;nw;ne;nu;nw;ne;ne;e;e;e;}
+#VARIABLE	my_zhujie0	{se;sw;sd;sw;nw;w;w;sd;}
+#VARIABLE	my_zhujie1	{nu;e;ne;e;}
+#VARIABLE	my_zhujie10	{ne;sw;w;}
+#VARIABLE	my_zhujie100	{nw;w;sw;w;}
+#VARIABLE	my_zhujie2	{nw;w;sw;ne;e;se;}
+#VARIABLE	my_zhujie20	{e;ne;e;se;sw;w;}
+#VARIABLE	my_zhuzi	{sw;se;s;sw;w;w;nw;nw;se;se;e;e;}
+#VARIABLE	my_zhuzi1	{s;s;s;s;w;w;w;e;s;s;}
+#VARIABLE	my_zhuzi10	{w;n;s;s;n;w;e;e;}
+#VARIABLE	my_zhuzi2	{s;n;e;s;n;n;s;e;e;n;s;}
+#VARIABLE	my_zhuzi20	{e;s;s;n;e;w;n;n;s;}
+#VARIABLE	my_zhuzi3	{e;e;ne;eu;wd;sw;w;n;}
+#VARIABLE	my_zhuzi30	{n;w;w;w;s;s;}
+#VARIABLE	my_zhuzi4	{s;s;e;w;s;w;}
+#VARIABLE	my_zhuzi40	{e;e;w;s;sw;}
+#VARIABLE	my_zhuzi5	{e;e;e;sw;w;n;n;n;n;n;}
 
 #class find_target close

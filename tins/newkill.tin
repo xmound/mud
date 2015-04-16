@@ -1,0 +1,155 @@
+#nop read other tins
+#read default.tin
+#nop read combat.tin or not? probably assign other 
+
+#format filename {logs/newkill_log_%s_%t.txt} {$login_id} {%Y-%m-%d};
+#log append {$filename} 
+
+#class newkill open
+
+#var bag {bag}
+#alias kg {kill $target_name_lower};
+
+#alias start {
+	newkill_start_lijing;
+}
+
+#alias newkill_ready_check {
+	#nop check status 1.hp 2.yao 3. weapon 4. armor;
+	#showme {<fff>此处要怪完毕开始检查状态};
+	#action {^READY CHECK PASSED.} {
+		newkill_start_findguai;
+	};
+	#delay 3 {#showme {<fff>READY CHECK PASSED.};};
+}
+
+#alias newkill_start_lijing {
+	#class newkill_lijing_inner open;
+	#alias al {set brief_all;fly sky;#13 n;#4 e;#2 s;#2 e;open door;n;u;ask li jing about newkill;unset brief_all};
+	
+	#alias newkill_start_lijing2 {
+		#class newkill_lijing_inner2 open;
+		#action {^%?%?李靖对你说道：近有%*(%*)在%*为非作歹，请速去降服！} {
+			tkill newkill_lijing_inner2;
+			tkill newkill_lijing_inner;
+			#var lijing_responded 1;
+			#var target_name_chinese {%%%3};
+			#var target_name_upper {%%%4};
+			#format {target_name_lower} {%l} {$target_name_upper};
+			#var target_location {%%%5};
+			fly lingshan;#3 w;s;wu;
+			newkill_ready_check;
+		};
+		#action {^%?%?李靖说道：老夫不是派你去降服%*吗？} {
+			tkill newkill_lijing_inner2;
+			tkill newkill_lijing_inner;
+			#var lijing_responded 1;
+			#if {"%%%3" == "$target_name_chinese"} {
+				fly lingshan;#3 w;s;wu;
+				newkill_ready_check;
+			}; #else {
+				#nop 丢怪了;
+			};
+		};
+		#action {^%?%?李靖对手中照妖镜一看，说：这位%*,妖魔已除尽,不妨先去歇息} {
+			tkill newkill_lijing_inner2;
+			tkill newkill_lijing_inner;
+			#var lijing_responded 1;
+			fly lingshan;#3 w;s;wu;
+			#delay 15 {newkill_start_lijing};
+			#echo {<fff>此处需要调整要怪频率};
+		};
+		
+		#action {^%?%?但是很显然的，李靖现在的状况没有办法给你任何答覆。} {
+			tkill newkill_lijing_inner2;
+			tkill newkill_lijing_inner;
+			#var lijing_responded 0;
+		};
+		
+		#class newkill_lijing_inner2 close;
+		#var lijing_responded {0};
+		#delay 3 {
+			#if {$lijing_responded == 0} {
+				tkill newkill_lijing_inner2;
+				tkill newkill_lijing_inner;
+				#showme {<fff>李靖未响应问询。};
+				fly lingshan;#3 w;s;wu;
+				#delay 15 {newkill_start_lijing};
+			}; 
+		};
+	};
+	
+	#action {^%?%?你向李靖打听有关『newkill』的消息。} {newkill_start_lijing2};
+	#action {^%?%?这里没有这个人。} {fly lingshan;#delay 15 {newkill_start_lijing};};
+
+	#class newkill_lijing_inner close;
+	
+	al;
+}
+
+#alias newkill_start_findguai {
+	#class newkill_findguai_inner open;
+	
+	#action {^FAILED TO FIND TARGET $target_name_lower} {
+		tkill newkill_findguai_inner;
+		newkill_start_relocate;
+	};
+	
+	#action {^TARGET $target_name_lower DISAPPEARED} {
+		tkill newkill_findguai_inner;
+		newkill_start_relocate;
+	};
+	
+	#action {^SUCCESSFULLY FOUND TARGET $target_name_lower} {
+		look $target_name_lower;
+		check $target_name_lower;
+	};
+	
+	
+	#action {顺风耳告诉你} {
+		newkill_start_kill;	
+	};
+	
+	#class newkill_findguai_inner close;
+	
+	exert powerup;
+	exert shield;
+	perform qianyan;
+	
+	#var target_name_lower $target_name_lower;
+	#var target_name_upper $target_name_upper;
+	#var target_name_chinese $target_name_chinese;
+	#delay 5 {
+		tload find_target;
+		find $target_name_lower;
+	};
+}
+
+#alias newkill_start_kill {
+	#echo {<fff>已经检查完怪的状态，可以开始杀怪了};
+	#action {^%?%?%?从天上徐徐飘下几页天书，落入你的怀中。} {
+		newkill_start_relocate;
+	};
+}
+
+#alias newkill_start_relocate {
+	#echo {<fff>此处开始relocate};
+	relocate;
+	#action {^RELOCATED TO STONE SUCCESSFULLY.} {
+		#delay 3 {newkill_start_recovery};
+	};
+}
+
+#alias newkill_start_recovery {
+	#echo {<fff>此处可以开始恢复};
+	rec;
+	#action {^RECOVERY FINISHED.} {
+		newkill_start_decode;
+	};
+}
+
+#alias newkill_start_decode {
+	#echo {<fff>此处标志这个怪结束了};
+}
+
+#class newkill close

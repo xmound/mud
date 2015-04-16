@@ -5,8 +5,10 @@
 #CONFIG {PACKET PATCH} {0.5}
 #CONFIG {COMMAND ECHO} {OFF}
 #CONFIG {LOG} {plain}
-#DEBUG action off
-#DEBUG variable off
+#CONFIG {COLOR PATHCH} {ON}
+#CONFIG {CONNECT RETRY} {99999}
+#DEBUG {ACTIONs} {OFF}
+#DEBUG {VARIABLEs} {OFF}
 
 #MACRO {\e[1;2A} {#buffer {up}}
 #MACRO {\e[1;2B} {#buffer {down}}
@@ -42,7 +44,7 @@
 #alias ysd {fly tianzhu;#10 w;s;s;e;buy dan;eat dan;w}
 #alias gbb {fly changan;#6 s;e;nu;hd;n;#3 nw}
 #alias gchi {fly changan;#6 s;e;nu;hd;n;#3 nw;e;chi}
-#alias zhou {fly changan;s;e;buy jiudai;w;n;w;w;w;n;us;give zhou to yuan;ss;s;tear book}
+#alias zhou {fly changan;s;e;buy jiudai;w;n;w;w;w;n;us;give jiudai to yuan;ss;s;tear book}
 #alias tm {fly sky;#13 n;#4 w;#3 n;#2 w;ask jian fu about ÌìÂí;e}
 #alias mm {mount horse-$login_id}
 #alias us {unset no_accept}
@@ -109,8 +111,7 @@
 #nop ########## task specific ######
 #alias relocate {
 	tload relocation;
-	fly stone;
-	l;
+	fly lingshan;
 }
 
 #ALIAS learn_skill {
@@ -160,7 +161,7 @@
 	set brief CHECKED TARGET LEVEL;
 }
 #ALIAS rec {
-	#showme {RECOVERY STARTED.};
+	#showme {<fff>RECOVERY STARTED.};
 	#class recovery read tins/recovery.tin;
 	er;
 	re;

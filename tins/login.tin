@@ -5,7 +5,6 @@
 #read tins/default.tin;
 #read tins/main.tin;
 
-
 #foreach {$tins_to_load[%*]} {file_to_load} {	
 	#nop format filename {tins/%s_%s.tin} {$class_to_load} {$login_id} ;
 	#format filename {tins/%s.tin} {$file_to_load};

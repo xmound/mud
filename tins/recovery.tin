@@ -60,7 +60,7 @@
 			er;
 			re;
 			#CLASS recovery kill;
-			#SHOWME {RECOVERY FINISHED.};};
+			#SHOWME {<fff>RECOVERY FINISHED.};};
 	};
 }
 

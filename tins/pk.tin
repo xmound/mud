@@ -1,0 +1,48 @@
+{PK}
+#action	{%1给你一*冰*} {drop ice;drop ice blade;set no_accept;pker=%1;id here}
+#action	{%e[1;31m(%x)喃喃地念了几句咒语，突然大袖一挥朝你罩了过去！%e[0m} {#log pk.txt;pker=%1;id here;QuitAction}
+#action	{%e[1;31m不料确被你看破，攻其不备，%x反被打了个措手不及！%e[0m} {enforcemax;enable stick qianjun-bang;perform qiankun on @pkerID;perform pili on @pkerID;enable stick kusang-bang;perform three on @pkerID;QuitAction}
+#action	{%e[1;31m你神不守舍111地看着(%x)，怜香惜玉之心由然而起，竟然忘了自己在战斗之中。%e[0m} {set wimpy 100;#log pk.txt;pker=%1;id here}
+#action	{%e[1;31m如果你要和(%x)性命相搏，请你也对这个人下一次 kill 指令。%e[0m} {#log pk.txt;pker=%1;id here;QuitAction}
+#action	{%e[1;35m(%x)凝视着你的双眼，温柔地拍着你的头，在你耳边轻声唱着：“小宝宝，快睡觉。。。”%e[0m} {set wimpy 100;#log pk.txt;pker=%1;id here;QuitAction}
+#action	{%e[1;36m你果然被这光环套住，当时目瞪口呆，不知所措！%e[0m} {set wimpy 100}
+#action	{%e[1;37m%x一见到你，愣了一愣，大叫：「我宰了你！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你对着%x大喝：「可恶，又是你！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你喝道：「%x，我们的帐还没算完，看招！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你喝道：「*，看招！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你和%x一碰面，二话不说就打了起来！%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你和*仇人相见份外眼红，立刻打了起来！%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你一见到%x，愣了一愣，大叫：「我宰了你！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你一眼瞥见%x，「哼」的一声冲了过来！%e[0m} {#wait 500;surrender}
+#action	{%e[31m六耳猕猴抓耳挠腮地对你尖声说道：到了阎王那儿休怪猴爷无情} {#T- AutoLog;exercise 0;meditate 0;QuitAction}
+#action	{%x身形闪动，挡住了你的去路。} {#T- AutoLog;QuitAction}
+#action	{^> 荒郊小店 -} {QuitAction}
+#action	{^>%s半空中劈下一道闪电，轰的一声落在你头上！} {exert recover;exert refresh}
+#action	{^>%s你打了个寒颤。$} {#T- Autolog;QuitAction}
+#action	{^>%s你仿佛觉得有人在你耳边隐隐说道：“还．．我．．命．．来．} {exert recover;exert refresh}
+#action	{^>%s你觉得脑袋又痛又涨，身子已不大听使唤了。$} {QuitAction}
+#action	{^>%s你抬头看看天，暗自嘀咕：我干了那么多坏事，不会天打雷劈吧？} {exert recover;exert refresh}
+#action	{^>%s你突然觉得背脊上泛起一阵凉意：鬼？！} {exert recover;exert refresh}
+#action	{^>%s你想起以前干过的那么多伤天害理之事，不由惭愧得汗流浃背。} {exert recover;exert refresh}
+#action	{^>%s你眼露凶光，发疯似地大喊：“杀！杀！杀！”累得上气不接下气。} {exert recover;exert refresh}
+#action	{^>%s你嘴唇发青，身子微微发抖，好象冷得厉害。$} {#T- Autolog;QuitAction}
+#action	{^>%s你嘴唇乌青发亮，浑身抖个不停，不知道中了什么邪。$} {#T- Autolog;QuitAction}
+#action	{^>%s瞌睡虫迅速地爬进你的鼻孔里。$} {exercise 0;meditate 0;toepr;QuitAction}
+#action	{^????荒郊小店 -} {QuitAction}
+#action	{^????慢慢地你终于又有了知觉} {Busy=0;mying4=0;#if (@usermp=gouhun) {#2 release};#T+ AfterWakeUp;hp;er;ef;score}
+#action	{^????你想攻，却不知道哪个破绽是真，哪个是假。} {exercise 0;meditate 0;QuitAction}
+#action	{^@pker%s=%s(%w)$} {pkerID=%1;ttb @pker(@pkerID) 要杀我！！}
+#action	{^半空中劈下一道闪电，轰的一声落在你头上！} {exert recover;exert refresh}
+#action	{^结果你被*攻了个措手不及！} {set wimpy 100;hmm @pkerID}
+#action	{^你打了个寒颤。$} {#T- Autolog;QuitAction}
+#action	{^你仿佛觉得有人在你耳边隐隐说道：“还．．我．．命．．来．} {e;exert recover;exert refresh;w}
+#action	{^你觉得脑袋又痛又涨，身子已不大听使唤了。$} {quit;surrender;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit}
+#action	{^你抬头看看天，暗自嘀咕：我干了那么多坏事，不会天打雷劈吧？} {exert recover;exert refresh}
+#action	{^你突然觉得背脊上泛起一阵凉意：鬼？！} {exert recover;exert refresh}
+#action	{^你想起以前干过的那么多伤天害理之事，不由惭愧得汗流浃背。} {exert recover;exert refresh}
+#action	{^你眼露凶光，发疯似地大喊：“杀！杀！杀！”累得上气不接下气。} {exert recover;exert refresh}
+#action	{^你嘴唇发青，身子微微发抖，好象冷得厉害。$} {#T- Autolog;QuitAction}
+#action	{^你嘴唇乌青发亮，浑身抖个不停，不知道中了什么邪。$} {#T- Autolog;QuitAction}
+#action	{^瞌睡虫迅速地爬进你的鼻孔里。$} {exercise 0;meditate 0;toepr;QuitAction}
+#action	{你“啊～～秋～～”一声打了个喷嚏，不由皱了皱眉。} {set no_accept}
+#action	{只见@pker浑身松软，瘫倒在地．．．却果然正是(%x)！} {pker=%1;id here}

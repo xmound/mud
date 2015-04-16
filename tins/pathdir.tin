@@ -21,3 +21,40 @@
 #PATHDIR          {se}  {nw}  {6}
 #PATHDIR          {nw}  {se}  {9}
 #PATHDIR          {sw}  {ne}  {12}
+
+
+#PATHDIR {enter} {out}
+#PATHDIR {out} {enter}
+
+#PATHDIR {open door} {open door}
+
+#PATHDIR {climb wall} {climb wall}
+
+#PATHDIR {jump} {jump}
+
+#PATHDIR {climb pine} {climb pine}
+
+#PATHDIR {climb left} {climb right}
+#PATHDIR {climb right} {climb left}
+
+#PATHDIR {climb up} {climb down}
+#PATHDIR {climb down} {climb up}
+#PATHDIR {backyard} {frontyard}
+#PATHDIR {frontyard} {backyard}
+
+#PATHDIR {right} {left}
+#PATHDIR {left} {right}
+
+#PATHDIR {sink}
+#PATHDIR {jump bridge}
+#PATHDIR {jump shi bi}
+#PATHDIR {dive dong}
+#PATHDIR {answer 1}
+#PATHDIR {look}
+#PATHDIR {bed}
+
+#PATHDIR {dive;put bishui zhou in $bag}
+
+#nop PATHDIR {get zhou from $bag;dive;put zhou in $bag}
+#nop PATHDIR {give 2 silver to ma dao;give 3 silver to xiaoer;give 2 silver to boss;give 2 silver to waiter}
+#nop PATHDIR {#wa 10000;#if (@found=0) {ResetTrigger;#wa 6000;gohh}}

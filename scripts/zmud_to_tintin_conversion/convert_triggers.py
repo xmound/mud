@@ -22,11 +22,13 @@ def process_file(input_file):
 def write_results(trigger_list, output_file):
 	with open(output_file, "w") as f:
 		for classes, triggers in trigger_list.iteritems():
-			text_to_write = """%s\n\n\n""" % (classes)
+			text_to_write = """%s\n""" % (classes)
 			f.write(text_to_write)
 			for trigger in sorted(triggers):
 				text_to_write = """#action\t%s\n""" % (trigger)
 				f.write(text_to_write)
+			text_to_write = """\n\n"""
+			f.write(text_to_write)
 
 def main():
     results = process_file(input_file)
