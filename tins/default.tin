@@ -38,6 +38,7 @@
 #ALIAS ca {fly changan;}
 #ALIAS kf {fly kaifeng;}
 #ALIAS spr {ca;#2 s;w;#2 u;s;team with cubuyi;team;}
+#alias fx_ketou {fly yinwu;sw;#4 w;#3 sw;s;w;s;s}
 #ALIAS rulai {fly lingshan;#5 w;s;wu;sw;nu;wu;nw;n;nw;wu;#5 s;};
 #alias go_pansi_danlu {fly zhuzi;#9 n;#2 w;#2 nw;sw;w;wu;#3 se;e;}
 #alias get_out_from_shelita {tload shelita;start_moving_out_shelita;}
@@ -155,7 +156,7 @@
 	set brief status_check;
 }
 
-#alias {check_target_level}{
+#alias {check_target_level} {
 	tload check_target;
 	check $target_name_lower;
 	set brief CHECKED TARGET LEVEL;

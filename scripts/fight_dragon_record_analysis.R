@@ -7,6 +7,7 @@ query <-
 "select * from fight_dragon_log 
 where dt > (datetime('now','localtime', '-24 hours'))
 --and event = 'master_absent'
+--and char = 'nyfour'
 order by dt asc;"
 
 df <- dbGetQuery(db, query)
@@ -30,7 +31,7 @@ df$time_1min <- as.POSIXct(floor(as.numeric(df$ts)/(60))*(60), origin = strptime
 df$time_5mins <- as.POSIXct(floor(as.numeric(df$ts)/(5*60))*(5*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
 df$time_15mins <- as.POSIXct(floor(as.numeric(df$ts)/(15*60))*(15*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
 df$time_1hr <- as.POSIXct(floor(as.numeric(df$ts)/(60*60))*(60*60), origin = strptime("1970-01-01", "%Y-%m-%d", tz=""))
-
+df <- df[df$value >= 0,]
 number_indecies <- as.numeric(df$value) > 0
 df_events <- df[is.na(number_indecies),]
 
@@ -41,6 +42,7 @@ df <- df[ !(df$event == 'qn_gain' & df$value <0),]
 par(mfrow = c(3, 1), mex=0.6, mar=c(5,5,2,2))
 
 #new ggplot/ hour
+dev.off()
 df_plot <- aggregate(value ~ char + event + time_1hr, data = df, FUN = sum)
 ggplot(data = df_plot, aes( x =time_1hr, y = value, color = char)) +
     geom_line() +

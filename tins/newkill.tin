@@ -8,6 +8,7 @@
 #class newkill open
 
 #var bag {bag}
+#var my_nl {27}
 #alias kg {kill $target_name_lower};
 
 #alias start {
@@ -105,9 +106,16 @@
 		check $target_name_lower;
 	};
 	
-	
-	#action {顺风耳告诉你} {
-		newkill_start_kill;	
+	#action {TARGET 武学 %1, TARGET 内力 %2} {
+		tkill newkill_findguai_inner;
+		#var target_nl %%2;
+		#math target_nl_upper_bound {$target_nl * 100 * 1.4 / 100};
+		#math target_nl_lower_bound {$target_nl * 100 * 0.6 / 100};
+		#if {$target_nl < $target_nl_upper_bound && $target_nl > $target_nl_lower_bound} {
+			newkill_start_kill;
+		}; #else {
+			relocate;
+		};
 	};
 	
 	#class newkill_findguai_inner close;
@@ -119,7 +127,7 @@
 	#var target_name_lower $target_name_lower;
 	#var target_name_upper $target_name_upper;
 	#var target_name_chinese $target_name_chinese;
-	#delay 5 {
+	#delay 4 {
 		tload find_target;
 		find $target_name_lower;
 	};

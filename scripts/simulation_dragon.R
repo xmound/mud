@@ -142,17 +142,28 @@ my_enable_parry_mod = mean(c(-15, -10, -20, -5, -25, -10, -25, -15))
 dragon_enable_dodge_mod = mean(c(10, -10, 10, -10, 0, 10)) # dragonfight, dragon's max impact to my dp
 dragon_enable_parry_mod = mean(c(-10, -20, -20,-10,-20,-30)) #dragonfight, dragon's max impact to my pp
 
-wx = 51000000
-basic_dodge = 560
-basic_unarmed = 532
-basic_parry = 537
 
-dragonsteps = 420
-dragonfights = seq(742,800,5) # seq(0,800,50) #seq(100,800,50)
-attack_enableds = 713 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
-special_parrys = c(0,171,414,seq(714,800,10))
+# wx = 51000000
+# basic_dodge = 560
+# basic_unarmed = 532
+# basic_parry = 537
+# 
+# dragonsteps = 420
+# dragonfights = seq(742,800,5) # seq(0,800,50) #seq(100,800,50)
+# attack_enableds = 713 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
+# special_parrys = c(0,171,414,seq(714,800,10))
 #defined in the loop special_dodges
 
+#szxszh
+wx = 11852362
+basic_dodge = 413
+basic_unarmed = 319
+basic_parry = 413
+
+dragonsteps = seq(0,400,10)#seq(0,400,5)
+dragonfights = 319#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
+attack_enableds = 463 #seq(0,463,10)#seq(0,400,10) #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
+special_parrys = c(0)
 
 ######################## start simulation ##################
 
@@ -171,8 +182,8 @@ i <- 0
 for ( dragonstep in dragonsteps) {
     for ( dragonfight in dragonfights) {
         for (attack_enabled in attack_enableds) {
-            for (special_parry in special_parrys) {
-                for (special_dodge in c(0, 171, dragonstep, 769)) {
+            for (special_parry in c(special_parrys)) {
+                for (special_dodge in c(0,171, dragonstep, 397)) {
                     
                     if (i %% 1000 == 0) print(i)
                     i = i+1
@@ -217,18 +228,29 @@ special_dodge = par[5]
 compute_expectation(print_or_not = 1)
 
 ########################### tests  ####################
-wx = 50700000
-basic_dodge = 560
-basic_unarmed = 532
-basic_parry = 537
+wx = 5120000
+basic_dodge = 561
+basic_unarmed = 533
+basic_parry = 538
 
-dragonstep = 420
-dragonfight = 770
-attack_enabled = 713
-special_parry = 408
-special_dodge  = 770
+dragonstep = 421
+dragonfight = 771
+attack_enabled = 714
+special_parry = 410 #409
+special_dodge  = 771
 compute_expectation(print_or_not = 1)
 
+wx = 11852362
+basic_dodge = 413
+basic_unarmed = 319
+basic_parry = 413
+
+dragonstep = 0#seq(0,400,5)
+dragonfight = 319#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
+attack_enabled = 100 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
+special_parry = 0
+special_dodge  = 0
+compute_expectation(print_or_not = 1)
 #### wuxing 30?
 wx = 8781331
 basic_dodge = 417

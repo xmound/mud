@@ -8,13 +8,13 @@
 
 #nop ########## variables ############
 
-#var skill_to_practice unarmed
-#var skill_to_upgrade dragonfight
-#var target_skill_level 770
+#var skill_to_practice dodge
+#var skill_to_upgrade dragonstep
+#var target_skill_level 290
 
 #var skill_to_practice_2nd dodge
 #var skill_to_upgrade_2nd dragonstep
-#var target_skill_level_2nd 420
+#var target_skill_level_2nd 200
 
 #var recover_method sleep
 #var fight_yutu yutu
@@ -30,18 +30,18 @@
 						经验$current_skill_exp/$exp_to_next_level|
 						休息$recover_method|玉兔$fight_yutu|保镖$body_guard} {2};		
 
-#action {^%?%?%?%?%?重新连线完毕。} {
+#action {{XYJ RECONNECTION DONE.|XYJ NEW CONNECTION ESTABLISHED.}} {
+	stop;
+	practice_move;
 	relocate;
 }
 
-#alias relocate {
-	stop;
-	start_move;
-	set brief_all;
-	$path_to_practice;
-	unset brief_all;
-	#delay 5 {l};
+#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {
+		stop;
+		practice_move;
+		relocate;
 }
+
 #alias start_practice {
 	stop;
 	practice_practise;
@@ -429,11 +429,8 @@
 		#delay 10 {#showme {RELOCATION IS NEEDED.};};
 	};
 	
-	#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {stop;relocate};
-	
 	#action {^RELOCATION IS NEEDED.} {
-		random;
-		#tick relocation_tick {surrender;random;fly stone;} {2};
+		relocate;
 		#if {&{body_guard}} {tell $body_guard RELOCATION IS NEEDED FOR YOU.};
 	};
 	
@@ -441,9 +438,9 @@
 		#delay 10 {relocate};
 	};
 	
-	#action {周围没有一片云，没办法腾云驾雾。} {
+	#action {周1111围没有一片云，没办法腾云驾雾。} {
 		stop;
-		#delay 1 {start_move;random;fly stone;};
+		relocate;
 	};
 	
 	#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去} {
@@ -454,12 +451,17 @@
 	};
 
 	#action {^守门人死了。} {
-		#delay 5 {relocate;};
+		set brief_all;
+		$path_to_practice;
+		unset brief_all;
+		#delay 3 {l};
 	};
 	
-	#action {^仙石 -} {
-		#untick relocation_tick;
-		#delay 5 {relocate;};
+	#action {RELOCATED TO STONE SUCCESSFULLY.} {
+		set brief_all;
+		$path_to_practice;
+		unset brief_all;
+		#delay 5 {l};
 	};
 	
 	#action {^狮子宫 -} {

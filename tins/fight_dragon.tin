@@ -10,7 +10,8 @@
 #var auto_reconnect {0}
 #var dragons_to_fight {4}
 
-#var weapon {}
+#var weapon_for_fight {}
+#var weapon_for_practice {}
 #var learn_skills {0}
 #var skill_to_learn {}
 #var skill_to_learn2 {}
@@ -38,7 +39,33 @@
 
 #action {{XYJ RECONNECTION DONE.|XYJ NEW CONNECTION ESTABLISHED.}} {
 	stop;
-	start_setup;
+	start;
+}
+
+#alias reset_idle_prevention_ticker {
+	#tick fight_dragon_idle_prevention {
+		#showme {LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?};
+	} {600};
+}
+
+#action {^LOOKS LIKE YOU HAVE BEEN IDLING FOR A WHILE?} {stop;#delay 5 {start};}
+
+#action {^忽然一阵黄风呼啸而来，你身不由己被卷了进去！} {
+	stop;
+	#delay 5 {get_out_from_shelita};
+}
+#action {(%1)告诉你：report} {
+	#script {foo} {python scripts/report.py 'fight_dragon' '$login_id'};
+	#var status_report $foo[1];
+	#if {"$skill_to_learn" == ""} {
+		tell %1 $status_report目前武学$current_wx, 潜能$current_qn, 未学习技能;
+	}; #else {
+		tell %1 $status_report目前武学$current_wx, 潜能$current_qn, 正学习技能：$skill_to_learn。;
+	};	
+}
+
+#action {^SUCCESSFULLY GOT OUT FROM SHELITA.} {
+	#delay 5 {relocate};
 }
 
 #alias start {
@@ -50,6 +77,7 @@
 	};
 	hp;
 	start_setup;
+	reset_idle_prevention_ticker;
 }
 
 #alias reset {
@@ -66,6 +94,7 @@
 	tkill fight_dragon_move_inner;
 	tkill fight_dragon_learn_inner;
 	#untick fight_dragon;
+	reset_idle_prevention_ticker;
 }
 
 
@@ -77,15 +106,29 @@
 	#nop action {^$place_to_fight} {#class fight_dragon_setup_inner kill;start_fight};
 	
 	#alias go_buy_weapon {
-		#if {"$weapon" == "rake"} {
+		#if {"$weapon_for_fight" == "rake"} {
 			fly tianzhu;#8 e;w;w;w;n;drop rake;buy zhupa;s;unwield bang;unwield sword;unwield fork;wield rake;
-		}; #elseif {"$weapon" == "sword"} {
+		}; #elseif {"$weapon_for_fight" == "sword"} {
 			fly moon;get guishuzhi;unwield bang;unwield sword;unwield fork;wield sword;
-		}; #elseif {"$weapon" == "unarmed"} {
+		}; #elseif {"$weapon_for_fight" == "unarmed"} {
 			unwield all;
 		};
 	};
 	
+	#alias go_buy_weapon_practice {
+		fly changan;w;s;
+		#delay 5 {
+			withdraw 1 gold;
+			#delay 5 {
+				n;e;s;w;
+				#delay 2 {
+					drop $weapon_for_practice;
+					buy $weapon_for_practice;
+					#delay 3 {e;#showme {BOUGHT WEAPON};};
+				};
+			};
+		};
+	};
 	#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去} {
 		enforce 100;
 		kill guard;
@@ -117,20 +160,24 @@
 
 	#action {^RELOCATED TO STONE SUCCESSFULLY.} {
 		$fight_enables;
-		#delay 2 {go_buy_weapon};
-		#delay 4 {
-			#var previous_wx {0};
-			#var previous_qn {-1};
-			enforce 0;
-			set brief_all;
-			wimpy 40;
-			fly changan;
-			#6 s;
-			e;
-			nu;
-			hd;
-			l;
+		#delay 2 {
+			go_buy_weapon;
+			#delay 2 {go_buy_weapon_practice};
 		};
+	};
+	
+	#action {^BOUGHT WEAPON} {
+		#var previous_wx {0};
+		#var previous_qn {-1};
+		enforce 0;
+		set brief_all;
+		wimpy 40;
+		fly changan;
+		#6 s;
+		e;
+		nu;
+		hd;
+		l;
 	};
 	#class fight_dragon_setup_inner close;
 	relocate;
@@ -194,6 +241,7 @@
 	};
 	
 	#alias turn_on_fight_dragon_tick {
+		reset_idle_prevention_ticker;
 		#tick fight_dragon {
 			check_dragon_status;
 		} {30};
@@ -212,7 +260,11 @@
 				#var practice_neeeded {0};
 			}; #elseif {$current_skill_exp > $exp_to_next_level} {
 				#var practice_needed {1};
+				#var skill_to_practice {$skill_to_learn};
+				#var skill_to_practice_chinese {$skill_to_upgrade_chinese};
 			}; 
+		}; #elseif { "%%4" == "$skill_to_learn2"} {
+			#nop ;
 		}; #else {
 			#line {gag};
 		};
@@ -220,8 +272,8 @@
 	
 	#action {你的「基本%*」进步了！} {
 		#if {$abandon_skills == 1} {
-			#if {"$weapon" == "rake"} {abandon rake;abandon rake};
-			#if {"$weapon" == "sword"} {abandon sword;abandon sword};
+			#if {"$weapon_for_fight" == "rake"} {abandon rake;abandon rake};
+			#if {"$weapon_for_fight" == "sword"} {abandon sword;abandon sword};
 		};
 	};
 	
@@ -238,7 +290,17 @@
 			$path_from_eat_to_fight;
 			sh;
 			#loop 1 $count_dragon cnt {fight dragon $cnt;kill dragon $cnt;};
-		}; #elseif {$count_dragon < $dragons_to_fight} {
+		}; #elseif {$percent_hp < 95} {
+			#if {$percent_hp < 50} {
+				quitAction;
+			}; #else {
+				$path_one_step_move;
+				surrender;
+				exert heal;er;
+				$path_one_step_back;
+				#loop 1 $count_dragon cnt {fight dragon $cnt};
+			};
+		};#elseif {$count_dragon < $dragons_to_fight} {
 			start_summon;
 		}; #elseif {$current_qn > 90 && $learn_skills == 1 && $practice_needed == 0} {
 			$path_from_fight_to_master;
@@ -316,9 +378,10 @@
 	#action {^%?%?%?%?你似乎十分疲惫} {
 		$path_one_step_move;
 		surrender;
+		#3 exert heal;
 		er;
 		re;
-		#path_one_step_back;
+		$path_one_step_back;
 		#loop 1 $count_dragon cnt {fight dragon $cnt};
 	} {4};
 
@@ -376,9 +439,69 @@
 	check_dragon_status;
 }
 
-#nop alias start_learn {
-	#class fight_dragon_learn_inner open;
-	#class fight_dragon_learn_inner close;
+#nop alias start_practice {
+	#class fight_dragon_practice_inner open;
+	#if {"$skill_to_practice" == "force"} {
+		stop;
+		relocate;
+		#action {RELOCATED TO STONE SUCCESSFULLY.} {
+			#delay 5 {
+				fly moon;
+				drop sword;get sword;
+				fly lingshan;
+				unwield $weapon_for_fight;
+				wield sword;
+				enable force none;
+				enable sword liangyi-sword;
+				enable parry liangyi-sword;
+				#tick practice_tick {#5 practice parry;er;re} {5};
+			};
+		};
+		
+		#action {你的「$skill_to_practice_chinese」进步了！} {
+			unwield sword;
+			#untick practice_tick;
+			er;
+			re;
+			#delay 5 {start};
+		};
+	}; #elseif {"$skill_to_practice" == "spells"} {
+		stop;
+		relocate;
+		#action {RELOCATED TO STONE SUCCESSFULLY.} {
+			#delay 5 {
+				xiudao;
+			};
+		};
+		
+		#action {你的「$skill_to_practice_chinese」进步了！} {
+			#delay 10 {
+				er;
+				re;
+				start;
+			};
+		};
+		
+	}; #else {
+		#if {"$skill_to_practice" == "unarmed"} {
+			unwield $weapon_for_fight;
+			enable unarmed none;
+		}; #elseif {"$skill_to_practice" == "dodge" || "$skill_to_practice" == "parry"} {
+			enable $skill_to_practice none;
+		}; #else {
+			unwield $weapon_for_fight;
+			wield $weapon_for_practice;
+			enable $skill_to_practice none;
+		}; 
+	
+		#action {你的「$skill_to_practice_chinese」进步了！} {
+			unwield $weapon_for_practice;
+			wield $weapon_for_fight;
+			$fight_enables;
+			tkill fight_dragon_practice_inner;
+		};
+	}; 
+	#class fight_dragon_practice_inner close;
 }
 
 #class fight_dragon close
