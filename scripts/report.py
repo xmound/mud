@@ -69,8 +69,8 @@ def report_dragon(char):
 	avg_wx_gain = wx_gain_24_hr * 60 / num_minutes
 	avg_qn_gain = qn_gain_24_hr * 60 / num_minutes 
 	
-	print "在过去24小时内打龙获得武学%s，潜能%s。平均%s武学/小时，%s潜能/小时。期间活跃打龙时间约为%.1f小时，覆盖率为%s%%。逃跑%s次。" \
-	% (str(wx_gain_24_hr), str(qn_gain_24_hr), str(avg_wx_gain), str(avg_qn_gain), active_hours, str(activeness), str(count_escapes))
+	print "在过去24小时内活跃打龙时间约为%.1f小时,共获得武学%s，潜能%s。平均%s武学/小时，%s潜能/小时。全效率期望值为每天%d武学。期间中断逃跑%s次。" \
+	% (active_hours, str(wx_gain_24_hr), str(qn_gain_24_hr), str(avg_wx_gain), str(avg_qn_gain), avg_wx_gain*24, str(count_escapes))
 
 def main():
 	if requirement == 'fight_dragon':
