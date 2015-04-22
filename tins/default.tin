@@ -197,7 +197,8 @@
 	#VAR current_nl %4;
 	#VAR max_nl %5;
 	#VAR percent_nl %6;
-	#MATH current_nl_percent {$current_nl * 100 / $max_nl}
+	#MATH current_hp_percent {$current_hp * 100 / $max_hp};
+	#MATH current_nl_percent {$current_nl * 100 / $max_nl};
 };
 	
 #ACTION {^%?%?%?%?精神：%s%1%s/%s%2%s(%3%)%s法力：%s%4%s/%s%5%s(%6%)} {
@@ -207,7 +208,8 @@
 	#VAR current_fl %4;
 	#VAR max_fl %5;
 	#VAR percent_fl %6;
-	#MATH current_fl_percent {$current_fl * 100 / $max_fl}
+	#MATH current_js_percent {$current_js * 100 / $max_js};
+	#MATH current_fl_percent {$current_fl * 100 / $max_fl};
 };
 
 #action {^%?%?%?%?食物：%s%1%s/%s%2%s武学：%s%3$} {

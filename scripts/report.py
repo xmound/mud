@@ -30,7 +30,7 @@ def report_dragon(char):
 		AND value >= 0 \
 		" % character
 	query = re.sub('(\t)*(\s)+', ' ', ''.join(query))
-	wx_gain_24_hr = exec_query( query )[0]
+	wx_gain_24_hr = exec_query(query)[0]
 	
 	#qn gain - 24 hours
 	query = "SELECT sum(value) \
@@ -41,7 +41,18 @@ def report_dragon(char):
 		AND value >= 0 \
 		" % character
 	query = re.sub('(\t)*(\s)+', ' ', ''.join(query))
-	qn_gain_24_hr = exec_query( query)[0]
+	qn_gain_24_hr = exec_query(query)[0]
+	
+	# unique minutes
+	query = "select count(distinct strftime('%%H:%%M',dt)) num_minutes \
+		from fight_dragon_log \
+		WHERE char = '%s' \
+		AND dt >= datetime('now', '-1 day', 'localtime') \
+		AND event = 'wx_gain' \
+		AND value >= 0 \
+		" % character
+	query = re.sub('(\t)*(\s)+', ' ', ''.join(query))
+	num_minutes = exec_query(query)[0]
 	
 	#escapes
 	query = "SELECT count(*) \
@@ -51,9 +62,15 @@ def report_dragon(char):
 		AND event = 'escape' \
 		" % character
 	query = re.sub('(\t)*(\s)+', ' ', ''.join(query))
-	count_escapes = exec_query( query)[0]
+	count_escapes = exec_query(query)[0]
 	
-	print "过去24小时共获得武学%s点，潜能%s点。逃跑%s次。" % (str(wx_gain_24_hr), str(qn_gain_24_hr), str(count_escapes))
+	activeness = num_minutes *100  / (60*24)
+	active_hours = 1.0* num_minutes / 60
+	avg_wx_gain = wx_gain_24_hr * 60 / num_minutes
+	avg_qn_gain = qn_gain_24_hr * 60 / num_minutes 
+	
+	print "在过去24小时内打龙获得武学%s，潜能%s。平均%s武学/小时，%s潜能/小时。期间活跃打龙时间约为%.1f小时，覆盖率为%s%%。逃跑%s次。" \
+	% (str(wx_gain_24_hr), str(qn_gain_24_hr), str(avg_wx_gain), str(avg_qn_gain), active_hours, str(activeness), str(count_escapes))
 
 def main():
 	if requirement == 'fight_dragon':

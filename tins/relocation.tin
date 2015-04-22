@@ -1,15 +1,14 @@
 #class relocation open
 
-#alias turn_on_relocation_tick {
-	#tick relocation_tick {fly lingshan} {1};
-}
-
-#delay 2 {turn_on_relocation_tick};
+#tick relocation_tick {fly lingshan} {2};
 
 #action {^%?你正在战斗，飞不开。} {
 	random;
 };
 
+#action {^你想飞起来，可是体力似乎有点不支。} {
+	er;re;dazuo 20;
+};
 #action {^%?%?你奋力望上一跳，似乎想飞起来。结果离地不到三尺就一个倒栽葱摔了下来。} {
 	er;re;mingsi 20;
 };
@@ -22,19 +21,17 @@
 	re;er;
 };
 
-#action {{^%?%?只见平地吹起一阵阴风，你从里面走了出来。|^%?%?只见半空中降下一朵云彩，你从里面走了出来。}} {
+#action {^%?%?{只见平地吹起一阵阴风，你从里面走了出来。|只见半空中降下一朵云彩，你从里面走了出来。}} {
 	#untick relocation_tick;
 	tkill relocation;
 	#3 w;s;wu;
-	#delay 1 {
-		#showme {<fff>RELOCATED TO STONE SUCCESSFULLY.}	;
-	};
+	#delay 1 {#showme {<fff>RELOCATED TO STONE SUCCESSFULLY.};};
 };
 
 #action {^%?%?%?%?%?%?%你一次输入} {
 	#untick relocation_tick;
 	#delay 5 {
-		turn_on_relocation_tick;
+		#tick relocation_tick {fly lingshan} {2};
 	};
 };
 

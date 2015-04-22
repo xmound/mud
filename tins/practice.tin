@@ -8,16 +8,16 @@
 
 #nop ########## variables ############
 
-#var skill_to_practice dodge
-#var skill_to_upgrade dragonstep
-#var target_skill_level 290
+#var skill_to_practice unarmed
+#var skill_to_upgrade dragonfight
+#var target_skill_level 342
 
 #var skill_to_practice_2nd dodge
 #var skill_to_upgrade_2nd dragonstep
 #var target_skill_level_2nd 200
 
 #var recover_method sleep
-#var fight_yutu yutu
+#var fight_yutu noyutu
 #var path_to_practice {gbb;#3 ne;#3 se}
 #var path_to_recover {w}
 #var path_after_recover {e}

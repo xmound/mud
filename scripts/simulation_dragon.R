@@ -160,7 +160,7 @@ basic_dodge = 413
 basic_unarmed = 319
 basic_parry = 413
 
-dragonsteps = seq(0,400,10)#seq(0,400,5)
+dragonsteps = 290#seq(0,400,5)
 dragonfights = 319#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
 attack_enableds = 463 #seq(0,463,10)#seq(0,400,10) #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
 special_parrys = c(0)
@@ -241,16 +241,18 @@ special_dodge  = 771
 compute_expectation(print_or_not = 1)
 
 wx = 11852362
+#wx = 13000000
 basic_dodge = 413
-basic_unarmed = 319
+basic_unarmed = 340
 basic_parry = 413
 
-dragonstep = 0#seq(0,400,5)
-dragonfight = 319#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
-attack_enabled = 100 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
+dragonstep = 290#seq(0,400,5)
+dragonfight = 340#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
+attack_enabled = 410 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
 special_parry = 0
-special_dodge  = 0
+special_dodge  = 290
 compute_expectation(print_or_not = 1)
+
 #### wuxing 30?
 wx = 8781331
 basic_dodge = 417

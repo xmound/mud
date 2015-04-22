@@ -1,0 +1,21 @@
+#VARIABLE         {abandon_skills}  {1}
+#VARIABLE         {dragons_to_fight}  {4}
+#VARIABLE         {fight_enables}  {enable sword liangyi-sword;enable parry none;enable dodge dragonstep}
+#VARIABLE         {learn_skills}  {1}
+#VARIABLE         {heal_dragon}  {1}
+#VARIABLE         {master}  {cong}
+#VARIABLE         {path_from_eat_to_fight}    {w;#3 ne;se}
+#VARIABLE         {path_from_fight_to_eat}    {#2 nw;#3 sw;e}
+#VARIABLE         {path_from_fight_to_master}       {#2 nw;#3 sw}
+#VARIABLE         {path_from_fight_to_reset}      {#3 se;#3 sw;s}
+#VARIABLE         {path_from_master_to_fight}       {#3 ne;se}
+#VARIABLE         {path_from_reset_to_fight}      {n;#3 ne;#2 nw}
+#VARIABLE         {path_one_step_back}  {se}
+#VARIABLE         {path_one_step_move}  {nw}
+#VARIABLE         {previous_qn}  {-1}
+#VARIABLE         {previous_wx}  {0}
+#VARIABLE         {skill_to_learn}  {force}
+#VARIABLE         {skill_to_learn2}  {}
+#VARIABLE         {target_skill_level}  {999}
+#VARIABLE         {weapon_for_fight}  {sword}
+#VARIABLE         {weapon_for_practice}  {sword}

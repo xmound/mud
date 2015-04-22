@@ -1,14 +1,14 @@
-#read tins/combat.tin
-#read tins/default.tin
-#class fight_dragon open
-
+#read tins/combat.tin;
+#read tins/default.tin;
 #format filename {logs/fight_dragon_log_%s_%t.txt} {$login_id} {%Y-%m-%d};
-#log append {$filename} 
+#log append {$filename};
 
+#class fight_dragon open
 
 #nop ######## settings below ###########
 #var auto_reconnect {0}
 #var dragons_to_fight {4}
+#var heal_dragon {0}
 
 #var weapon_for_fight {}
 #var weapon_for_practice {}
@@ -34,12 +34,23 @@
 #var path_one_step_back {}
 #nop ######## settings above ###########
 
+#format filename_settings {settings/fight_dragon_%s.settings.tin} {$login_id};
+#read $filename_settings;
+
 #var previous_wx {0}
 #var previous_qn {-1}
 
 #action {{XYJ RECONNECTION DONE.|XYJ NEW CONNECTION ESTABLISHED.}} {
 	stop;
-	start;
+	#delay 2 {start;};
+}
+
+#alias start {
+	#echo {<fff> 请确认各技能！};
+	#echo {<fff> 请确认各技能！};
+	hp;
+	start_setup;
+	reset_idle_prevention_ticker;
 }
 
 #alias reset_idle_prevention_ticker {
@@ -58,7 +69,7 @@
 	#script {foo} {python scripts/report.py 'fight_dragon' '$login_id'};
 	#var status_report $foo[1];
 	#if {"$skill_to_learn" == ""} {
-		tell %1 $status_report目前武学$current_wx, 潜能$current_qn, 未学习技能;
+		tell %1 $status_report目前武学$current_wx, 潜能$current_qn, 正未学习技能。;
 	}; #else {
 		tell %1 $status_report目前武学$current_wx, 潜能$current_qn, 正学习技能：$skill_to_learn。;
 	};	
@@ -66,18 +77,6 @@
 
 #action {^SUCCESSFULLY GOT OUT FROM SHELITA.} {
 	#delay 5 {relocate};
-}
-
-#alias start {
-	#echo {<fff> 请确认各技能！};
-	#echo {<fff> 请确认各技能！};
-	#delay 2 {
-		#echo {<fff> 请确认各技能！};
-		#echo {<fff> 请确认各技能！};
-	};
-	hp;
-	start_setup;
-	reset_idle_prevention_ticker;
 }
 
 #alias reset {
@@ -93,82 +92,151 @@
 	tkill fight_dragon_cast_inner;
 	tkill fight_dragon_move_inner;
 	tkill fight_dragon_learn_inner;
+	tkill fight_dragon_practice_inner;
 	#untick fight_dragon;
+	#untick practice_tick;
 	reset_idle_prevention_ticker;
 }
 
 
 #alias start_setup {
 	#class fight_dragon_setup_inner open;
+	#action {^RELOCATED TO STONE SUCCESSFULLY.} {
+		check_hp_status;
+	};
 	
-	#nop action {^{一名马官牵着你的坐骑走了过来。|监副对你说：怎么？骑驴找驴？}} {mm;#delay 5 {$path_to_fight;l};};
-	#nop action {^{你已经%%*在%*上了！|你潇洒地一个纵身，稳稳地%%*在%%*上！}} {};
-	#nop action {^$place_to_fight} {#class fight_dragon_setup_inner kill;start_fight};
+	#alias {check_hp_status} {hp;set brief check_hp_status;};
 	
-	#alias go_buy_weapon {
-		#if {"$weapon_for_fight" == "rake"} {
-			fly tianzhu;#8 e;w;w;w;n;drop rake;buy zhupa;s;unwield bang;unwield sword;unwield fork;wield rake;
-		}; #elseif {"$weapon_for_fight" == "sword"} {
-			fly moon;get guishuzhi;unwield bang;unwield sword;unwield fork;wield sword;
-		}; #elseif {"$weapon_for_fight" == "unarmed"} {
-			unwield all;
+	#action {设定环境变数%*check_hp_status} {
+		#if {$percent_hp < 95} {
+			#3 exert heal;
+		};
+		#if {$current_nl_percent < 50 || $current_fl_percent < 50} {
+			rec;
+		}; #else {
+			#SHOWME {<fff>RECOVERY FINISHED.}
 		};
 	};
 	
-	#alias go_buy_weapon_practice {
-		fly changan;w;s;
-		#delay 5 {
-			withdraw 1 gold;
-			#delay 5 {
-				n;e;s;w;
-				#delay 2 {
-					drop $weapon_for_practice;
-					buy $weapon_for_practice;
-					#delay 3 {e;#showme {BOUGHT WEAPON};};
+	#action {RECOVERY FINISHED.} {
+		check_weapons_for_fight;
+	};
+	
+	#alias check_weapons_for_fight {
+		#class check_weapons_inner_class open;
+		#var num_weapons {0};
+		#action {{^□|}%S%s(%*)} {
+			#if {"%%%1" == "□"} {
+				#format {weapon_wielding} {%l} {%%%4};
+				#loop 1 5 cnt {unwield $weapon_wielding $cnt};
+			};
+		
+			#if {"%%%2" == "桂树枝"} {
+				#if {"$weapon_for_fight" == "sword"} {
+					#math num_weapons {$num_weapons + 1};
+				};
+			};
+			
+			#if {"%%%2" == "竹耙"} {
+				#if {"$weapon_for_fight" == "rake"} {
+					#math num_weapons {$num_weapons + 1};
+				};
+			};
+			
+			#if {"%%%2" == "木叉"} {
+				#if {"$weapon_for_fight" == "fork"} {
+					#math num_weapons {$num_weapons + 1};
+				};
+			};
+			#if {"%%%2" == "木棒"} {
+				#if {"$weapon_for_fight" == "bang"} {
+					#math num_weapons {$num_weapons + 1};
 				};
 			};
 		};
-	};
-	#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去} {
-		enforce 100;
-		kill guard;
-	};
-	
-	#action {^守门人死了。} {
-		enforce 0;
-		hd;
-		l;
-	};
-	
-	#action {^南天极 -} {enforce 0;kill hd guard;start_summon};
-	
-	#action {^Failed to summon dragon.} {
-		#delay 5 {
-			l;
-		};
-	};
 
-	#action {^Successfully summoned a dragon.} {
-		enforce 0;
-		#class fight_dragon_setup_inner kill;
-		#delay 6 {
-			$path_from_reset_to_fight;
-			kill dragon;
-			start_fight;
+		#action {设定环境变数%*check_weapons} {
+			#if {"$weapon_for_fight" == ""} {
+				#showme {CHECK WEAPON FOR PRACTICE PASSED.};
+			}; #elseif {$num_weapons > 0} {
+				#if {$num_weapons > 1} {
+					#loop 2 $num_weapons cnt {drop $weapon_for_fight $cnt};
+					#nop wield $weapon_for_fight;
+				};
+				#showme {CHECK WEAPON FOR FIGHT PASSED.};
+			}; #else {
+				#showme {CHECK WEAPON FOR FIGHT FAILED.};
+			};
+			#class check_weapons_inner_class kill;
 		};
-	};
-
-	#action {^RELOCATED TO STONE SUCCESSFULLY.} {
-		$fight_enables;
-		#delay 2 {
-			go_buy_weapon;
-			#delay 2 {go_buy_weapon_practice};
-		};
+		#class check_weapons_inner_class close;
+		i;
+		set brief check_weapons;
 	};
 	
-	#action {^BOUGHT WEAPON} {
+	#alias check_weapons_for_practice {
+		#class check_weapons_inner_class open;
+		#var num_weapons {0};
+		#action {{^□|}%S%s(%*)} {
+		
+			#if {"%%%1" == "□"} {
+				#format {weapon_wielding} {%l} {%%%3};
+				unwield $weapon_wielding;
+			};
+			
+			#if {"$weapon_for_practice" == "sword"} {
+				#if {"%%%2" == "桂树枝" || "%%%2" == "铁剑"} {
+					#math num_weapons {$num_weapons + 1};
+					#loop 1 5 cnt {unwield $weapon_wielding $cnt};
+				};
+			};
+					
+			#if {"%%%4" == "Zhu pa"} {
+				#if {"$weapon_for_practice" == "rake"} {
+					#math num_weapons {$num_weapons + 1};
+				};
+			};
+			
+			#if {"%%%4" == "Fork"} {
+				#if {"$weapon_for_practice" == "fork"} {
+					#math num_weapons {$num_weapons + 1};
+				};
+			};
+			#if {"%%%2" == "盘龙棍"} {
+				#if {"$weapon_for_practice" == "bang"} {
+					#math num_weapons {$num_weapons + 1};
+				};
+			};
+		};
+				
+		#action {设定环境变数%*check_weapons} {
+			#if {"$weapon_for_practice" == ""} {
+				#showme {CHECK WEAPON FOR PRACTICE PASSED.};
+			}; #elseif {$num_weapons > 0} {
+				#if {$num_weapons > 1} {
+					#loop 2 $num_weapons cnt {drop $weapon_for_practice $cnt};
+					#nop wield $weapon_for_fight;
+				};
+				#showme {CHECK WEAPON FOR PRACTICE PASSED.};
+			}; #else {
+				#showme {CHECK WEAPON FOR PRACTICE FAILED.};
+			};
+			#class check_weapons_inner_class kill;
+		};
+		#class check_weapons_inner_class close;
+		i;
+		set brief check_weapons;
+	};
+	
+	#action {CHECK WEAPON FOR FIGHT FAILED.} {go_buy_weapon_for_fight};
+	#action {CHECK WEAPON FOR FIGHT PASSED.} {#delay 3 {check_weapons_for_practice};};
+	#action {CHECK WEAPON FOR PRACTICE FAILED.} {go_buy_weapon_for_practice};
+	#action {CHECK WEAPON FOR PRACTICE PASSED.} {
+		#echo {<fff>武器检查完毕，开始打龙。};
 		#var previous_wx {0};
 		#var previous_qn {-1};
+		$fight_enables;
+		wield $weapon_for_fight;
 		enforce 0;
 		set brief_all;
 		wimpy 40;
@@ -178,6 +246,60 @@
 		nu;
 		hd;
 		l;
+	};	
+	
+	
+	#alias go_buy_weapon_for_fight {
+		#if {"$weapon_for_fight" == "rake"} {
+			fly tianzhu;#8 e;w;w;w;n;buy zhupa;s;unwield bang;unwield sword;unwield fork;
+		}; #elseif {"$weapon_for_fight" == "sword"} {
+			fly moon;get guishuzhi;unwield bang;unwield sword;unwield fork;
+		}; elseif {"$weapon_for_practice" == "fork"} {
+			fly changan;s;w;buy 木叉;#delay 3 {e};
+		};
+	};
+	#alias go_buy_weapon_for_practice {
+		#if {"$weapon_for_practice" == "rake"} {
+			fly tianzhu;#8 e;w;w;w;n;buy zhupa;s;unwield bang;unwield sword;unwield fork;
+		}; #elseif {"$weapon_for_practice" == "sword"} {
+			fly changan;s;w;buy 铁剑;#delay 3 {e;};
+		}; #elseif {"$weapon_for_practice" == "bang"} {
+			fly changan;s;w;buy dragon stick;#delay 3 {e;};
+		}; elseif {"$weapon_for_practice" == "fork"} {
+			fly changan;s;w;buy 木叉;#delay 3 {e;};
+		};
+	};
+	#action {{你的钱不够|你没有足够的钱}} {
+		#delay 5 {
+			fly changan;w;s;
+			#delay 4 {withdraw 1 gold};
+			#delay 8 {n;check_weapons_for_fight};
+		};
+	};
+	#action {{^你捡起|^你附近没有这样东西|^当铺里没有这种货品}} {#delay 5 {check_weapons_for_fight;};};
+	#action {^你向%S买} {#delay 5 {check_weapons_for_fight;};};
+	#action {^守门人拦住了你：帮派总堂重地闲杂人免进，无帮派人士请去} {
+		enforce 100;
+		kill guard;
+	};
+	#action {^守门人死了。} {
+		enforce 0;
+		hd;
+		l;
+	};
+	#action {^南天极 -} {enforce 0;kill hd guard;start_summon;};
+	
+	#action {^Failed to summon dragon.} {
+		#delay 5 {l;};
+	};
+	#action {^Successfully summoned a dragon.} {
+		enforce 0;
+		#class fight_dragon_setup_inner kill;
+		#delay 6 {
+			$path_from_reset_to_fight;
+			kill dragon;
+			start_fight;
+		};
 	};
 	#class fight_dragon_setup_inner close;
 	relocate;
@@ -254,10 +376,8 @@
 			#var current_skill_exp %%8;
 			#MATH exp_to_next_level {($current_skill_level + 1 ) * ($current_skill_level + 1)};
 			
-			#nop SHOWME {练习状态prompt};
-			
 			#if {$current_skill_exp <= $exp_to_next_level} {
-				#var practice_neeeded {0};
+				#var practice_needed {0};
 			}; #elseif {$current_skill_exp > $exp_to_next_level} {
 				#var practice_needed {1};
 				#var skill_to_practice {$skill_to_learn};
@@ -274,11 +394,16 @@
 		#if {$abandon_skills == 1} {
 			#if {"$weapon_for_fight" == "rake"} {abandon rake;abandon rake};
 			#if {"$weapon_for_fight" == "sword"} {abandon sword;abandon sword};
+			#if {"$weapon_for_fight" == "bang"} {abandon stick;abandon stick};
+			#if {"$weapon_for_fight" == "fork"} {abandon fork;abandon fork};
 		};
 	};
 	
 	#action {^设定环境变数%*check_dragon_number} {
-		#if {$count_dragon == 0} {
+		#if {$current_hp_percent < 25} {
+			#echo {气血过低，终止机器。};
+			random;qq;
+		}; #elseif {$count_dragon == 0} {
 			stop;
 			#delay 5 {
 				start_setup;
@@ -288,38 +413,41 @@
 			surrender;
 			chi;
 			$path_from_eat_to_fight;
-			sh;
 			#loop 1 $count_dragon cnt {fight dragon $cnt;kill dragon $cnt;};
-		}; #elseif {$percent_hp < 95} {
+		}; #elseif {$percent_hp < 98} {
 			#if {$percent_hp < 50} {
-				quitAction;
+				qq;
 			}; #else {
 				$path_one_step_move;
 				surrender;
 				exert heal;er;
+				exert shield;
 				$path_one_step_back;
 				#loop 1 $count_dragon cnt {fight dragon $cnt};
 			};
 		};#elseif {$count_dragon < $dragons_to_fight} {
 			start_summon;
-		}; #elseif {$current_qn > 90 && $learn_skills == 1 && $practice_needed == 0} {
+		}; #elseif {$current_qn > 80 && $learn_skills == 1 && $practice_needed == 0} {
 			$path_from_fight_to_master;
 			surrender;
+			#if {$abandon_skills == 1} {
+				#if {"$weapon_for_fight" == "rake"} {abandon rake;abandon rake};
+				#if {"$weapon_for_fight" == "sword"} {abandon sword;abandon sword};
+				#if {"$weapon_for_fight" == "bang"} {abandon stick;abandon stick};
+				#if {"$weapon_for_fight" == "fork"} {abandon fork;abandon fork};
+			};
 			#2 learn $skill_to_learn from $master for 10000;
 			re;
 			#2 learn $skill_to_learn2 from $master for 10000;
 			re;
 			$path_from_master_to_fight;
 			#loop 1 $count_dragon cnt {fight dragon $cnt};
-		};  #elseif {$practice_needed == 100} {
+		};  #elseif {$practice_needed == 1} {
 			start_practice;
 		}; #elseif {$current_nl_percent < 20} {
-			random;
-			surrender;
-			er;
-			fly sky;
+			#echo {内力过低，需要回复。};
 			stop;
-			start_setup;
+			relocate;
 		}; 
 		
 		turn_on_fight_dragon_tick;
@@ -378,7 +506,7 @@
 	#action {^%?%?%?%?你似乎十分疲惫} {
 		$path_one_step_move;
 		surrender;
-		#3 exert heal;
+		#2 exert heal;
 		er;
 		re;
 		$path_one_step_back;
@@ -394,7 +522,9 @@
 	} {4};
 
 	#action {^%?%?%?%?%?%?%?%?%?%?龙气喘嘘嘘} {
-		#loop 1 $count_dragon cnt {#1 {exert recover dragon $cnt};};
+		#if {$heal_dragon == 1} {
+			#loop 1 4 cnt {#1 {exert recover dragon $cnt};};
+		};
 	};
 	
 	#action {^你要向谁求教？} {
@@ -430,58 +560,59 @@
 		start_setup;
 	};
 	
-	#action {{你对准%*深深吸了几口气运将过去|对准你，深深吸了几口气运将过去}} {
-		#line {gag};
-	};
+	#action {深深吸了几口气运将过} {#line {gag};};
 	
 	#class fight_dragon_fight_inner close;
-	
 	check_dragon_status;
 }
 
-#nop alias start_practice {
-	#class fight_dragon_practice_inner open;
+#alias start_practice {
 	#if {"$skill_to_practice" == "force"} {
-		stop;
-		relocate;
+		#class fight_dragon_practice_inner open;
+		#action {你的「内功心法」进步了！} {
+			unwield $weapon_for_practice;
+			wield $weapon_for_fight;
+			#untick practice_tick;
+			enable force dragonforce;
+			tkill fight_dragon_practice_inner;
+			er;
+			re;
+			stop;
+			#delay 10 {start};
+		};
+		
 		#action {RELOCATED TO STONE SUCCESSFULLY.} {
 			#delay 5 {
-				fly moon;
-				drop sword;get sword;
+				#var weapon_for_practice {sword};
 				fly lingshan;
 				unwield $weapon_for_fight;
-				wield sword;
+				wield $weapon_for_practice;
 				enable force none;
 				enable sword liangyi-sword;
 				enable parry liangyi-sword;
-				#tick practice_tick {#5 practice parry;er;re} {5};
+				#tick practice_tick {practice parry;cast transfer} {1};
 			};
 		};
-		
-		#action {你的「$skill_to_practice_chinese」进步了！} {
-			unwield sword;
-			#untick practice_tick;
-			er;
-			re;
-			#delay 5 {start};
-		};
-	}; #elseif {"$skill_to_practice" == "spells"} {
-		stop;
+		#class fight_dragon_practice_inner close;
 		relocate;
+	}; #elseif {"$skill_to_practice" == "spells"} {
+		#class fight_dragon_practice_inner open;
 		#action {RELOCATED TO STONE SUCCESSFULLY.} {
 			#delay 5 {
-				xiudao;
+				er;re;xiudao;
 			};
 		};
-		
-		#action {你的「$skill_to_practice_chinese」进步了！} {
+		#action {你的「法术」进步了！} {
+			tkill fight_dragon_practice_inner;
 			#delay 10 {
 				er;
 				re;
+				stop;
 				start;
 			};
 		};
-		
+		#class fight_dragon_practice_inner close;
+		relocate;
 	}; #else {
 		#if {"$skill_to_practice" == "unarmed"} {
 			unwield $weapon_for_fight;
@@ -493,15 +624,15 @@
 			wield $weapon_for_practice;
 			enable $skill_to_practice none;
 		}; 
-	
+		#class fight_dragon_practice_inner open;
 		#action {你的「$skill_to_practice_chinese」进步了！} {
 			unwield $weapon_for_practice;
 			wield $weapon_for_fight;
 			$fight_enables;
 			tkill fight_dragon_practice_inner;
 		};
+		#class fight_dragon_practice_inner close;
 	}; 
-	#class fight_dragon_practice_inner close;
 }
 
 #class fight_dragon close
