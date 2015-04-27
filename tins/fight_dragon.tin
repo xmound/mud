@@ -254,7 +254,7 @@
 			fly tianzhu;#8 e;w;w;w;n;buy zhupa;s;unwield bang;unwield sword;unwield fork;
 		}; #elseif {"$weapon_for_fight" == "sword"} {
 			fly moon;get guishuzhi;unwield bang;unwield sword;unwield fork;
-		}; elseif {"$weapon_for_practice" == "fork"} {
+		}; #elseif {"$weapon_for_fight" == "fork"} {
 			fly changan;s;w;buy Ä¾²æ;#delay 3 {e};
 		};
 	};
@@ -416,7 +416,7 @@
 			#loop 1 $count_dragon cnt {fight dragon $cnt;kill dragon $cnt;};
 		}; #elseif {$percent_hp < 98} {
 			#if {$percent_hp < 50} {
-				qq;
+				random;qq;
 			}; #else {
 				$path_one_step_move;
 				surrender;
@@ -438,8 +438,8 @@
 			};
 			#2 learn $skill_to_learn from $master for 10000;
 			re;
-			#2 learn $skill_to_learn2 from $master for 10000;
-			re;
+			#nop 2 learn $skill_to_learn2 from $master for 10000;
+			#nop re;
 			$path_from_master_to_fight;
 			#loop 1 $count_dragon cnt {fight dragon $cnt};
 		};  #elseif {$practice_needed == 1} {

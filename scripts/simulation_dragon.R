@@ -154,16 +154,29 @@ dragon_enable_parry_mod = mean(c(-10, -20, -20,-10,-20,-30)) #dragonfight, drago
 # special_parrys = c(0,171,414,seq(714,800,10))
 #defined in the loop special_dodges
 
-#szxszh
-wx = 11852362
-basic_dodge = 413
-basic_unarmed = 319
-basic_parry = 413
+# #szxszh
+# wx = 11852362
+# basic_dodge = 413
+# basic_unarmed = 319
+# basic_parry = 413
+# 
+# dragonsteps = 290#seq(0,400,5)
+# dragonfights = 319#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
+# attack_enableds = 463 #seq(0,463,10)#seq(0,400,10) #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
+# special_parrys = c(0)
 
-dragonsteps = 290#seq(0,400,5)
-dragonfights = 319#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
-attack_enableds = 463 #seq(0,463,10)#seq(0,400,10) #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
-special_parrys = c(0)
+
+wx = 14615418
+basic_dodge = 523
+basic_unarmed = 518
+basic_parry = 523
+
+dragonsteps = 0
+dragonfights = 499
+attack_enableds = 466
+special_parrys = 0
+special_dodges = c(0)
+
 
 ######################## start simulation ##################
 
@@ -183,7 +196,7 @@ for ( dragonstep in dragonsteps) {
     for ( dragonfight in dragonfights) {
         for (attack_enabled in attack_enableds) {
             for (special_parry in c(special_parrys)) {
-                for (special_dodge in c(0,171, dragonstep, 397)) {
+                for (special_dodge in c(special_dodges, dragonstep)) {
                     
                     if (i %% 1000 == 0) print(i)
                     i = i+1
@@ -236,18 +249,18 @@ basic_parry = 538
 dragonstep = 421
 dragonfight = 771
 attack_enabled = 714
-special_parry = 410 #409
+special_parry = 420 #409
 special_dodge  = 771
 compute_expectation(print_or_not = 1)
 
-wx = 11852362
+wx = 12000000
 #wx = 13000000
 basic_dodge = 413
-basic_unarmed = 340
+basic_unarmed = 342
 basic_parry = 413
 
 dragonstep = 290#seq(0,400,5)
-dragonfight = 340#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
+dragonfight = 342#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
 attack_enabled = 410 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
 special_parry = 0
 special_dodge  = 290

@@ -10,11 +10,11 @@
 
 #var skill_to_practice unarmed
 #var skill_to_upgrade dragonfight
-#var target_skill_level 342
+#var target_skill_level 521
 
-#var skill_to_practice_2nd dodge
-#var skill_to_upgrade_2nd dragonstep
-#var target_skill_level_2nd 200
+#var skill_to_practice_2nd {}
+#var skill_to_upgrade_2nd {}
+#var target_skill_level_2nd {}
 
 #var recover_method sleep
 #var fight_yutu noyutu
