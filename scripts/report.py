@@ -28,6 +28,7 @@ def report_dragon(char):
 		AND dt >= datetime('now', '-1 day', 'localtime') \
 		AND event = 'wx_gain' \
 		AND value >= 0 \
+		AND value <= 200 \
 		" % character
 	query = re.sub('(\t)*(\s)+', ' ', ''.join(query))
 	wx_gain_24_hr = exec_query(query)[0]
@@ -39,6 +40,7 @@ def report_dragon(char):
 		AND dt >= datetime('now', '-1 day', 'localtime') \
 		AND event = 'qn_gain' \
 		AND value >= 0 \
+		AND value <= 100 \
 		" % character
 	query = re.sub('(\t)*(\s)+', ' ', ''.join(query))
 	qn_gain_24_hr = exec_query(query)[0]
