@@ -28,7 +28,7 @@ def convert_number(s):
  	s = s.replace("°Ë", "8")
  	s = s.replace("¾Å", "9")
  	s = s.replace("Ê®", "*10+")
-	if s[-1] == "+":
+	if s[-1] == "\+":
 		s = s + "0"
 	if s[0] == "\*":
 		s = "1" + s

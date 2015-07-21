@@ -1,0 +1,425 @@
+#alias findbaihu {#var GLpath my_baihu;fly pingding;nw;ne;#var GLexecNO findbaihu1;fguai}
+#alias findbaihu1 {#var GLpath my_baihu1;#var GLexecNO findbaihu2;fguai}
+#alias findbaihu2 {tkill temp;#VA tempbaihu 0;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad tempbaihu 1;#show 这个        $tempbaihu            这个;#wa 2000;#if {$tempbaihu=1} {s;wink $target_name_lower};#if {$tempbaihu=2} {eu;wink $target_name_lower};#if {$tempbaihu=3} {ne;wink $target_name_lower};#if {$tempbaihu=4} {ne;wink $target_name_lower};#if {$tempbaihu=5} {nd;wink $target_name_lower};#if {$tempbaihu=6} {ne;wink $target_name_lower};#if {$tempbaihu=7} {se;wink $target_name_lower};#if {$tempbaihu=8} {se;wink $target_name_lower};#if {$tempbaihu=9} {nw;wink $target_name_lower};#if {$tempbaihu=10} {nw;wink $target_name_lower};#if {$tempbaihu=11} {ne;wink $target_name_lower};#if {$tempbaihu=12} {nd;wink $target_name_lower};#if {$tempbaihu=13} {e;wink $target_name_lower};#if {$tempbaihu>13} {tkill temp;findnext}} temp;#t+ temp;wink $target_name_lower}
+#alias findbaihu2_bak {#var GLpath my_baihu2;#var GLexecNO findnext;fguai}
+#alias findbaihu2_bakk {tkill temp;#VA tempbaihu 0;#action {^????黑暗中只见你跌跌撞撞地摔了下来} {tkill temp;#t- findguai;#t- nextmove;#t- Escape;inkgd=1;#wa 10000;#T+ Outbaihudong;l} temp;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad tempbaihu 1;#show 这个        $tempbaihu            这个;#wa 2000;#if {$tempbaihu=1} {s;wink $target_name_lower};#if {$tempbaihu=2} {eu;wink $target_name_lower};#if {$tempbaihu=3} {ne;wink $target_name_lower};#if {$tempbaihu=4} {ne;wink $target_name_lower};#if {$tempbaihu=5} {nd;wink $target_name_lower};#if {$tempbaihu=6} {ne;wink $target_name_lower};#if {$tempbaihu=7} {se;wink $target_name_lower};#if {$tempbaihu=8} {se;wink $target_name_lower};#if {$tempbaihu=9} {nw;wink $target_name_lower};#if {$tempbaihu=10} {nw;wink $target_name_lower};#if {$tempbaihu=11} {ne;wink $target_name_lower};#if {$tempbaihu=12} {nd;wink $target_name_lower};#if {$tempbaihu=13} {e;wink $target_name_lower};#if {$tempbaihu>13} {tkill temp;findnext}} temp;#t+ temp;wink $target_name_lower}
+#alias findbaihu3 {tkill temp;#VA tempbaihu 0;#action {^????山湾} {wink $target_name_lower} temp;#action {^????野路} {wink $target_name_lower} temp;#action {^????碗子山} {wink $target_name_lower} temp;#action {^????山道} {wink $target_name_lower} temp;#action {^????山湾} {wink $target_name_lower} temp;#action {^????山凹} {wink $target_name_lower} temp;#action {^????山路} {wink $target_name_lower} temp;#action {^????这个方向没有出路} {wink $target_name_lower} temp;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad tempbaihu 1;#show 这个        $tempbaihu            这个;#wa 2000;#if {$tempbaihu=1} {u};#if {$tempbaihu>1} {tkill temp;findnext}} temp;#t+ temp;wink $target_name_lower}
+#alias findbaihu3_bakk {tkill temp;#VA tempbaihu 0;#action {^????黑暗中只见你跌跌撞撞地摔了下来} {tkill temp;#t- nextmove;#t- Escape;#t- findguai;inkgd=1;#wa 10000;#T+ Outbaihudong;l} temp;#action {^????山湾} {wink $target_name_lower} temp;#action {^????野路} {wink $target_name_lower} temp;#action {^????碗子山} {wink $target_name_lower} temp;#action {^????山道} {wink $target_name_lower} temp;#action {^????山湾} {wink $target_name_lower} temp;#action {^????山凹} {wink $target_name_lower} temp;#action {^????山路} {wink $target_name_lower} temp;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad tempbaihu 1;#show 这个        $tempbaihu            这个;#wa 2000;#if {$tempbaihu=1} {u};#if {$tempbaihu>1} {tkill temp;findnext}} temp;#t+ temp;wink $target_name_lower}
+#alias findbbt {#var GLpath my_bibotan;GLexectrig=bbt_end;fly jingjiling;#var GLexecNO findbbt1;fguai}
+#alias findbbt1 {#var GLpath my_bibotan1;#var GLexecNO findbbt2;fguai}
+#alias findbbt2 {get zhou from $bag;#var GLpath my_bibotan2;#var GLexecNO findbbt3;fguai;put zhou in $bag}
+#alias findbbt3 {#wa 1000;#alias tempnext {tkill temp;#var GLpath my_bibotan3;#var GLexecNO findbbt4;fguai} temp;#action {西波儿古嚷道：宫中有贵客，闲人免进！} {kill gu} temp;#action {古波儿西嚷道：宫中有贵客，闲人免进！} {kill xi} temp;#action {碧波潭水晶宫} {tempnext} temp;#action {西波儿古死了} {nu} temp;#action {古波儿西死了} {nu} temp;#t+ temp;nu}
+#alias findbbt4 {#alias tempnext {tkill temp;#var GLpath my_bibotan4;#var GLexecNO findbbt5;fguai} temp;#wa 1000;#action {天波儿笑喝道：后院是禁地，还是莫去的好！} {#if {$mbibo=1} {#t+ fight1;kill tianboer xiao;ff};#if {$mbibo=0} {findnext};} temp;#action {笑波儿天喝道：后院是禁地，还是莫去的好！} {#if {$mbibo=1} {#t+ fight1;kill xiaoboer tian;ff};#if {$mbibo=0} {findnext};} temp;#action {后花园} {tempnext} temp;#action {天波儿笑死了} {n} temp;#action {笑波儿天死了} {n} temp;#var GLexecNO findnext;#t+ temp;open door;n}
+#alias findbbt5 {#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {芙蓉亭 -} {#wa 3000;#if {$found=0} {ResetTrigger;#wa 6000;#4 s;sd;s;sd;#2 s;u;gohh}} temp;#t+ temp;jump;wink $target_name_lower}
+#alias findbiqiu {#var GLpath my_biqiu;fly wudidong;nu;ed;#var GLexecNO findbiqiu1;fguai}
+#alias findbiqiu1 {#var GLpath my_biqiu1;#var GLexecNO findbiqiu2;fguai}
+#alias findbiqiu2 {#var GLpath my_biqiu2;#var GLexecNO findbiqiu20;fguai}
+#alias findbiqiu20 {#var GLpath my_biqiu20;#var GLexecNO findbiqiu200;fguai}
+#alias findbiqiu200 {#var GLpath my_biqiu200;#var GLexecNO findbiqiu2000;fguai}
+#alias findbiqiu2000 {#var GLpath my_biqiu2000;#var GLexecNO findbiqiu3;fguai}
+#alias findbiqiu3 {#var GLpath my_biqiu3;#var GLexecNO findbiqiu4;fguai}
+#alias findbiqiu4 {#var GLpath my_biqiu4;#var GLexecNO findnext;fguai}
+#alias findbiqiu4_bak {#var GLpath my_biqiu4;#var GLexecNO findbiqiu5;fguai}
+#alias findbiqiu5 {#action {你的耳边悄声说道：再来一次} {#wait 1000;er;ef;#3 turn left;#3 turn right;push tree;whisper $userid 再来一次} temp;#action {刹那间，一声响亮唿喇喇闪开两扇门，你一头撞将进去} {tkill temp;#var GLpath {};#var GLexecNO findnext;fguai} temp;#t+ temp;whisper $userid 再来一次}
+#alias findbt {fly yinwu;sw;#4 w;sw;sw;#6 s;sw;w;nw;w;w;nw;#wait 1000;#var GLpath {};#var GLexecNO findbt1;fguai}
+#alias findbt1 {#var GLpath my_baotou;#var GLexecNO findnext;fguai}
+#alias findbx {#var GLpath my_baoxiang;fly baoxiang;#3 n;#var GLexecNO findbx1;fguai}
+#alias findbx1 {#action {白玉阶} {tempnext} temp;#action {阁门大使向你摇了摇手。} {kill da shi} temp;#action {大使死了。} {su} temp;#alias tempnext {tkill temp;#var GLpath my_baoxiang1;#var GLexecNO findbx20;fguai} temp;#t+ temp;su}
+#alias findbx10 {#action {你眼前身影一晃，似乎有谁挡住了你的路} {#wait 100;sw} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findbx11;fguai} temp;#t+ temp;sw;#action {野路} {tempnext} temp}
+#alias findbx11 {#var GLpath my_baoxiang11;#var GLexecNO findbx12;fguai}
+#alias findbx12 {#var GLpath my_baoxiang12;#var GLexecNO findnext;fguai}
+#alias findbx13 {#2 w;#2 e;w;down;#var GLpath my_baoxiang13;#var GLexecNO findbx14;fguai}
+#alias findbx14 {#2 w;#2 e;#2 w;down;#var GLpath my_baoxiang13;#var GLexecNO findbx15;fguai}
+#alias findbx15 {#var GLpath my_baihu;w;w;fly pingding;nw;ne;#var GLexecNO findbx16;fguai}
+#alias findbx16 {#var GLpath my_baihu1;#var GLexecNO findnext;fguai}
+#alias findbx2 {#var GLpath my_baoxiang2;#var GLexecNO findbx3;fguai}
+#alias findbx20 {#wait 1000;#var GLpath my_baoxiang20;#var GLexecNO findbx2;fguai}
+#alias findbx3 {tkill temp;fly pingding;nw;ne;#var GLpath my_baoxiang0;#var GLexecNO findbx30;fguai}
+#alias findbx30 {#var GLpath my_baoxiang3;#var GLexecNO findbx4;fguai}
+#alias findbx3_bak {#action {河面上的船慢慢聚在一起} {tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_baoxiang3;#var GLexecNO findbx4;fguai} temp;#t+ temp}
+#alias findbx4 {#action {刹那间天崩地裂，金塔突然消失得无影无踪} {tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_baoxiang4;#var GLexecNO findbx5;fguai} temp;#t+ temp;wield $weapon;wield $weapon2;break shi ban}
+#alias findbx5 {#action {轰隆一声巨响，一切都还原了} {tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_baoxiang5;#var GLexecNO findbx6;fguai} temp;#t+ temp}
+#alias findbx6 {#var GLpath my_baoxiang6;#var GLexecNO findbx7;fguai}
+#alias findbx7 {#var GLpath my_baoxiang7;#var GLexecNO findbx13;fguai}
+#alias findbx7_bak {#var GLpath my_baoxiang7;GLslowrun=1;FGslowsum=5;#var GLexecNO findbx8;fguai}
+#alias findbx8 {#var GLpath my_cax;ca;#4 w;#var GLexecNO findbx9;fguai}
+#alias findbx9 {#action {马盗喊叫着：不给钱我要杀人啦} {kill ma dao;jl;perform chaofeng on ma dao;enforce 0} temp;#action {看起来马盗想杀死你！} {kill ma dao} temp;#action {马道} {se;tempnext} temp;#action {马盗死了} {tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_baoxiang9;#var GLexecNO findbx10;fguai} {temp};#t+ temp;nw}
+#alias findca {fly changan;GLexectrig=ca_end;#var GLpath my_changan;#var GLexecNO findca1;fguai}
+#alias findca1 {#wait 500;#var GLpath my_changan1;#var GLexecNO findca2;fguai}
+#alias findca2 {#wait 2000;#var GLpath my_changan2;#var GLexecNO findca3;fguai}
+#alias findca3 {#wait 2000;#var GLpath my_changan3;#var GLexecNO findca4;fguai}
+#alias findca4 {#wait 2000;#var GLpath my_changan4;#var GLexecNO findca5;fguai}
+#alias findca5 {#wait 2000;#var GLpath my_changan5;#var GLexecNO findca6;fguai}
+#alias findca6 {#wait 1000;#var GLpath my_changan6;#var GLexecNO findca7;fguai}
+#alias findca7 {#wait 2000;#var GLpath my_changan7;#var GLexecNO findca8;fguai}
+#alias findca8 {#wait 2000;#var GLpath my_changan8;#var GLexecNO findca80;fguai}
+#alias findca80 {#wait 2000;#var GLpath my_changan80;#var GLexecNO findca9;fguai}
+#alias findca9 {#wait 2000;#var GLpath my_changan9;#var GLexecNO findca90;fguai}
+#alias findca90 {#wait 2000;#var GLpath my_changan90;#var GLexecNO findca91;fguai}
+#alias findca91 {#wait 2000;#var GLpath my_changan91;#var GLexecNO findnext;fguai}
+#alias findcan {fly changan;#3 s;#var GLpath my_can;#var GLexecNO findcan0;fguai}
+#alias findcan0 {#var GLpath my_can0;#var GLexecNO findcan1;fguai}
+#alias findcan1 {#wa 500;#var GLpath my_can1;#var GLexecNO findnext;fguai}
+#alias findcaout {#6 d;out}
+#alias findcax {#var GLpath my_cax0;GLexectrig=cax_end;fly moon;#var GLexecNO findcax0;fguai}
+#alias findcax0 {#var GLpath my_cax;GLexectrig=cax_end;#var GLexecNO findcax1;fguai}
+#alias findcax1 {#action {马盗喊叫着：不给钱我要杀人啦} {kill ma dao;enforce 0} temp;#action {看起来马盗想杀死你！} {kill ma dao} temp;#action {马道} {se;tempnext} temp;#action {马盗死了} {tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_cax1;#var GLexecNO findcax2;fguai} {temp};#t+ temp;nw}
+#alias findcax2 {#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findcax3;fguai} temp;#action {你忽然觉得脚下的石板松} {tempnext} temp;#t+ temp}
+#alias findcax3 {#alias tempnext {tkill temp;#var GLpath my_cax2;#var GLexecNO findcax4;fguai} {temp};#action {什么？} {jl;break;exert recover} temp;#action {你扯着铁栏杆，双手一较劲，大喊一声} {jl;break;exert recover} temp;#action {你躬身从铁笼中钻了出去} {tempnext} temp;#action {铁栏杆的缝隙足够一个人钻出去了} {out} temp;#t+ temp;out}
+#alias findcax4 {s;w;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findcax5;fguai} {temp};#action {这里没有这个人} {su;tempnext} temp;#action {边关守将死了} {kill wu jiang} temp;#t+ temp;#t+ fight1;kill wu jiang}
+#alias findcax5 {tkill temp;#t+ fight1;#var GLpath my_cax3;#var GLexecNO findcax6;fguai}
+#alias findcax6 {tkill temp;#action {这里没有这个人} {findcax7} temp;#action {老虎精死了} {kill laohu jing} temp;#action {就在这一恍惚之见，真身一个虎跳，钻入草从中不见了} {kill laohu jing} temp;#t+ temp;#t+ fight1;kill laohu jing}
+#alias findcax7 {tkill temp;#var GLpath my_cax4;#var GLexecNO findnext;fguai}
+#alias findcaz {e;s;findca}
+#alias findchechi {#var GLpath my_chechi;fly wuji;#5 e;sw;w;sw;#var GLexecNO findchechi1;fguai}
+#alias findchechi1 {open door;#var GLpath my_chechi1;#var GLexecNO findchechi2;fguai}
+#alias findchechi10 {s;spell shugui8;#var GLexecNO findchechi11;fguai}
+#alias findchechi11 {s;spell shugui9;#var GLpath {};#var GLexecNO findchechi12;fguai}
+#alias findchechi12 {#wait 1000;s;#var GLpath my_chechi2;#var GLexecNO findchechi13;fguai}
+#alias findchechi13 {#wa 2000;#var GLpath my_chechi3;#var GLexecNO findchechi14;fguai}
+#alias findchechi14 {#wa 2000;#var GLpath my_chechi4;#var GLexecNO findchechi15;fguai}
+#alias findchechi15 {#var GLpath my_chechi5;#var GLexecNO findchechi16;#wa 2000;fguai}
+#alias findchechi16 {#wa 2000;#var GLpath my_chechi6;#var GLexecNO findchechi17;fguai}
+#alias findchechi17 {#wa 2000;#var GLpath my_chechi7;#var GLexecNO findchechi18;fguai}
+#alias findchechi18 {#wa 2000;#alias tempnext {tkill temp;#var GLpath my_chechi8;#var GLexecNO findnext;fguai} temp;#action {护宫卫士喝道：禁行！} {kill wei shi} temp;#action {坛场} {s;tempnext} temp;#action {护宫卫士死了} {n} temp;#t+ temp;n}
+#alias findchechi2 {spell shugui;#var GLpath {};#var GLexecNO findchechi3;fguai}
+#alias findchechi3 {s;spell shugui1;#var GLexecNO findchechi4;fguai}
+#alias findchechi4 {s;spell shugui2;#var GLexecNO findchechi5;fguai}
+#alias findchechi5 {s;spell shugui3;#var GLexecNO findchechi6;fguai}
+#alias findchechi6 {s;spell shugui4;#var GLexecNO findchechi7;fguai}
+#alias findchechi7 {s;spell shugui5;#var GLexecNO findchechi8;fguai}
+#alias findchechi8 {s;spell shugui6;#var GLexecNO findchechi9;fguai}
+#alias findchechi9 {s;spell shugui7;#var GLexecNO findchechi10;fguai}
+#alias findchechiout {}
+#alias finddd {#var GLpath my_dudi;GLexectrig=dd_end;fly dudi;nw;#2 ne;#var GLexecNO finddd0;fguai}
+#alias finddd0 {#var GLpath my_dudi0;#var GLexecNO finddd00;fguai}
+#alias finddd00 {#var GLpath my_dudi1;#var GLexecNO finddd5;fguai}
+#alias finddd1 {#action {这里没有这个人} {ff;remove dun;wield $weapon;wield $weapon2;exert recover;exert refresh;break;exert recover;exert refresh;sw;tempnext} temp;#action {精死了} {kill yao jing} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO finddd2;fguai} temp;#t+ temp;kill yao jing}
+#alias finddd2 {#action {这里没有这个人} {ff;remove dun;wield $weapon;wield $weapon2;exert recover;exert refresh;break;exert recover;exert refresh;s;tempnext} temp;#action {精死了} {kill yao jing} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO finddd3;fguai} temp;#t+ temp;kill yao jing}
+#alias finddd3 {#action {这里没有这个人} {ff;remove dun;wield $weapon;wield $weapon2;exert recover;exert refresh;break;exert recover;exert refresh;se;tempnext} temp;#action {精死了} {kill yao jing} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO finddd4;fguai} temp;#t+ temp;kill yao jing}
+#alias finddd4 {#var GLpath my_dudi3;#var GLexecNO findnext;fguai}
+#alias finddd5 {#action {一洞门 -} {#if {$mdudi=1} {#wa 2000;#if {$found=0} {#var GLpath {};#var GLexecNO finddd1;fguai;enforce 1;kill yao jing}};#if {$mdudi=0} {#wa 2000;cmm;#if {$found=0} {ResetTrigger;#wa 6000;#2 release;gohh}}} temp;#T+ temp;out;enter}
+#alias findddout {w;n;nw;n;ne;out}
+#alias findfc {fly lingtai;open door;GLexectrig=fc_end;#var GLpath my_fangcun;#var GLexecNO findfc5;fguai}
+#alias findfc1 {#wait 1000;#var GLpath my_fangcun1;#var GLexecNO findfc2;fguai}
+#alias findfc2 {#wait 1000;#var GLpath my_fangcun2;#var GLexecNO findfc3;fguai}
+#alias findfc3 {#action {广羲子对你说到：上面是我道家弟子清修} {kill guang xizi} temp;#action {广羲子死了} {up} temp;#action {小室} {tkill temp;#wa 2000;#var GLpath my_baoxiang13;#var GLexecNO findfc30;fguai} temp;#t+ temp;u}
+#alias findfc30 {tkill temp;#var GLpath my_fangcun3;#var GLexecNO findfc4;fguai}
+#alias findfc4 {#action {这里没有 master yunyang} {tempnext} temp;#action {你要看什么} {enforce 0;tempnext} temp;#action {云阳真人死了} {enforce 0;#wa 5000;tempnext} temp;#action {的企图，并没有上当} {#wait 1000;BusyPerform} temp;#action {云阳真人目前正自顾不暇，放胆攻击吧} {#wait 1000;mypf2} temp;#action {结果他被你攻了个措手不及} {#wait 1000;mypf2} temp;#action {果然被这光环套住} {#wait 1000;mypf2} temp;#action {被你的长鼻高高卷起，你用力一甩} {#wait 2000;mypf2} temp;#action {云阳真人与菩提祖师实是半师半友} {#if {$myunyang=1} {#t+ fight1;#wa 3000;#if {$found=0} {BusyPerformTarget=master yunyang;EnforceMax;kill master yunyang;BusyPerform}};#if {$myunyang=0} {#t- find;#delc temp;#wa 2000;s;sd;gohh}} temp;#alias tempnext {tkill temp;#var GLpath my_fangcun4;#var GLexecNO findnext;fguai} temp;#t+ temp;BusyPerformTarget=master yunyang;look master yunyang}
+#alias findfc5 {climb pine;#var GLpath {};#var GLexecNO findfc1;fguai}
+#alias findfcout {out;sw;se;sw;se;sd}
+#alias findfx {#var GLpath my_fengxian;fly yinwu;sw;#4 w;#var GLexecNO findfx1;fguai}
+#alias findfx1 {#wait 2000;#var GLpath my_fengxian1;#var GLexecNO findfx2;fguai}
+#alias findfx2 {#wait 2000;#var GLpath my_fengxian2;#var GLexecNO findfx3;fguai}
+#alias findfx3 {#wait 1000;#var GLpath my_fengxian3;#var GLexecNO findnext;fguai}
+#alias findfxout {#2 nw;#2 ne}
+#alias findgao {#var GLpath my_gao;fly putuo;#2 sd;#2 s;swim;#3 n;#wait 1000;#var GLexecNO findgao1;fguai}
+#alias findgao1 {#var GLpath my_gao1;#var GLexecNO findgao2;fguai}
+#alias findgao2 {#var GLpath my_gao2;#var GLexecNO findgao20;fguai}
+#alias findgao20 {#var GLpath my_gao20;#var GLexecNO findgao200;fguai}
+#alias findgao200 {#var GLpath my_gao200;#var GLexecNO findgao2000;fguai}
+#alias findgao2000 {#var GLpath my_gao2000;#var GLexecNO findgao3;fguai}
+#alias findgao3 {#wait 1000;climb wall;#var GLpath my_gao3;#var GLexecNO findgao4;fguai}
+#alias findgao4 {#action {夏鹏展一个箭步闪到你前面，狞笑道} {jl;kill xia pengzhan} temp;#action {夏鹏展死了} {tempnext} temp;#action {夏鹏展慢慢睁开眼睛} {kill xia} temp;#action {内室 -} {wink $target_name_lower} temp;#action {你用迷人的眼眸对} {#delc temp;FGcount=0;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {findnext} temp;#alias tempnext {#var GLpath my_gao4;#var GLexecNO ;fguai} temp;#t+ temp;open door;e}
+#alias findhell {tkill temp;#t- findguai;#t+ hell2;#t+ hell3;#t- hell4;#t- hell;#t- hell5;#T- Hell6;#t+ fight1;mhell=0;found=0;cast townportal}
+#alias findhell1 {#T- hell;#T- hell1;#T- hell2;#T- hell3;#T- hell4;#T- hell5;#T- hell6;tkill temp;#action {招魂司 -} {findhell2} temp;#VA temphell 0;#action {你用迷人的眼眸对} {#delc temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad temphell 1;#wa 1000;%case{$temphell,helloth1,helloth2,helloth3,helloth4,helloth5,helloth6,helloth7,helloth8,helloth9,helloth10}} temp;#t+ temp;#t+ findguai;wink $target_name_lower}
+#alias findhell2 {#T- hell;#T- hell1;#T- hell2;#T- hell3;#T- hell4;#T- hell5;#T- hell6;tkill temp;#action {阎罗宝殿 -} {#t- hell;tkill temp;#wa 2000;#var GLpath my_baoxiang13;#var GLexecNO findhell4;fguai} temp;#action {牛头鬼暴喝几声：擅闯阎罗殿，这不是找死吗？} {#stop;#wa 3000;#if {$found=0} {kill niutou gui}} temp;#action {牛头鬼脚下一个不稳，跌在地上一动也不动了} {kill niutou gui} temp;#action {马面鬼抡起手中铜锤，对着你说：先问问它答应不！} {#stop;#wa 3000;#if {$found=0} {kill mamian gui}} temp;#action {马面鬼脚下一个不稳，跌在地上一动也不动了} {kill mamian gui} temp;#action {%x鬼死了。} {#wa 1000;#if {$found=0} {n}} temp;#t+ temp;#t+ findguai;#var GLpath my_hell2;#var GLexecNO findhell3;fguai}
+#alias findhell3 {#var GLpath my_hell3;#var GLexecNO north;fguai}
+#alias findhell4 {#T- hell;#T- hell1;#T- hell2;#T- hell3;#T- hell4;#T- hell5;#T- hell6;tkill temp;#var GLpath my_hell4;#var GLexecNO findhell5;fguai}
+#alias findhell5 {#var GLpath my_hell5;#var GLexecNO findhell6;fguai}
+#alias findhell6 {#var GLpath my_hell6;#var GLexecNO findhell7;fguai}
+#alias findhell7 {#var GLpath my_hell7;#var GLexecNO findnext;fguai}
+#alias findhellbak {tkill temp;#action {$yaoname~{$yaoid~}} {#stop;follow $yaoidd;#T+ Fight1;found=1;#cw yellow;ResetTrigger2;#wa 3000;#T+ backup;enforcemax;#if {$bian=1} {bian me};#wa 2000;l $yaoidd} temp;#action {$yaoname走了过来} {#stop;found=1;follow $yaoidd;#cw yellow;ResetTrigger2;#wa 3000;#T+ backup;#T+ Fight1;enforcemax;#if {$bian=1} {bian me};#wa 2000;l $yaoidd} temp;#action {你的龙神心法运行一周天完毕，龙鳞渐渐消去了。} {#if {$found=0} {exert shield}} temp;#action {你的反五行摄气诀运行一周天完毕，将内力收回丹田。} {#if {$found=0} {exert powerup}} temp;#action {你觉得头脑不大清醒，身子轻飘飘的} {#t+ figh1;hp} temp;#t- findguai;#t+ hell2;#t+ hell3;#t- hell4;#t- hell;#t- hell5;#T- Hell6;#T- temp;#t- fight1;mhell=0;found=0;cast chuqiao}
+#alias findhellout {tkill temp;#t- findguai;#t- CastChuQiao;#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#t- hell;#t- hell2;#t- hell3;#t- hell4;#t- hell5;#t- hell6;#t+ hellfly2;#t+ hellfly3;#t- hellfly4;#t- hellfly;#t- hellfly5;#T- Hellfly6;#t+ fight1;mhell=0;found=0;l}
+#alias findhellout2 {n;#3 e;#3 s;se;out;open guancai;#wa 2000;gohh}
+#alias findhl {#action {荡悠悠三更梦} {tkill temp;u;#5 n;get 1 gold from $bag;buy pillow from gudong;buy pillow from leng;put pillow in $bag;#wa 1000;findhl0} temp;#action {你刚睡过一觉, 先活动活动吧} {#wait 5000;sleep} temp;fly putuo;open door;get pillow from $bag;n;e;s;sleep}
+#alias findhl0 {#var GLpath my_honglou0;#var GLexecNO findhl1;fguai}
+#alias findhl1 {#wait 1000;#var GLpath my_honglou;#var GLexecNO findhl2;fguai}
+#alias findhl2 {#wait 1000;#var GLpath my_honglou1;#var GLexecNO findnext;fguai}
+#alias findhlout {#5 s}
+#alias findhys {fly dudi;nw;ne;ne;sw;sw;se;sd;se;wd;se;#wa 3000;ed;sw;#var GLpath my_firemount;#var GLexecNO findhys0;fguai}
+#alias findhys0 {GLexectrig=firemount_end;#var GLpath my_firemount0;#var GLexecNO findhys1;fguai}
+#alias findhys1 {#var GLpath my_firemount1;fly jilei;sw;n;#var GLexecNO findnext;fguai}
+#alias findjilei {#var GLpath my_jilei;fly jilei;#var GLexecNO findjilei0;fguai}
+#alias findjilei0 {#var GLpath my_jilei0;#var GLexecNO findjilei1;fguai}
+#alias findjilei1 {#wa 2000;#var GLpath my_jilei1;#var GLexecNO findnext;fguai}
+#alias findjileiout {e;nw;ne;n;nw;ne}
+#alias findjindou {#var GLpath my_jindou;GLexectrig=jd_end;fly tongtian;#5 s;#3 n;#3 w;#wa 4000;#2 n;#var GLexecNO findjindou1;fguai}
+#alias findjindou1 {#VA mbian 0;#action {你手捻口诀，念动真言，摇身一变，变得和*怪一模一样} {bian=1;tkill temp;tx;$Escape1;fly tongtian;#5 s;#3 n;#3 w;#wa 2000;#2 n;nw;w;w;sw;wu;sw;n;nw;sw;bian;#var GLpath {};#var GLexecNO findjindou10;fguai} temp;#action {你想变成谁} {#if {$mbian=0 and $found=0} {s;se;se;bian yao guai};#if {$mbian=1 and $found=0} {s;bian yao guai};#if {$mbian=2 and $found=0} {ne;bian yao guai};#if {$mbian=3 and $found=0} {findnext};#ADD mbian 1} temp;e;se;eu;nu;ne;e;ne;bian yao guai}
+#alias findjindou10 {localtime;#wa 3000;#var GLpath my_jindou1;#var GLexecNO findjindou2;fguai}
+#alias findjindou2 {#var GLpath my_jindou2;#var GLexecNO findnext;fguai}
+#alias findjindouout {n;e;ne;n;ne}
+#alias findjjf {#var GLpath my_jjf;fc;#2 e;#var GLexecNO findjjf1;fguai}
+#alias findjjf1 {#var GLpath my_jjf1;#var GLexecNO findnext;fguai}
+#alias findjjl {#action {你挥舞手中*小心的去拨开那堆堆荆棘} {exert recover;push jingji} temp;#action {你要对谁做这个动作} {tempnext} temp;#var GLpath my_jjl0;#t- temp;fly jingjiling;#var GLexecNO findjjl1;fguai}
+#alias findjjl1 {#alias tempnext {wu;#var GLpath {};#var GLexecNO findjjl2;fguai} temp;jl;#t+ temp;push jingji}
+#alias findjjl2 {#alias tempnext {sw;#var GLpath {};#var GLexecNO findjjl3;fguai} temp;#t+ temp;push jingji}
+#alias findjjl3 {#alias tempnext {w;#var GLpath {};#var GLexecNO findjjl4;fguai} temp;#t+ temp;push jingji}
+#alias findjjl4 {#alias tempnext {nw;#var GLpath {};#var GLexecNO findjjl5;fguai} temp;#t+ temp;push jingji}
+#alias findjjl5 {#alias tempnext {wu;#var GLpath {};#var GLexecNO findjjl6;fguai} temp;#t+ temp;push jingji}
+#alias findjjl6 {#alias tempnext {nw;#var GLpath {};#var GLexecNO findjjl7;fguai} temp;#t+ temp;push jingji}
+#alias findjjl7 {#alias tempnext {wu;#var GLpath {};#var GLexecNO findjjl8;fguai} temp;#t+ temp;push jingji}
+#alias findjjl8 {#alias tempnext {s;#var GLpath {};#var GLexecNO findjjl9;fguai} temp;#t+ temp;push jingji}
+#alias findjjl9 {tkill temp;#alias tempnext {tkill temp;#var GLpath my_jjl1;#var GLexecNO findnext;fguai} temp;#action {赤身鬼使一挺手中钢叉，挡住了你的去路} {unwield $weapon2;wear all;kill guard} temp;#action {石崖} {tempnext} temp;#action {赤身鬼使死了} {su} temp;#t+ temp;su}
+#alias findjjl_bak {#var GLpath {};fly jingjiling;jl;#var GLexecNO findjjl1;fguai}
+#alias findjp {#var GLpath my_jp;fly qinglong;sw;se;sd;se;#wait 1000;#var GLexecNO findjp1;fguai}
+#alias findjp1 {#var GLpath my_jp1;#wait 1000;#var GLexecNO findjp2;fguai}
+#alias findjp2 {#var GLpath my_jp2;#wait 1000;#var GLexecNO findnext;fguai}
+#alias findjsg {#var GLpath my_jsg;GLexectrig=jsg_end;fxxt;nw;nw;e;ne;e;e;#wa 3000;e;#var GLexecNO findjsg0;fguai}
+#alias findjsg0 {#var GLpath my_jsg0;#var GLexecNO findjsg1;fguai}
+#alias findjsg1 {#wa 2000;#var GLpath my_jsg1;w;nw;wd;w;sw;w;#var GLexecNO findjsg2;fguai}
+#alias findjsg2 {#wa 2000;#var GLpath my_jsg2;#var GLexecNO findjsg3;fguai}
+#alias findjsg3 {#wa 2000;#alias tempnext {tkill temp;#var GLpath my_jsg3;#var GLexecNO findjsg4;fguai} temp;#action {苦宿禅师说道：*是好人呐。} {enter;tempnext} temp;#t+ temp;GLexecTMP=$GLexecEND;GLexecEND=findjsg5;ask chanshi about 扫塔}
+#alias findjsg4 {#alias tempnext {tkill temp;out;sd;#2 s;open door;s;findnext} temp;#action {小门被人打开了。} {tempnext} temp;#t+ temp;#12 d;knock door}
+#alias findjsg5 {#wa 3000;#alias tempnext {tkill temp;out;sd;#2 s;open door;s;#exec $GLexecTMP} temp;#action {小门被人打开了。} {tempnext} temp;#t+ temp;#12 d;knock door}
+#alias findjsgout {#5 d;knock door;out}
+#alias findkf {#var GLpath my_kf;GLexectrig=kf_end;fly kaifeng;#var GLexecNO findkf0;fguai}
+#alias findkf0 {#wait 1000;#var GLpath my_kf0;#var GLexecNO findkf1;fguai}
+#alias findkf1 {#wait 1000;#var GLpath my_kf1;#var GLexecNO findkf2;fguai}
+#alias findkf2 {#wait 2000;#var GLpath my_kf2;#var GLexecNO findkf3;fguai}
+#alias findkf3 {#wait 1000;get 1 silver from $bag;donate 1 silver;#var GLpath my_kf3;#var GLexecNO findkf30;fguai}
+#alias findkf30 {#wait 1000;#var GLpath my_kf30;#var GLexecNO findkf4;fguai}
+#alias findkf4 {#wait 2000;#var GLpath my_kf4;#var GLexecNO findkf5;fguai}
+#alias findkf5 {#wait 2000;#var GLpath my_kf5;#var GLexecNO findnext;fguai}
+#alias findkfout {nd}
+#alias findls {#var GLpath my_lingshan;fly lingshan;#3 w;s;#var GLexecNO findls0;fguai}
+#alias findls0 {#alias tempnextls {tkill temp;findls1} temp;#action {阿傩将你轻拦：我佛祖暂不待客也。} {#stop;#wa 2000;#if {$found=0} {#if {$mzunzhe=0} {n;accept rulai fo};#if {$mzunzhe=1} {#t+ fight;#t+ fight1;#t+ fight2;enforcemax;kill anuo zunzhe}}} temp;#action {迦叶将你轻拦：我佛祖暂不待客也。} {#stop;#wa 2000;#if {$found=0} {#if {$mzunzhe=0} {n;accept rulai fo};#if {$mzunzhe=1} {#t+ fight;#t+ fight1;#t+ fight2;enforcemax;kill jiaye zunzhe}}} temp;#action {如来佛轻轻一翻掌，你稳稳地跳下来落在地上} {#wa 2000;#if {$found=0} {tempnextls}} temp;#action {缓缓一点头：佛法无边} {tx;s} temp;#action {^????没有这个人} {#wa 2000;#if {$found=0} {#t- LingShan;#t- find;ResetTrigger;#wa 2000;gohh}} temp;#action {现在并没有公开邀请别人} {#wa 2000;#if {$found=0} {#t- LingShan;#t- find;ResetTrigger;#wa 2000;gohh}} temp;#action {一门} {tempnextls} temp;#t+ temp;#if {$found=0} {s}}
+#alias findls1 {tkill temp;#var GLpath my_lingshan1;#var GLexecNO findls41;fguai}
+#alias findls10 {#var GLpath my_lingshan10;#var GLexecNO findls2;fguai}
+#alias findls2 {#var GLpath my_lingshan2;#var GLexecNO findls20;fguai}
+#alias findls20 {#var GLpath my_lingshan20;#var GLexecNO findls3;fguai}
+#alias findls3 {#var GLpath my_lingshan3;#var GLexecNO findls30;fguai}
+#alias findls30 {#var GLpath my_lingshan30;#var GLexecNO findnext;fguai}
+#alias findls41 {#var GLpath my_lingshan41;#var GLexecNO findls42;fguai}
+#alias findls42 {#var GLpath my_lingshan42;#var GLexecNO findls43;fguai}
+#alias findls43 {#var GLpath my_lingshan43;#var GLexecNO findls44;fguai}
+#alias findls44 {#var GLpath my_lingshan44;#var GLexecNO findls45;fguai}
+#alias findls45 {#var GLpath my_lingshan45;#var GLexecNO findnext;fguai}
+#alias findmoon {#var GLpath my_moon;fly wuzhuang;.my_wzgout;#wa 2000;#var GLexecNO findmoon1;fguai}
+#alias findmoon1 {#alias tempnext {tkill temp;#var GLpath my_moon1;#var GLexecNO findmoon2;fguai} temp;#action {这里没有这个人} {tempnext} temp;#action {吴刚死了} {tempnext} temp;#t+ temp;kill wu gang}
+#alias findmoon2 {#alias tempnext {tkill temp;climb tree;#var GLpath {};#var GLexecNO findmoon3;er;fguai} temp;#action {这里没有这个人} {tempnext} temp;#action {吴刚死了} {tempnext} temp;#t+ temp;kill wu gang}
+#alias findmoon2_bak {climb tree;#var GLpath {};#var GLexecNO findmoon3;er;fguai}
+#alias findmoon3 {#var GLpath my_moon2;#var GLexecNO findmoon4;fguai}
+#alias findmoon4 {#var GLpath my_moon3;#var GLexecNO findmoon5;fguai}
+#alias findmoon5 {#action {你突然意识到采莲不免有失英雄本} {#wait 100;cai lian} temp;#action {你双脚在莲叶上一点，身子轻轻在水上掠过，回来时手中已多了一只莲} {#wa 2000;drop lian zi;tempnext} temp;#action {你脚下一滑，扑通一声掉进了莲花池} {tempnext} temp;#action {您先歇歇吧} {tempnext} temp;#action {可是你身上已经装不下了} {tempnext} temp;#action {你不是月宫弟子怎能在这采莲} {#wa 2000;cai lian} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findnext;fguai} temp;w;s;cai lian}
+#alias findms {fly putuo;#2 sd;#2 s;swim;#3 n;#wa 3000;#var GLpath my_ms;#var GLexecNO findms0;fguai}
+#alias findms0 {#var GLpath my_ms0;#var GLexecNO findms1;fguai}
+#alias findms1 {#action {直健将黄铜禅杖提了起来} {#wa 2000;#if {$found=0} {kill zhi jian}} temp;#action {直健脚下一个不稳，跌在地上一动也不动了} {#wa 2000;#if {$found=0} {kill zhi jian}} temp;#action {郭申一横手中青锋剑} {#wa 2000;#if {$found=0} {kill guo shen}} temp;#action {郭申脚下一个不稳，跌在地上一动也不动了} {#wa 2000;#if {$found=0} {kill guo shen}} temp;#action {{直健死了。|郭申死了。}} {#wa 2000;#if {$found=0} {findms2}} temp;#action {飞凤峰 -} {tkill temp;#wa 2000;#if {$found=0} {findnext}} temp;#t+ temp;#var GLpath my_ms1;#var GLexecNO ;fguai}
+#alias findms2 {#t+ temp;#var GLpath my_ms1;#var GLexecNO ;fguai}
+#alias findmy {Tuxue1=0;Tuxue2=0;Tuxue3=0;Andao1=0;Andao2=0;Andao3=0;GLexectrig=my_end;#var GLpath {};fly tianzhu;#7 w;#8 s;#wa 1000;#3 e;se;#var GLexecNO findmy0000;fguai}
+#alias findmy0 {#var GLpath my_maoying0;#var GLexecNO findmy1;fguai}
+#alias findmy00 {#var GLpath my_maoying00;#var GLexecNO findmy000;fguai}
+#alias findmy000 {#var GLpath my_maoying000;#var GLexecNO findmy0;fguai}
+#alias findmy0000 {#wait 3000;#var GLpath my_maoying;#var GLexecNO findmy00;fguai}
+#alias findmy1 {myag;enter;#var GLpath {};Mycheck;fguai}
+#alias findmy2 {#action {{这里明显的出口是 west 和 southwest|这里明显的出口是 southwest 和 west}} {tkill temp;#if {$Tuxue1=1 and $Tuxue2=1 and $Tuxue3=1 and $Andao1=1 and $Andao2=1 and $Andao3=1} {findnext} {Tuxue2=1;Andao1=1;#var GLpath w;#var GLexecNO findmy3;fguai}} temp;#action {{这里明显的出口是 east 和 southeast|这里明显的出口是 southeast 和 east}} {tkill temp;#if {$Tuxue1=1 and $Tuxue2=1 and $Tuxue3=1 and $Andao1=1 and $Andao2=1 and $Andao3=1} {findnext} {Tuxue1=1;Andao2=1;#var GLpath l;#var GLexecNO findmy3;fguai}} temp;#action {{这里明显的出口是 northwest 和 northeast|这里明显的出口是 northeast 和 northwest}} {tkill temp;#if {$Tuxue1=1 and $Tuxue2=1 and $Tuxue3=1 and $Andao1=1 and $Andao2=1 and $Andao3=1} {findnext} {Tuxue3=1;Andao3=1;#var GLpath j;#var GLexecNO findmy3;fguai}} temp;#t+ temp;look}
+#alias findmy3 {#action {你在黑暗中梆地撞到了石墙} {#wait 500;n} temp;#action {你的动作还没有完成，不能移动} {#wait 500;n} temp;#action {你在黑暗中找到一出口} {tkill temp;#wait 4000;exert refresh;exert recover;ne;findmy1} temp;#t+ temp;n}
+#alias findneg {#var GLpath my_neg1;fneg;#var GLexecNO findneg11;fguai}
+#alias findneg1 {#wait 2000;#var GLpath my_neg2;#var GLexecNO findneg2;fguai}
+#alias findneg11 {#alias tempnext {tkill temp;#var GLpath my_neg11;#var GLexecNO findneg1;fguai} {temp};GLexecEND={#wa 4000;#if {~$GLrobot=1} {fl} {}};#action {^????现在是西游} {#if {$FGfound=1} {cast fu on princess} {tempnext}} temp;#action {$GLname的*~{$target_name_lower~}} {FGfound=0} temp;#action {$KGname~{$target_name_lower~}} {FGfound=1} temp;#action {小公主对你大喝一声大胆！} {cast fu on princess} temp;#action {小公主脚下一个不稳，跌在地上一动也不动了。} {#wa 5000;cast fu on princess} temp;#action {{小公主死了。|这里没有 prineces。}} {#wa 3000;n;follow $target_name_lower;#delc temp;#exec $GLexecYES} {temp};#t+ temp;#l north;time}
+#alias findneg2 {#wait 1000;#var GLpath my_neg;#var GLexecNO findnext;fnegd;fguai}
+#alias findnext {GLslowrun=0;#wa 2000;ResetTrigger;#wa 4000;gohh}
+#alias findout {#if {$location=竹节山} {findzjout};#if {$location=金兜山} {findjindouout};#if {$location=长安城} {findcaout};#if {$location=麒麟山} {findqilinout};#if {$location=平顶山} {findpdsout};#if {$location=毒敌山} {findddout};#if {$location=开封城} {findkfout};#if {$location=祭赛国} {findjsgout};#if {$location=积雷山} {findjileiout};#if {$location=五庄观} {findwzgout};#if {$location=蓬莱仙岛} {findplout};#if {$location=天竺国} {findtzout};#if {$location=钦法国} {findqfout};#if {$location=红楼一梦} {findhlout};#if {$location=凤仙郡} {findfxout};#if {$location=方寸山} {findfcout};#if {$location=车迟国} {findchechiout};#if {$location=无底洞 and $mwddpush=1} {findwddout};#if {$location=毛颖山} {findmyout};#if {$location=盘丝岭} {findpsout};#if {$location=女儿国} {findnegout};#if {$location=小西天} {findxxtout};#if {$location=灵山} {findlsout};#if {$location=乌鸡国} {findwujiout};#if {$location=阴曹地府} {findhellout};#if {$location=碧波潭 or $location=龙宫} {#if {$usermp=fly} {#va usermp2 flyinsea;#va usermp sea;l}
+#alias findoutchuqiao {#if {$usermp2=yaofainsea or $usermp2=yaofainfly} {#t- CastChuQiao3;#wa 1000;#t+ CastChuQiao3;#t+ Escape;randomwalk;look;fly stone} {findoutchuqiao2}
+#alias findoutchuqiao2 {tkill temp;ResetTrigger;#action {^????阴阳界} {#wa 3000;#3 north;e;#if {$usermp2=yaofainsea or $usermp2=yaofainfly} {#va usermp yaofa;#va usermp2 yaofaaa};#if {$usermp2=flyinsea or $usermp2=flyinfly} {#va usermp fly;#va usermp2 flyaaa};s;e;get pillow from $bag;sleep} temp;#action {^????这里不准念咒文} {#t- CastChuQiao3;#wa 1000;#t+ Escape;look;randomwalk;cast chuqiao} temp;#action {你刚睡过一觉, 先活动活动吧} {#wait 5000;sleep} temp;#action {^????你的法力不足} {mingsi 100} temp;#action {^????你的魂魄已经出壳了} {findhellout} temp;#action {^????你行功完毕，从冥思中回过神来} {#wa 3000;er;ef;cast chuqiao} temp;#action {^????荡悠悠三更梦} {tkill temp;u;#5 n;get 1 gold from $bag;buy pillow from gudong;buy pillow from leng;put pillow in $bag;#wa 3000;#2 s;fly dudi;gohh}
+#alias findpds {#var GLpath my_pds;GLexectrig=pds_end;fly pingding;#var GLexecNO findpds00;fguai}
+#alias findpds0 {#wait 2000;#var GLpath my_pds0;#var GLexecNO findpds1;fguai}
+#alias findpds00 {#wa 2000;#var GLpath my_pds00;#var GLexecNO findpds0;fguai}
+#alias findpds1 {#wait 2000;#var GLpath my_pds1;#var GLexecNO findpds10;fguai}
+#alias findpds10 {#wait 2000;#var GLpath my_pds10;#var GLexecNO findpds2;fguai}
+#alias findpds2 {#wait 1000;#var GLpath my_pds2;#var GLexecNO findpds20;fguai}
+#alias findpds20 {#wait 1000;#var GLpath my_pds20;#var GLexecNO findnext;fguai}
+#alias findpdsout {w;w;sw;n;nw;ne;n;nw;ne;n;nw;ed}
+#alias findpl {#var GLpath my_penglai;GLexectrig=pl_end;get eastsea map from $bag;fly penglai;put map in $bag;#var GLexecNO findpl1;fguai}
+#alias findpl1 {#alias tempnext {tkill temp;findpl10} temp;#action {伸手拦住你：里面是老夫卧室，你去干什么} {#if {$mxing=1} {enforce 1;#t+ fight1;er;ef;kill xing;ff} {tkill temp;#wa 2000;#if {$found=0} {ResetTrigger;sd;su;findpl20}}} temp;#action {星化作一道白光向天上直冲而去。。。} {enter} temp;#action {白云洞} {tempnext} temp;#t+ temp;enter}
+#alias findpl10 {tkill temp;#VA temppl 0;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad temppl 1;#show 这个        $temppl            这个;#wa 1000;#if {$temppl<6} {ne;wink $target_name_lower};#if {$temppl>5 and $temppl<13} {nw;wink $target_name_lower};#if {$temppl>12 and $temppl<16} {n;wink $target_name_lower};#if {$temppl>15 and $temppl<18} {ne;wink $target_name_lower};#if {$temppl=18} {nw;wink $target_name_lower};#if {$temppl>18 and $temppl<21} {n;wink $target_name_lower};#if {$temppl=21} {findpl11}} temp;#t+ temp;wink $target_name_lower}
+#alias findpl11 {tkill temp;#VA temppl 0;#action {青石崖下 -} {inpl=0;tkill temp;#wait 2000;#var GLpath my_baoxiang13;#var GLexecNO findpl2;fguai} temp;#action {白猿舞动手中长剑，好象不愿让你过去} {#if {$wx>3500000} {#t+ figh1;kill bai yuan;inpl=1;ff;#wa 2000;mypf2} {tkill temp;#wa 20000;findpl12}} temp;#action {白猿脚下一个不稳} {kill bai yuan} temp;#action {白猿死了} {inpl=0;tkill temp;#wa 1000;findpl13} temp;#t+ temp;n}
+#alias findpl12 {tkill temp;#VA temppl 0;#action {青石崖下 -} {inpl=0;tkill temp;#wait 200;#var GLpath my_baoxiang13;#var GLexecNO findpl2;fguai} temp;#action {白猿舞动手中长剑，好象不愿让你过去} {#if {$wx>3500000} {#t+ figh1;kill bai yuan;inpl=1;ff;#wa 2000;mypf2} {tkill temp;findpl2}} temp;#action {白猿脚下一个不稳} {kill bai yuan} temp;#action {白猿死了} {inpl=0;tkill temp;#wa 1000;findpl13} temp;#t+ temp;n}
+#alias findpl12_bak {tkill temp;#VA temppl 0;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {tkill temp;findpl2} temp;#action {青石崖下 -} {inpl=0;wink $target_name_lower} temp;#action {白猿舞动手中长剑，好象不愿让你过去} {#if {$wx>3500000} {#t+ figh1;kill bai yuan;inpl=1;ff;#wa 2000;mypf2} {tkill temp;findpl2}} temp;#action {白猿脚下一个不稳} {kill bai yuan} temp;#action {白猿死了} {inpl=0;#if {$found=0} {n}} temp;#t+ temp;n}
+#alias findpl13 {tkill temp;#action {青石崖下 -} {inpl=0;tkill temp;#wait 200;#var GLpath my_baoxiang13;#var GLexecNO findpl2;fguai} temp;#action {^????这个方向没有出路} {#t+ temp;n;l} temp;#action {^????你现在无法移动} {#T+ temp;n} temp;#t+ temp;n}
+#alias findpl2 {get eastsea map from $bag;fly penglai;put map in $bag;su;#var GLpath {};#var GLexecNO findpl20;fguai}
+#alias findpl20 {tkill temp;#action {你要看什么？} {inpl=0;tempnext} temp;#action {西王母的弟子。奉王母之命，总司天下名花，乃群芳之主} {#wa 1000;#if {$mxianzi=1 and $mnight=0} {kill $BusyPerformTarget;inpl=1;em;BusyPerform} {nd;tkill temp;#wa 20000;su;findpl3}} temp;#action {百花仙子死了} {#wait 6000;inpl=0;enforce 0;tempnext} temp;#action {百花仙子目前正自顾不暇，放胆攻击吧} {#wait 1000;kill xianzi;perform pozhan} temp;#action {被你攻了个措手不及} {#wa 2000;mypf} temp;#action {百花仙子果然被这光环套住} {#wa 2000;mypf} temp;#action {被你的长鼻高高卷起，你用力一甩} {#wa 2000;mypf} temp;#action {你见到百花仙子祥宁之态，娇美不可方物，心中一荡，却不防那光球一闪，突然射向你} {shiyue=1;inpl=0;tell $tellid 不好了，中shiyue了，救命啊。;tell $tellid2 不好了，中shiyue了，救命啊。;tune bh;tune bb;#2 nd;#wa 5000;#2 nd;dazuo 0;mingsi 0;#wa 10000;quit;#di} temp;#action {你在天上转了半天也不知该往那边飞．．} {#wa 2000;reset;toepr} temp;#alias tempnext {tkill temp;#var GLpath my_penglai2;#var GLexecNO findpl4;fguai} temp;#t+ temp;time;look xianzi;BusyPerformTarget=baihua xianzi}
+#alias findpl3 {tkill temp;#action {你要看什么？} {inpl=0;tempnext} temp;#action {西王母的弟子。奉王母之命，总司天下名花，乃群芳之主} {#wa 1000;#if {$mxianzi=1 and $mnight=0} {kill $BusyPerformTarget;inpl=1;BusyPerform} {nd;tkill temp;#wa 2000;gohh}} temp;#action {百花仙子死了} {#wait 6000;inpl=0;enforce 0;tempnext} temp;#action {百花仙子目前正自顾不暇，放胆攻击吧} {#wait 1000;kill xianzi;BusyPerform} temp;#action {被你攻了个措手不及} {#wa 2000;mypf} temp;#action {百花仙子果然被这光环套住} {#wa 2000;mypf} temp;#action {被你的长鼻高高卷起，你用力一甩} {#wa 2000;mypf} temp;#action {你见到百花仙子祥宁之态，娇美不可方物，心中一荡，却不防那光球一闪，突然射向你} {shiyue=1;inpl=0;tell $tellid 不好了，中shiyue了，救命啊。;tell $tellid2 不好了，中shiyue了，救命啊。;tune bh;tune bb} temp;#action {你在天上转了半天也不知该往那边飞．．} {#wa 2000;reset;toepr} temp;#alias tempnext {tkill temp;#var GLpath my_penglai2;#var GLexecNO findpl4;fguai} temp;#t+ temp;time;look xianzi;BusyPerformTarget=baihua xianzi}
+#alias findpl3_bak {#action {你要看什么？} {inpl=0;tempnext} temp;#action {西王母的弟子} {#if {$mxianzi=1} {kill $BusyPerformTarget;inpl=1;BusyPerform};#if {$mxianzi=0} {#if {$found=0} {nd;#t- find;#delc temp;#wa 2000;gohh}}} temp;#action {百花仙子死了} {#wait 6000;inpl=0;enforce 0;tempnext} temp;#action {百花仙子目前正自顾不暇，放胆攻击吧} {#wait 1000;kill xianzi;perform pozhan} temp;#action {被你攻了个措手不及} {#wa 2000;mypf} temp;#action {百花仙子果然被这光环套住} {#wa 2000;mypf} temp;#action {你见到百花仙子祥宁之态，娇美不可方物，心中一荡，却不防那光球一闪，突然射向你} {shiyue=1;inpl=0;tell $tellid 不好了，中shiyue了，救命啊。;tell $tellid2 不好了，中shiyue了，救命啊。;tune bh;tune bb} temp;#action {你在天上转了半天也不知该往那边飞．．} {#wa 2000;reset;toepr} temp;#alias tempnext {tkill temp;#var GLpath my_penglai2;#var GLexecNO findpl4;fguai} temp;#t+ temp;look xianzi;BusyPerformTarget=baihua xianzi}
+#alias findpl4 {#action {你从悬崖上跳了下来} {#t+ 百花谷;#t+ nextmove;#t- findguai;#t- Escape;Zzlnum=0;l;wink $target_name_lower} temp;jump down}
+#alias findplout {out;sd}
+#alias findps {#var GLpath {};fly xiaoxitian;#2 nw;n;w;sw;w;w;sw;se;s;sw;w;w;nw;#var GLexecNO findps0;fguai}
+#alias findps0 {#var GLpath my_pansi;#var GLexecNO findps1;fguai}
+#alias findps1 {#wait 1000;#var GLpath my_pansi1;#var GLexecNO findps10;fguai}
+#alias findps10 {#wait 1000;#var GLpath my_pansi10;#var GLexecNO findps2;fguai}
+#alias findps2 {#wait 1000;#action {一张祭奠时的烧纸黄钱} {#wait 2000;tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_pansi2;#var GLexecNO findps3;fguai} temp;#action {你要看什么} {us;ask furen about 黄钱} temp;#action {断肠妇人给你一张黄钱} {ss;look huang qian} temp;#t+ temp;get huang qian from $bag;look huang qian}
+#alias findps3 {#wait 1000;#alias tempnext {tkill temp;#var GLpath my_pansi3;#var GLexecNO findnext;fguai} temp;#action {你胆颤心惊地掂脚一跳，嗖地一声跃了过去。} {put huang qian in $bag;tempnext} temp;#t+ temp;jump}
+#alias findps4 {enter danlu;#var GLpath {};#var GLexecNO findps1;fguai}
+#alias findps98 {fly zhuzi;#8 n;#2 w;#2 nw;sw;w;wu;se;se;se;e}
+#alias findps99 {#show %ansi{yellow}可以去寺里进danlu看看，方法有：findps98, then;#show %ansi{yellow}penetrate danlu;#show %ansi{yellow}enter danlu;#show %ansi{yellow}fly danlu;#show %ansi{yellow}dive danlu;#show %ansi{yellow}teleport danlu;#show %ansi{yellow}jump danlu;#show %ansi{yellow}sink danlu;#show %ansi{yellow}plunge danlu}
+#alias findpt {#t- 紫竹林;#var GLpath my_putuo;GLexectrig=pt_end;fly putuo;open door;#var GLexecNO findpt0;fguai}
+#alias findpt0 {#t- 紫竹林;#var GLpath my_putuo0;#var GLexecNO findpt1;fguai}
+#alias findpt1 {#var GLpath my_putuo1;#var GLexecNO findpt10;fguai}
+#alias findpt10 {#action {掌厨僧死了} {#if {$found=0} {findpt10}} temp;#action {掌厨僧伸手拦住你：里面是本派厨房} {enforce 0;kill zhangchu seng;ff} temp;#action {斋房 -} {tkill temp;#var GLpath my_baoxiang13;#var GLexecNO findpt2;fguai} temp;#t+ temp;e}
+#alias findpt2 {#action {惠岸行者伸手拦住你：你往本门书院里走干什么呀} {enforce 1;#stop;#t+ fight1;kill huian xingzhe;ff} temp;#action {惠岸行者死了} {w} temp;#action {书院 -} {tkill temp;#var GLpath my_baoxiang13;#var GLexecNO findpt3;fguai} temp;#t+ temp;#4 w}
+#alias findpt20 {#var GLpath my_putuo20;#var GLexecNO ;fguai}
+#alias findpt3 {tkill temp;#var GLpath my_putuo3;#var GLexecNO findpt4;fguai}
+#alias findpt4 {#t+ 紫竹林;#t- findguai;#t+ nextmove;#T- Escape;Zzlnum=0;l;wink $target_name_lower}
+#alias findqf {#var GLpath my_qinfa;fly yinwu;se;#var GLexecNO findqf1;fguai}
+#alias findqf1 {#wa 2000;#var GLpath my_qinfa1;#var GLexecNO findqf2;fguai}
+#alias findqf2 {#wa 2000;#var GLpath my_qinfa2;#var GLexecNO findqf3;fguai}
+#alias findqf3 {#wa 2000;#var GLpath my_qinfa3;#var GLexecNO findnext;fguai}
+#alias findqfout {}
+#alias findqilin {#var GLpath my_qilin;GLexectrig=qilin_end;fly qilin;#var GLexecNO findqilin1;fguai}
+#alias findqilin1 {#var GLpath my_qilin1;#var GLexecNO findqilin2;fguai}
+#alias findqilin2 {#var GLpath my_qilin2;#var GLexecNO findqilin3;fguai}
+#alias findqilin3 {#action {洞内} {tempnext} temp;#action {慢慢地你终于又有了知觉} {tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_qilin3;#var GLexecNO findqilin4;fguai} temp;#t+ temp;#if {$wx>999999} {ne};#if {$wx<1000000} {tkill temp;findqilin4}}
+#alias findqilin4 {sw;fly zhuzi;#10 s;#wait 2000;#6 n;#wait 5000;#4 e;#wait 2000;#var GLpath {};#var GLexecNO findqilin5;fguai}
+#alias findqilin5 {#var GLpath my_qilin4;#var GLexecNO findnext;fguai}
+#alias findqilinout {se;e;nw;ne;ne;sw;se;w;sw}
+#alias findql {#var GLpath my_ql;fly qinglong;#var GLexecNO findql1;fguai}
+#alias findql1 {#var GLpath my_ql1;#var GLexecNO findql2;fguai}
+#alias findql2 {jump;#var GLpath {};#var GLexecNO findql3;fguai}
+#alias findql3 {jump;#var GLpath {};#var GLexecNO findql4;fguai}
+#alias findql4 {u;u;.my_ql;findnext}
+#alias findql4_bak {#action {东山凹 -} {wink $target_name_lower} temp;#action {山涧早已将通向山凹的路淹没，很久就没人能过涧了} {#delc temp;findnext} temp;#action {你用迷人的眼眸对} {#delc temp;FGcount=0;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {findql5} temp;#t+ temp;u;nw}
+#alias findql5 {#var GLpath my_ql5;#var GLexecNO findql6;fguai}
+#alias findql6 {tkill temp;#alias tempnext {tkill temp;#var GLpath my_ql4;#var GLexecNO findnext;fguai} temp;#action {守门牛精一晃两只大牛角抵住你：想溜到哪儿去？} {tkill temp;s;sw;sw;findnext} temp;#action {通道} {tempnext} temp;#t+ temp;e}
+#alias findql_bak {#var GLpath my_ql;GLexectrig=qinglong_end;fly qinglong;#var GLexecNO findql1;fguai}
+#alias findsea {T- temp;fly putuo;sd;sd;s;s;swim;get zhou from $bag;#var GLpath my_sea0;#var GLexecNO findsea0;fguai}
+#alias findsea0 {#var GLpath my_sea;#var GLexecNO findsea01;idle;#wa 5000;fguai}
+#alias findsea00 {tkill temp;#var GLpath my_sea00;#var GLexecNO findsea1;fguai}
+#alias findsea01 {#var GLpath my_sea01;#var GLexecNO findsea02;fguai}
+#alias findsea02 {#var GLpath my_sea02;#var GLexecNO findsea00;fguai}
+#alias findsea1 {#action {龙宫前厅} {tempnext} temp;#action {宫前护卫伸手挡住了你的去路} {kill li shi} temp;#action {力士死了} {e} temp;#alias tempnext {tkill temp;#var GLpath my_sea1;#var GLexecNO findsea2;fguai} temp;#t+ temp;e}
+#alias findsea2 {#wait 1000;#var GLpath my_sea2;#var GLexecNO findsea3;fguai}
+#alias findsea3 {#wait 1000;#var GLpath my_sea3;#var GLexecNO findsea4;fguai}
+#alias findsea4 {#t+ 莽林;#t+ nextmove;#wait 1000;s;wd;w;w;sw;sw;#t+ nextmove;#t- findguai;#t- Escape;Zzlnum=0;wink $target_name_lower}
+#alias findsea99 {#action {^????突然一阵暗流涌来，把你冲到了莽林深处} {tkill temp;#wa 5000;gohh} temp;#T- temp}
+#alias findsea999 {fly putuo;sd;sd;s;s;swim;e;e;e;GLexectrig=lg_end;#alias tempnext {tkill temp;#var GLpath my_sea;#var GLexecNO findsea1;fguai} temp;#action {你一个猛子扎到水中，然后不见了．} {#wait 6000;tempnext} temp;#t+ temp;get zhou from $bag;dive;put zhou in $bag;;;;#action {你潜了过来} {#wa 6000;#if {$found=0} {findsea0}} temp;#t+ temp}
+#alias findsea_bak {#action {^????你潜了过来} {tkill temp;#wa 5000;#if {$found=0} {findsea0}} temp;fly putuo;sd;sd;s;s;swim;e;e;e;#t+ temp;get zhou from $bag;#var GLpath my_sea0;#var GLexecNO ;fguai}
+#alias findsx2 {jump shi bi;#var GLpath my_xue2;#var GLexecNO findxs3;fguai}
+#alias findtth {#var GLpath my_tth;fly tongtian;#var GLexecNO findtth0;fguai}
+#alias findtth0 {#var GLpath my_tth0;#var GLexecNO findtth00;fguai}
+#alias findtth00 {#var GLpath my_tth00;#var GLexecNO findtth1;fguai}
+#alias findtth1 {#var GLpath my_tth1;#var GLexecNO findtth2;fguai}
+#alias findtth2 {sw;nw;ne;#var GLpath {};#var GLexecNO findtth3;fguai}
+#alias findtth3 {out;nw;#var GLpath {};#var GLexecNO findtth4;fguai}
+#alias findtth4 {out;w;n;#var GLpath {};#var GLexecNO findtth5;fguai}
+#alias findtth5 {out;w;#var GLpath {};#var GLexecNO findtth6;fguai}
+#alias findtth6 {out;s;e;#var GLpath {};#var GLexecNO findtth7;fguai}
+#alias findtth7 {out;se;#var GLpath {};#var GLexecNO findnext;fguai}
+#alias findtth8 {out;se;#var GLpath {};#var GLexecNO findnext;fguai}
+#alias findtz {#var GLpath my_tianzhu00;fly lingshan;#4 w;#wait 3000;#var GLexecNO findtz00;fguai}
+#alias findtz0 {#var GLpath my_tianzhu0;#var GLexecNO findtz1;fguai}
+#alias findtz00 {#var GLpath my_tianzhu;#var GLexecNO findtz0;fguai}
+#alias findtz1 {#wait 2000;#var GLpath my_tianzhu1;#var GLexecNO findtz2;fguai}
+#alias findtz2 {#wait 2000;#var GLpath my_tianzhu2;#var GLexecNO findtz3;fguai}
+#alias findtz3 {#wait 2000;#var GLpath my_tianzhu3;#var GLexecNO findtz4;fguai}
+#alias findtz4 {#wait 2000;#var GLpath my_tianzhu4;#var GLexecNO findtz5;fguai}
+#alias findtz5 {#wait 2000;#var GLpath my_tianzhu5;#var GLexecNO findtz6;fguai}
+#alias findtz6 {tkill temp;#action {白玉阶} {tkill temp;findtz7} temp;#action {阁门大使向你摇了摇手。} {kill da shi} temp;#action {大使死了。} {su} temp;#t+ temp;fly baoxiang;#5 s;su}
+#alias findtz6_bak {#wait 1000;ne;n;nw;nw;n;nw;#4 w;n;n;#wait 1000;#var GLpath my_tianzhu6;#var GLexecNO findnext;fguai}
+#alias findtz7 {tkill temp;#action {你手捻口诀，念动真言，摇身一变，变得和国王一模一样} {tkill temp;bian=1;#7 nd;n;n;#wa 2000;findtz8} temp;#action {你想变成谁} {tkill temp;#7 nd;n;findnext} temp;#7 su;bian guo wang}
+#alias findtz8 {tkill temp;fly tianzhu;#7 w;#4 s;e;e;e;n;n;n;bian;#var GLpath {};#var GLexecNO findtz9;fguai}
+#alias findtz9 {#wait 300;#var GLpath my_tianzhu6;#var GLexecNO findnext;fguai}
+#alias findtzout {}
+#alias findwdd {#var GLpath my_wdd;GLexectrig=wdd_end;mwddpush=0;fly wudidong;wu;sd;sw;#var GLexecNO findwdd0000;fguai}
+#alias findwdd0 {#var GLpath my_wdd0;#var GLexecNO findwdd01;fguai}
+#alias findwdd00 {#var GLpath my_wdd00;GLexectrig=wdd_end;#var GLexecNO findwdd1;fguai}
+#alias findwdd000 {tkill temp;get 3 silver from $bag;give 2 silver to ma dao;give 3 silver to xiaoer;give 2 silver to boss;give 2 silver to waiter;#var GLpath my_wdd000;#var GLexecNO findwdd00;fguai}
+#alias findwdd0000 {#var GLpath my_wdd0000;#var GLexecNO findwdd0;fguai}
+#alias findwdd01 {#var GLpath my_wdd01;#var GLexecNO findwdd000;fguai}
+#alias findwdd1 {#alias tempnext {tkill temp;#var GLpath {};mwddpush=1;#var GLexecNO findwdd2;fguai} temp;#action {你伤得颇重，而且神志也有点不清了。} {eayao 1 0;er;gohh} temp;#action {{你纵身一跃，跳了进去，大洞随即又合上了。}} {tempnext} temp;#t+ temp;#if {$msta=1} {enforcemax;push statue} {ResetTrigger;#wa 3000;#4 n;s;e;bian me;gohh}}
+#alias findwdd2 {#var GLpath my_wdd2;#var GLexecNO findwdd20;fguai}
+#alias findwdd20 {#var GLpath my_wdd20;#var GLexecNO findwdd3;fguai}
+#alias findwdd3 {#var GLpath my_wdd3;#var GLexecNO findwdd4;fguai}
+#alias findwdd4 {#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {殿门 -} {#wa 2000;#if {$wx>1299999 and $found=0} {tx;bian;n;wink $target_name_lower};#if {$wx<1300000 and $found=0 and $mwdd=1} {tx;bian;findwdd5;#5 s;up;ed;nd;enter;ne;u;n;knock;wink $target_name_lower};#if {$wx<1300000 and $found=0 and $mwdd=0} {tx;#7 s;u;ResetTrigger;#wa 6000;bian me;gohh}} temp;#action {^????护殿妖喝道} {#T- WuDiDong2;#if {$found=0} {#stop;enforce 1;kill hudian yao;kill hudian yao 2;kill hudian yao 3}} temp;#action {护殿妖死了} {#if {$found=0} {n;wink $target_name_lower}} temp;#action {大殿 -} {#wa 2000;#if {$found=0 and $mwdd=1} {tx;bian;findwdd5;#5 s;up;ed;nd;enter;ne;u;n;knock;wink $target_name_lower};#if {$found=0 and $mwdd=0} {tx;#t- wudidong;#T- WuDiDong2;#7 s;u;ResetTrigger;#wa 6000;bian me;gohh}} temp;#t+ temp;bian tian shu;#var GLpath my_wdd4;#var GLexecNO ;fguai}
+#alias findwdd5 {tkill temp;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {又急忙把门关上了} {wink $target_name_lower;#wait 3000;#if {$found=0} {se;wink $target_name_lower}} temp;#action {后院 -} {#wait 2000;#if {$found=0} {get zhou from $bag;dive well;put zhou in $bag;wink $target_name_lower}} temp;#action {井底 -} {#wait 2000;#if {$found=0} {e;wink $target_name_lower}} temp;#action {龙穴 -} {#wait 2000;#if {$found=0} {move;wink $target_name_lower}} temp;#action {避妖室 -} {#wa 2000;#if {$found=0} {ResetTrigger;#wa 3000;bian me;gohh}} temp;#t+ temp}
+#alias findwdd_bak {#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {没付房钱就想住店} {#wait 2000;#if {$found=0} {get 2 silver from $bag;give 2 silver to ma dao;give 3 silver to xiaoer;give 2 silver to boss;give 2 silver to waiter}} temp;#action {客房 -} {#wait 2000;#if {$found=0} {findwdd00}} temp;#action {你拿出二两银子} {#wait 2000;s;wink $target_name_lower} temp;#T+ temp;#var GLpath my_wdd;GLexectrig=wdd_end;fly wudidong;wu;sd;sw;#var GLexecNO findwdd0;fguai}
+#alias findwddout {#4 s;u}
+#alias findwuji {#var GLpath my_wuji;fly wuji;#var GLexecNO findwuji0;fguai}
+#alias findwuji0 {#var GLpath my_baoxiang13;get silver from $bag;give 3 silver to waiter;u;#var GLexecNO findwuji1;fguai}
+#alias findwuji1 {d;#wait 1000;#var GLpath my_wuji1;#var GLexecNO findwuji2;fguai}
+#alias findwuji2 {#wait 1000;#var GLpath my_wuji2;#var GLexecNO findwuji3;fguai}
+#alias findwuji3 {#alias tempnext {tkill temp;#var GLpath my_wuji3;#var GLexecNO findwuji4;fguai} temp;#action {守寺僧说道：“寺院恕不接客，请回} {kill shousi seng} temp;#action {前殿} {out;tempnext} temp;#action {守寺僧死了} {enter} temp;#t+ temp;enter}
+#alias findwuji4 {tkill temp;out;s;wd;fly wuji;#2 n;#var GLpath my_wuji4;#var GLexecNO findwuji5;fguai}
+#alias findwuji4_bak {out;s;wd;nw;wd;#5 w;#2 n;#var GLpath my_wuji4;#var GLexecNO findwuji5;fguai}
+#alias findwuji4_bakk {#action {铁斧对你而言太重了} {drop $weapon 2;#math sticknum $sticknum-1;buy axe from boss;buy axe from xiao xiao} temp;#action {你向{*}买下一把铁斧} {tkill temp;n;e;fly wuji;look;#wa 4000;#2 n;#var GLpath my_wuji4;#var GLexecNO findwuji5;fguai} temp;#T+ temp;out;s;wd;baxe}
+#alias findwuji5 {#action {护宫卫士死了} {kill wei shi} temp;#action {这里没有这个人} {w;tempnext} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findwuji6;fguai} temp;#t+ temp;kill wei shi}
+#alias findwuji6 {#action {护宫卫士死了} {kill wei shi} temp;#action {这里没有这个人} {w;tempnext} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findwuji7;fguai} temp;#t+ temp;kill wei shi}
+#alias findwuji7 {#action {护宫卫士死了} {kill wei shi} temp;#action {这里没有这个人} {n;tempnext} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findwuji8;fguai} temp;#t+ temp;kill wei shi}
+#alias findwuji8 {#wait 1000;#var GLpath my_wuji5;#var GLexecNO findwuji9;fguai}
+#alias findwuji9 {tkill temp;#wa 1000;findwuji90}
+#alias findwuji90 {#action {这里唯一的出口是} {tkill temp;out;#5 s;findwuji91} temp;#action {这里明显的出口是} {tkill temp;findwuji96} temp;#t+ temp;l}
+#alias findwuji91 {#action {铁斧对你而言太重了} {drop $weapon;#math sticknum $sticknum-1;buy axe from boss;buy axe from xiao xiao} temp;#action {你向{*}买下一把铁斧} {tkill temp;n;e;fly wuji;look;#wa 4000;#2 n;#var GLpath my_wuji4;#var GLexecNO findwuji92;fguai} temp;#T+ temp;baxe}
+#alias findwuji92 {#action {护宫卫士死了} {kill wei shi} temp;#action {这里没有这个人} {w;tempnext} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findwuji93;fguai} temp;#t+ temp;kill wei shi}
+#alias findwuji93 {#action {护宫卫士死了} {kill wei shi} temp;#action {这里没有这个人} {w;tempnext} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findwuji94;fguai} temp;#t+ temp;kill wei shi}
+#alias findwuji94 {#action {护宫卫士死了} {kill wei shi} temp;#action {这里没有这个人} {n;tempnext} temp;#alias tempnext {tkill temp;#var GLpath {};#var GLexecNO findwuji95;fguai} temp;#t+ temp;kill wei shi}
+#alias findwuji95 {#action {你抡起大斧子朝芭蕉树砍去，芭蕉树晃了晃} {er;kan bajiao} temp;#action {芭蕉树已经倒了} {exert recover;unwield axe;ff;wear dun;findwuji96} temp;#t+ temp;#3 e;#2 n;enter;em;unwield $weapon;unwield $weapon2;unwield zhua;unwield tiegun;remove dun;wield axe;kan bajiao}
+#alias findwuji96 {tkill temp;drop lumber axe;#var GLpath my_wuji8;#var GLexecNO findnext;fguai}
+#alias findwuji99 {#action {你抡起大斧子朝芭蕉树砍去，芭蕉树晃了晃} {r;kan bajiao} temp;#action {芭蕉树已经倒了} {exert recover;unwield axe;ff;wear dun;tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_wuji8;#var GLexecNO findnext;fguai} temp;#t+ temp;unwield $weapon;unwield $weapon2;unwield zhua;unwield tiegun;remove dun;wield axe;kan bajiao}
+#alias findwuji9_bak {#action {你抡起大斧子朝芭蕉树砍去，芭蕉树晃了晃} {r;kan bajiao} temp;#action {芭蕉树已经倒了} {exert recover;unwield axe;ff;wear dun;tempnext} temp;#alias tempnext {tkill temp;#var GLpath my_wuji8;#var GLexecNO findnext;fguai} temp;#t+ temp;unwield $weapon;unwield $weapon2;unwield zhua;unwield tiegun;remove dun;wield axe;kan bajiao}
+#alias findwuji_bak {#action {铁斧对你而言太重了} {drop $weapon 2;#math sticknum $sticknum-1;buy axe from boss;buy axe from xiao xiao} temp;#action {你向{*}买下一把铁斧} {tkill temp;n;e;fly wuji;look;#wa 4000;#var GLpath my_wuji;fly wuji;#var GLexecNO findwuji1;fguai} temp;#T+ temp;baxe}
+#alias findwujibak {#action {铁斧对你而言太重了} {drop $weapon 2;#math sticknum $sticknum-1;buy axe from boss;buy axe from xiao xiao} temp;#action {你向{*}买下一把铁斧} {tkill temp;n;e;fly wuji;look;#wa 4000;#if {$found=0} {#var GLpath my_wuji;fly wuji;#var GLexecNO findwuji1;fguai}} temp;#T+ temp;baxe}
+#alias findwujiout {#3 u}
+#alias findwzg {#var GLpath my_wzg;GLexectrig=wzg_end;fly wuzhuang;#var GLexecNO findwzg1;fguai}
+#alias findwzg1 {#var GLpath my_wzg1;#var GLexecNO findwzg2;fguai}
+#alias findwzg2 {#var GLpath my_wzg2;#var GLexecNO findwzg20;fguai}
+#alias findwzg20 {tkill temp;#VA tempwzg 0;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad tempwzg 1;#wa 1000;%case{$tempwzg,wzgoth1,wzgoth2,wzgoth3,wzgoth4,wzgoth5,wzgoth6,wzgoth7,wzgoth8,wzgoth9}} temp;#t+ temp;#t+ findguai;wink $target_name_lower}
+#alias findwzg200 {#var GLpath my_wzg200;#var GLexecNO findwzg3;fguai}
+#alias findwzg3 {tkill temp;#var GLpath my_wzg3;#var GLexecNO findwzg4;fguai}
+#alias findwzg4 {#var GLpath my_wzg4;#var GLexecNO findwzg5;fguai}
+#alias findwzg5 {#var GLpath my_wzg5;#var GLexecNO findwzg6;fguai}
+#alias findwzg6 {#var GLpath my_wzg6;#var GLexecNO findnext;fguai}
+#alias findwzgout {#4 s;ed;wd;out;su}
+#alias findxs {GLslowrun=2;#var GLpath my_xs;get xueshan map from $bag;fly xueshan;put map in $bag;#var GLexecNO findxs1;fguai}
+#alias findxs1 {exert recover;#var GLpath my_xs1;#var GLexecNO findxs2;fguai}
+#alias findxs2 {#action {冰谷巡使喝道：女弟子卧房，男子严禁入内！} {#stop;#if {$found=0} {enforce 1;kill xunshi}} temp;#action {冰谷巡使死了。} {#wait 2000;#if {$found=0} {findxs20}} temp;#action {冰谷巡使脚下一个不稳，跌在地上一动也不动了} {#stop;#if {$found=0} {enforce 1;kill xunshi}} temp;#action {女弟子卧房 -} {tkill temp;#wait 2000;#var GLpath my_baoxiang13;#var GLexecNO findxs200;fguai} temp;#t- temp;exert recover;#var GLpath my_xs2;#var GLexecNO findxs20;fguai}
+#alias findxs20 {#T+ temp;s}
+#alias findxs200 {tkill temp;#wa 2000;bed;#var GLpath my_baoxiang13;#var GLexecNO findxs2000;fguai}
+#alias findxs2000 {#var GLpath my_xs2000;#var GLexecNO findxs3;fguai}
+#alias findxs20_bak {#T+ temp;#var GLpath my_xs20;#var GLexecNO ;fguai}
+#alias findxs3 {exert recover;#var GLpath my_xs3;#var GLexecNO findxs30;fguai}
+#alias findxs30 {#var GLpath my_xs30;#var GLexecNO findxs4;fguai}
+#alias findxs4 {#action {小木屋 -} {tkill temp;#wait 1000;#var GLpath my_baoxiang13;#var GLexecNO findxs40;fguai} temp;#action {侍儿死了。} {#wait 2000;#if {$found=0} {s}} temp;#action {侍儿把你一拦道} {#wait 2000;#if {$found=0} {#stop;enforce 1;kill shi er}} temp;#action {侍儿脚下一个不稳，跌在地上一动也不动了} {#if {$found=0} {#stop;enforce 1;kill shi er}} temp;get xueshan map from $bag;fly xueshan;put map in $bag;#T+ temp;#var GLpath my_xs43;#var GLexecNO findxs41;fguai}
+#alias findxs40 {#var GLpath my_xs40;#var GLexecNO findxs5;fguai}
+#alias findxs41 {#T+ temp;s}
+#alias findxs4_bakk {#action {小木屋 -} {tkill temp;#wait 1000;#var GLpath my_baoxiang13;#var GLexecNO findxs40;fguai} temp;#action {侍儿死了。} {#wait 2000;s} temp;#action {侍儿把你一拦道} {#wait 2000;#stop;enforce 1;kill shi er} temp;#action {侍儿脚下一个不稳，跌在地上一动也不动了} {#stop;enforce 1;kill shi er} temp;get xueshan map from $bag;fly xueshan;put map in $bag;#T+ temp;#3 nu;#2 e;s}
+#alias findxs5 {tkill temp;#VA temppl 0;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad temppl 1;#wa 1000;#if {$temppl=1} {climb left;wink $target_name_lower};#if {$temppl=2 or $temppl=3} {climb up;wink $target_name_lower};#if {$temppl=4 or $temppl=5} {climb left;wink $target_name_lower};#if {$temppl=6 or $temppl=7} {climb up;wink $target_name_lower};#if {$temppl=8} {idle;wink $target_name_lower};#if {$temppl>8} {tkill temp;#wa 1000;findxs6}} temp;#t+ temp;climb up;wink $target_name_lower}
+#alias findxs5_bak {#var GLpath my_xs5;GLslowrun=1;FGslowsum=8;#var GLexecNO findxs6;fguai}
+#alias findxs6 {#var GLpath my_xs6;#var GLexecNO findxs7;fguai}
+#alias findxs7 {fly moon;#var GLpath my_xs7;#var GLexecNO findxs70;fguai}
+#alias findxs70 {#var GLpath my_xs70;#var GLexecNO findxs8;fguai}
+#alias findxs8 {tkill temp;#VA tempxs 1;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {你要对谁做这个动作} {#Ad tempxs 1;#wa 1000;%case{$tempxs,xsoth1,xsoth2,xsoth3,xsoth4,xsoth5,xsoth6,xsoth7,xsoth8,xsoth9,xsoth10}} temp;#t+ temp;#t+ findguai;xsoth1}
+#alias findxxt {#var GLpath my_xxt;fly xiaoxitian;#var GLexecNO findxxt0;fguai}
+#alias findxxt0 {#var GLpath my_xxt0;#var GLexecNO findxxt1;fguai}
+#alias findxxt1 {#var GLpath my_xxt1;GLexectrig=xxt_end;#var GLexecNO findnext;fguai}
+#alias findxxtout {w;n;ne;n;s;w;n;nw}
+#alias findyh {#var GLpath my_yuhua0;fly yinwu;#var GLexecNO findyh0;fguai}
+#alias findyh0 {#var GLpath my_yuhua;#var GLexecNO findyh1;#wa 1000;fguai}
+#alias findyh1 {#wait 1000;#var GLpath my_yuhua1;#var GLexecNO findyh2;fguai}
+#alias findyh2 {#wait 1000;#var GLpath my_yuhua2;#var GLexecNO findyh3;fguai}
+#alias findyh3 {#wait 1000;#var GLpath my_yuhua3;#var GLexecNO findnext;fguai}
+#alias findyw {#var GLpath my_yinwu;BusyPerformTarget=shan yao;fly yinwu;#va mxiaoyao 0;#var GLexecNO findyw0;fguai}
+#alias findyw0 {#var GLpath my_yinwu0;#var GLexecNO findyw1;fguai}
+#alias findyw1 {nw;nw;#alias tempnext {tkill temp;#var GLpath my_yinwu1;#var GLexecNO findyw2;fguai} temp;#action {山妖呲牙咧嘴地死活不让你过！} {kill shan yao;enforce 0;enchant 0;BusyPerformTarget=shan yao;BusyPerform} temp;#action {已经够忙了，你使的再漂亮也不会注意到} {#wa 2000;nw} temp;#action {山妖目前正自顾不暇，放胆攻击吧} {#wa 2000;nw} temp;#action {果然被这光环套住} {#wa 2000;nw} temp;#action {你的动作还没有完成，不能移动} {nw} temp;#action {悬崖} {tempnext} temp;#action {结果他被你攻了个措手不及} {nw} temp;#action {被你的长鼻高高卷起，你用力一甩} {nw} temp;#t+ temp;nw}
+#alias findyw2 {#alias tempnext {tkill temp;#var GLpath my_yinwu2;#var GLexecNO findyw3;fguai;sd;look} temp;#action {山妖呲牙咧嘴地死活不让你过！} {kill shan yao;enforce 0;enchant 0;BusyPerformTarget=shan yao;BusyPerform} temp;#action {你的动作还没有完成，不能移动} {ne} temp;#action {悬崖} {tempnext} temp;#action {已经够忙了，你使的再漂亮也不会注意到} {#wa 2000;ne} temp;#action {山妖目前正自顾不暇，放胆攻击吧} {#wa 2000;ne} temp;#action {果然被这光环套住} {#wa 2000;ne} temp;#action {结果他被你攻了个措手不及} {ne} temp;#action {被你的长鼻高高卷起，你用力一甩} {ne} temp;#t+ temp;se;ne}
+#alias findyw3 {#alias tempnextls {#var GLpath my_yinwu3;#var GLexecNO findyw30;fguai} temp;#alias findyw30 {id here} radomnone;#action {山洞里一座六角石亭} {bian me;#wa 3000;#if {$found=0} {id here}} temp;#action {你手捻口诀，念动真言，摇身一变，变得和飞蚂蚁一模一样} {w;bian me;wink $target_name_lower} temp;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {中堂 -} {bian me;#wa 3000;#if {$found=0} {findyw4}} temp;#action {涧水冲击着流水中的大小石块} {#wa 2000;findnext} temp;#action {你手捻口诀，念动真言，摇身一变，变得和水老鼠一模一样} {get zhou from $bag;dive;put zhou in $bag;bian me} temp;#action {你往水里一扎潜了下去} {#wa 2000;#if {$found=0} {tempnextls}} temp;#T+ temp;#T- yinwudong;sd;l}
+#alias findyw30 {id here}
+#alias findyw3_bak {#alias tempnextls {#var GLpath my_yinwu3;#var GLexecNO findyw30;fguai} temp;#alias findyw30 {id here} radomnone;#action {山洞里一座六角石亭} {bian me;#wa 3000;#if {$found=0} {id here}} temp;#action {你手捻口诀，念动真言，摇身一变，变得和飞蚂蚁一模一样} {w;bian me;wink $target_name_lower} temp;#action {你用迷人的眼眸对} {tkill temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow $target_name_lower;look $target_name_lower} temp;#action {中堂 -} {bian me;#wa 3000;#if {$found=0} {findyw4}} temp;#action {涧水冲击着流水中的大小石块} {#wa 2000;#if {$found=0} {id here}} temp;#action {你手捻口诀，念动真言，摇身一变，变得和水老鼠一模一样} {get zhou from $bag;dive;put zhou in $bag;bian me} temp;#action {你往水里一扎潜了下去} {#wa 2000;#if {$found=0} {tempnextls}} temp;#T+ temp;#T+ yinwudong;sd;id here}
+#alias findyw4 {#var GLpath my_yinwu4;#var GLexecNO findyw5;fguai}
+#alias findyw5 {#var GLpath my_yinwu5;#var GLexecNO findnext;fguai}
+#alias findzj {#var GLpath my_zhujie;GLexectrig=zj_end;fly yinwu;sw;#4 w;sw;sw;#6 s;sw;w;nw;w;w;nw;ne;#wait 4000;#var GLexecNO findzj0;fguai}
+#alias findzj0 {#var GLpath my_zhujie0;#var GLexecNO findzj1;fguai}
+#alias findzj1 {#var GLpath my_zhujie1;#var GLexecNO findzj10;fguai}
+#alias findzj10 {#var GLpath my_zhujie10;#var GLexecNO findzj100;fguai}
+#alias findzj100 {#var GLpath my_zhujie100;#var GLexecNO findzj2;fguai}
+#alias findzj2 {#var GLpath my_zhujie2;#var GLexecNO findzj20;fguai}
+#alias findzj20 {#var GLpath my_zhujie20;#var GLexecNO findnext;fguai}
+#alias findzjout {e;se;e;ne;e;se;e;ne;sw;w;sw;fly dudi}
+#alias findzz {#var GLpath my_zhuzi;fly xiaoxitian;nw;nw;n;w;sw;w;#wait 2000;#var GLexecNO findzz1;fguai}
+#alias findzz1 {#wait 1000;#var GLpath my_zhuzi1;#var GLexecNO findzz10;fguai}
+#alias findzz10 {#wait 1000;#var GLpath my_zhuzi10;#var GLexecNO findzz2;fguai}
+#alias findzz2 {#wait 1000;#var GLpath my_zhuzi2;#var GLexecNO findzz20;fguai}
+#alias findzz20 {#wait 1000;#var GLpath my_zhuzi20;#var GLexecNO findzz3;fguai}
+#alias findzz3 {#var GLpath my_zhuzi3;#wait 1000;#var GLexecNO findzz30;fguai}
+#alias findzz30 {#wait 1000;#var GLpath my_zhuzi30;#var GLexecNO findzz4;fguai}
+#alias findzz4 {#var GLpath my_zhuzi4;#wait 1000;#var GLexecNO findzz40;fguai}
+#alias findzz40 {#wait 1000;#var GLpath my_zhuzi40;#var GLexecNO findzz5;fguai}
+#alias findzz5 {#var GLpath my_zhuzi5;#wait 1000;#var GLexecNO findnext;fguai}

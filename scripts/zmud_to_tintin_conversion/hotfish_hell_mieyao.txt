@@ -1,0 +1,972 @@
+{killxmb}
+#action	{丢下} {#t- killxmb;tx;#al kxmbb {wave};ss;mxmb=0;w;idle;s;s;s;s;s;s;u;unwield bang;unwield bang 2;#if (@lunci<2) {mying=0;safego};#if (@lunci>1) {mying=0;al}}
+#action	{降魔棒对(*)而言太重了} {ss;#t- killxmb;mxmb=1;unwield bang;unwield bang 2;w;w;#wa 1000;#t- killxmb;#if (@lunci<2) {mying=0};#if (@lunci>1) {mying=0;al}}
+#action	{脚下一个不稳，跌在地上一动也不动了} {tx;get bang from corpse;get bang from zhang men;unwield bang;unwield bang 2;ss;w;s;s;s;s;s;u;#T- find;fly meishan;sw;w;w;nw;w;w;nw;#10 n;w;u;u;e;e;whisper @giveid 快开门;#wa 3000;give @giveid bang}
+#action	{你从子1111骛的尸体身上搜出一把降魔棒} {#math sticknum @sticknum+1;Weapon=@BuyWeaponID;#if (@sticknum>@snum2) {remove dun;unwield zhua;weapon=@BuyWeaponID;wield @Weapon;wield zhua;wear all;ss;#wa 4000;w;d;d;e;#if (@houzi=1) {gcorpse;look @Weapon} {fly stone;eu;look @Weapon}} {#wa 4000;buy @BuyWeaponID;whisper @giveid 给@userid我bang}}
+#action	{你给(*)一把降魔棒} {ss;mxmb=0;#t- killxmb;unwield bang;unwield bang 2;w;w;#wa 1000;#t- killxmb;#if (@lunci<2) {mying=0};#if (@lunci>1) {mying=0;al}}
+#action	{死了} {tx;get bang from corpse;unwield bang;unwield bang 2;ss;w;s;s;s;s;u;#T- find;fly meishan;sw;w;w;nw;w;w;nw;#10 n;w;u;u;e;e;whisper @giveid 快开门;#wa 3000;give @giveid bang}
+#action	{已经装不1下任何东西} {ss;#t- killxmb;mxmb=1;unwield bang;unwield bang 2;w;w;#wa 1000;#t- killxmb;#if (@lunci<2) {mying=0};#if (@lunci>1) {mying=0;al}}
+#action	{这里没有这个人} {ss;#t- killxmb;mxmb=0;unwield bang;unwield bang 2;w;s;s;s;s;s;u;open door;sd;#wa 1000;#if (@lunci<2) {mying=0;safego};#if (@lunci>1) {mying=0;al}}
+
+
+{PK}
+#action	{%1给你一*冰*} {drop ice;drop ice blade;set no_accept;pker=%1;id here}
+#action	{%e[1;31m(%x)喃喃地念了几句咒语，突然大袖一挥朝你罩了过去！%e[0m} {#log pk.txt;pker=%1;id here;QuitAction}
+#action	{%e[1;31m不料确被你看破，攻其不备，%x反被打了个措手不及！%e[0m} {enforcemax;enable stick qianjun-bang;perform qiankun on @pkerID;perform pili on @pkerID;enable stick kusang-bang;perform three on @pkerID;QuitAction}
+#action	{%e[1;31m你神不守舍111地看着(%x)，怜香惜玉之心由然而起，竟然忘了自己在战斗之中。%e[0m} {set wimpy 100;#log pk.txt;pker=%1;id here}
+#action	{%e[1;31m如果你要和(%x)性命相搏，请你也对这个人下一次 kill 指令。%e[0m} {#log pk.txt;pker=%1;id here;QuitAction}
+#action	{%e[1;35m(%x)凝视着你的双眼，温柔地拍着你的头，在你耳边轻声唱着：“小宝宝，快睡觉。。。”%e[0m} {set wimpy 100;#log pk.txt;pker=%1;id here;QuitAction}
+#action	{%e[1;36m你果然被这光环套住，当时目瞪口呆，不知所措！%e[0m} {set wimpy 100}
+#action	{%e[1;37m%x一见到你，愣了一愣，大叫：「我宰了你！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你对着%x大喝：「可恶，又是你！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你喝道：「%x，我们的帐还没算完，看招！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你喝道：「*，看招！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你和%x一碰面，二话不说就打了起来！%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你和*仇人相见份外眼红，立刻打了起来！%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你一见到%x，愣了一愣，大叫：「我宰了你！」%e[0m} {#wait 500;surrender}
+#action	{%e[1;37m你一眼瞥见%x，「哼」的一声冲了过来！%e[0m} {#wait 500;surrender}
+#action	{%e[31m六耳猕猴抓耳挠腮地对你尖声说道：到了阎王那儿休怪猴爷无情} {#T- AutoLog;exercise 0;meditate 0;QuitAction}
+#action	{%x身形闪动，挡住了你的去路。} {#T- AutoLog;QuitAction}
+#action	{^> 荒郊小店 -} {QuitAction}
+#action	{^>%s半空中劈下一道闪电，轰的一声落在你头上！} {exert recover;exert refresh}
+#action	{^>%s你打了个寒颤。$} {#T- Autolog;QuitAction}
+#action	{^>%s你仿佛觉得有人在你耳边隐隐说道：“还．．我．．命．．来．} {exert recover;exert refresh}
+#action	{^>%s你觉得脑袋又痛又涨，身子已不大听使唤了。$} {QuitAction}
+#action	{^>%s你抬头看看天，暗自嘀咕：我干了那么多坏事，不会天打雷劈吧？} {exert recover;exert refresh}
+#action	{^>%s你突然觉得背脊上泛起一阵凉意：鬼？！} {exert recover;exert refresh}
+#action	{^>%s你想起以前干过的那么多伤天害理之事，不由惭愧得汗流浃背。} {exert recover;exert refresh}
+#action	{^>%s你眼露凶光，发疯似地大喊：“杀！杀！杀！”累得上气不接下气。} {exert recover;exert refresh}
+#action	{^>%s你嘴唇发青，身子微微发抖，好象冷得厉害。$} {#T- Autolog;QuitAction}
+#action	{^>%s你嘴唇乌青发亮，浑身抖个不停，不知道中了什么邪。$} {#T- Autolog;QuitAction}
+#action	{^>%s瞌睡虫迅速地爬进你的鼻孔里。$} {exercise 0;meditate 0;toepr;QuitAction}
+#action	{^????荒郊小店 -} {QuitAction}
+#action	{^????慢慢地你终于又有了知觉} {Busy=0;mying4=0;#if (@usermp=gouhun) {#2 release};#T+ AfterWakeUp;hp;er;ef;score}
+#action	{^????你想攻，却不知道哪个破绽是真，哪个是假。} {exercise 0;meditate 0;QuitAction}
+#action	{^@pker%s=%s(%w)$} {pkerID=%1;ttb @pker(@pkerID) 要杀我！！}
+#action	{^半空中劈下一道闪电，轰的一声落在你头上！} {exert recover;exert refresh}
+#action	{^结果你被*攻了个措手不及！} {set wimpy 100;hmm @pkerID}
+#action	{^你打了个寒颤。$} {#T- Autolog;QuitAction}
+#action	{^你仿佛觉得有人在你耳边隐隐说道：“还．．我．．命．．来．} {e;exert recover;exert refresh;w}
+#action	{^你觉得脑袋又痛又涨，身子已不大听使唤了。$} {quit;surrender;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit;#wa 2000;quit}
+#action	{^你抬头看看天，暗自嘀咕：我干了那么多坏事，不会天打雷劈吧？} {exert recover;exert refresh}
+#action	{^你突然觉得背脊上泛起一阵凉意：鬼？！} {exert recover;exert refresh}
+#action	{^你想起以前干过的那么多伤天害理之事，不由惭愧得汗流浃背。} {exert recover;exert refresh}
+#action	{^你眼露凶光，发疯似地大喊：“杀！杀！杀！”累得上气不接下气。} {exert recover;exert refresh}
+#action	{^你嘴唇发青，身子微微发抖，好象冷得厉害。$} {#T- Autolog;QuitAction}
+#action	{^你嘴唇乌青发亮，浑身抖个不停，不知道中了什么邪。$} {#T- Autolog;QuitAction}
+#action	{^瞌睡虫迅速地爬进你的鼻孔里。$} {exercise 0;meditate 0;toepr;QuitAction}
+#action	{你“啊～～秋～～”一声打了个喷嚏，不由皱了皱眉。} {set no_accept}
+#action	{只见@pker浑身松软，瘫倒在地．．．却果然正是(%x)！} {pker=%1;id here}
+
+
+{hell2}
+#action	{????殿 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;w;w;e;#10 s}
+#action	{背阴小道 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;w;w;w;s;s}
+#action	{壁斗崖 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;#3 n;w;w;w;s;s}
+#action	{超生贵道门 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;nw;#3 n;w;w;w;s;s}
+#action	{翠云宫 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;sd;#10 s}
+#action	{奉祭场 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;s}
+#action	{鬼门关 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;s}
+#action	{荒郊草野 -} {#t- hell2;#t- hell3;#t- hell5;#t- hell;#t+ hell4}
+#action	{寂灭司 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;s;w;s}
+#action	{轮回司 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;s;e;s}
+#action	{奈何桥 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;#3 n;w;w;w;s}
+#action	{平阳大路 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;#3 n;w;w;w;s}
+#action	{司房 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;w;w;w;e;n;#7 w;e;e;s}
+#action	{阎罗宝殿 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;#5 s}
+#action	{阴司 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;w;w;w;e;n;#7 w;e;e;s}
+#action	{阴阳界 -} {#t+ find;#t- hell2;#t- hell3;#t- hell4;#t- hell5;#t+ hell;#wa 5000;#if (@found=0) {zaohell1}}
+#action	{阴阳塔 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;e;e;s}
+#action	{招魂司 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;l}
+#action	{泗鬼门 -} {#t- hell2;#t- hell3;#t- hell4;#t- hell;#t+ hell5;#wa 2000;w;w;s}
+
+
+{Hell}
+#action	{%e[1;31m鬼111111门关%e[0m - } {#wait 5000;#if (@Found=0) {north}}
+#action	{招魂司 -} {#wait 5000;#if (@Found=0) {zaohell2}}
+
+
+{LiJing2}
+#action	{%s凤凰琴?Fenghuang qin} {#if (@helpskill=cf and @mcf>0) {#math stick2num @stick2num+1}}
+#action	{^????凤凰琴已经装满暗器了} {#if (@helpskill=cf and @mcf>0) {#t- lijing;#t- lijing2;#if (@mcf>0) {mcf=1};gomieyao}}
+#action	{^????你打开凤凰琴的机关，将一把银针装了进去} {#if (@helpskill=cf and @mcf>0) {#t- lijing;#t+ lijing2;#if (@mcf>0) {mcf=1};#wa 5000;kk}}
+#action	{^????你的动作还没有完成，不能移动} {#if (@helpskill=qianshou) {#t- lijing;#wa 1000;#t+ lijing2;er}}
+#action	{^????你身上没有这东西} {#if (@helpskill=cf and @mcf>0) {#t- lijing;#t- lijing2;yinzhen=0;#if (@mcf>0) {mcf=8};gomieyao}}
+#action	{^????你深深吸了几口气，脸色看起来好多了} {#if (@helpskill=qianshou) {#t- lijing;#t+ lijing2;#wa 2000;er}}
+#action	{^????你双掌合十，身后突然幻出} {#if (@helpskill=qianshou) {#t- lijing;#t- lijing2;#if (@mduo=0) {mduo=168};#wa 5000;#t+ lijing2;er}}
+#action	{^????你微一凝11神，运起反五行摄气诀} {#if (@helpskill=qianshou) {#t- lijing;#t- lijing2;#wa 1000;w;gomieyao}}
+#action	{^????你微一凝11神，运起龙神心法} {#if (@helpskill=qianshou) {#t- lijing;#t- lijing2;#wa 1000;w;gomieyao}}
+#action	{^????你现在气力充沛，不需吸气} {#if (@helpskill=qianshou) {#t- lijing;#t- lijing2;w;gomieyao}}
+#action	{^????你向(*)买下一} {#if (@helpskill=cf and @mcf>0) {#t- lijing2;#t- lijing;#wa 5000;e;fly stone;sd;wd;sd;w;s;#t+ lijing2;kk}}
+#action	{^????你已经在运功中了} {#if (@helpskill=qianshou) {#t- lijing;#t- lijing2;#if (@mduo=0) {mduo=168};#wa 1000;w;gomieyao}}
+#action	{^????你正忙着呢} {#if (@helpskill=cf) {#t- lijing;#t+ lijing2;#wa 3000;kk}}
+#action	{^????设定环境变数(*)brief(*)cfcf} {#if (@helpskill=cf and @mcf>0) {#show {%ansi(yellow) 武器@weapon2有 @stick2num 个};#if (@stick2num<1) {fly changan;#t- lijing;#t+ lijing2;get gold from @bag;get silver from @bag;s;w;buy fenghuang qin} {kk}}}
+#action	{^????眼睛是需要休息的} {#if (@helpskill=qianshou) {#t- lijing;#t- lijing2;#wa 1000;w;gomieyao}}
+#action	{丛中蹿出一只猴子} {#if (@usermp=gouhun and @houzi=1) {#t- lijing2;#T+ LiJing;kill hou zi}}
+#action	{你上一个动作还没有完成，不能施用内功} {#if (@helpskill=qianshou) {#t- lijing;#t+ lijing2;#wa 2000;er}}
+#action	{一只顽皮的小猴子} {#if (@usermp=gouhun and @houzi=1) {#t- lijing2;#T+ LiJing;kill hou zi}}
+
+
+{CastChuQiao1}
+#action	{^??潭底小径 -} {#if (@usermp=sea or @usermp2=yaofainfly or @usermp2=flyinfly) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#wa 3000;#3 s;up;er;ef;atgc=1;#if (@usermp2=yaofainsea or @usermp2=yaofainfly) {#va usermp yaofa;#va usermp2 yaofaaa};#if (@usermp2=flyinsea or @usermp2=flyinfly) {#va usermp fly;#va usermp2 flyaaa};fly stone}}
+#action	{^??云房 -} {#if (@usermp=sea or @usermp2=yaofainfly or @usermp2=flyinfly) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#wa 3000;n;er;ef;atgc=1;#if (@usermp2=yaofainsea or @usermp2=yaofainfly) {#va usermp yaofa;#va usermp2 yaofaaa};#if (@usermp2=flyinsea or @usermp2=flyinfly) {#va usermp fly;#va usermp2 flyaaa};fly stone}}
+
+
+{nextmove}
+#action	{这里没有任何明显的出路} {GLmv=0;f1=;f2=;f3=;f4=;f5=;f6=}
+#action	{这里明显的出口是%s(%w)%s和%s(%w)。} {GLmv=2;f1=%1;f2=%2;f3=;f4=;f5=;f6=}
+#action	{这里明显的出口是%s(%w)、(%w)%s和%s(%w)。} {GLmv=3;f1=%1;f2=%2;f3=%3;f4=;f5=;f6=}
+#action	{这里明显的出口是%s(%w)、(%w)、(%w)%s和%s(%w)。} {GLmv=4;f1=%1;f2=%2;f3=%3;f4=%4;f5=;f6=}
+#action	{这里明显的出口是%s(%w)、(%w)、(%w)、(%w)%s和%s(%w)。} {GLmv=5;f1=%1;f2=%2;f3=%3;f4=%4;f5=%5;f6=}
+#action	{这里明显的出口是%s(%w)、(%w)、(%w)、(%w)、(%w)%s和%s(%w)。} {GLmv=6;f1=%1;f2=%2;f3=%3;f4=%4;f5=%5;f6=%6}
+#action	{这里唯一的出口是%s(%w)。} {GLmv=1;f1=%1;f2=;f3=;f4=;f5=;f6=}
+
+
+{thelper}
+#action	{^????@helpedrc脚下一个不稳，跌在地上一动也不动了} {get @helpedr;#wa 100;get @helpedr;#wa 100;get @helpedr;#wa 100;get @helpedr;#wa 100;get @helpedr;#wa 100;get @helpedr;#wa 100;get @helpedr;#wa 100;get @helpedr;tta @helpedrc跌在地上一动也不动了}
+#action	{^????@yaoname退后两步，深深地吸一口气，猛然发出股如山崩海啸般的龙} {surrender;ts;RandomWalk;ef;er;surrender;gohh}
+#action	{^????【队伍】@helpedrc：丢了丢了丢大了} {#if (@inkgd=0) {surrender;noneili=1;Busy=0;#cw white;#T- Fight;#T- Fight1;#T- Fight2;#t+ thelper1;qngain=%2;getwx=%1;hbnum=0;hbnum3=0;looknum=0;checkmark=0;hbt=0;mying2=0;mying4=0;#if (@bian=1) {bian me;bian=0};#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=乌鸡国) {drop axe};ResetTrigger;#wa 1000;surrender;enforce 1;#al timer {RefreshAll};ts;follow none;#wa 8000;ResetTrigger;gohh}}
+#action	{^????【队伍】@helpedrc：好咯好咯搞定咯} {#if (@inkgd=0) {surrender;noneili=1;Busy=0;#cw white;#T- Fight;#T- Fight1;#T- Fight2;#t+ thelper1;qngain=%2;getwx=%1;hbnum=0;hbnum3=0;looknum=0;checkmark=0;hbt=0;mying2=0;mying4=0;#if (@bian=1) {bian me;bian=0};#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=乌鸡国) {drop axe};ResetTrigger;#wa 1000;surrender;enforce 1;#al timer {RefreshAll};ts;follow none;#wa 8000;ResetTrigger;gohh}}
+#action	{^????看来该找机会逃跑了} {surrender;ts;RandomWalk;surrender;gohh}
+#action	{^????看起来@yaoname想杀死你} {#t- thelper;surrender;RandomWalk;noneili=1;Busy=0;#cw white;#T- Fight;#T- Fight1;#T- Fight2;qngain=%2;getwx=%1;hbnum=0;hbnum3=0;looknum=0;checkmark=0;hbt=0;mying2=0;mying4=0;#if (@bian=1) {bian me;bian=0};#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=乌鸡国) {drop axe};ResetTrigger;#wa 1000;#t+ thelper;#T+ thelper1;surrender;enforce 1;#al timer {RefreshAll};ts;follow none;ResetTrigger;gohh}
+#action	{^????你将@helpedrc扶了起来背在背上} {#file 1 @userid-mieyaoreport.txt;#write 1 你将@helpedrc扶了起来背在背上 @Location  @yaoidd    @weekday  @month  @day  @hour:@minute;#close 1;tta 你将@helpedrc扶在背上;ts}
+#action	{^????你决定开始跟随@helpedrc一起行动} {#T+ thelper1;#al timer {get @helpedr;#wa 300;get @helpedr;#wa 300;get @helpedr;er};#ts 1}
+#action	{^????如果你愿意加入，请用 team with @helpedr} {team with @helpedr}
+
+
+{XiaoXiaoGuai}
+#action	{^????你正要离开，忽然看见什么东西在眼前一晃，不由得停了下来} {StopRobot=1;#T- findguai;#T- XiaoXiaoGuai;#T+ GuaiBlockWay;#wa 3000;#T- findguai;look}
+
+
+{Escape}
+#action	{这里明显的出口是 (%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=;Escape4=;Escape5=;Escape6=}
+#action	{这里明显的出口是 (%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=;Escape5=;Escape6=}
+#action	{这里明显的出口是 (%w)、(%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=%4;Escape5=;Escape6=}
+#action	{这里明显的出口是 (%w)、(%w)、(%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=%4;Escape5=%5;Escape6=}
+#action	{这里明显的出口是 (%w)、(%w)、(%w)、(%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=%4;Escape5=%5;Escape6=%6}
+#action	{这里唯一的出口是 (%w)。bak} {Escape1=%1;Escape2=;Escape3=;Escape4=;Escape5=;Escape6=;escapeall="";#var escapeall %addItem(%1,@escapeall);#var escapeall %addItem(%2,@escapeall);#var escapeall %addItem(%3,@escapeall);#var escapeall %addItem(%4,@escapeall);#var escapeall %addItem(%5,@escapeall);#var escapeall %addItem(%6,@escapeall)}
+#action	{这里唯一的出口是 (%w)。} {Escape1=%1;Escape2=;Escape3=;Escape4=;Escape5=;Escape6=}
+
+
+{CastChuQiao3}
+#action	{^????但(*)的身影已紧紧跟上，将你拦了下来} {#wa 2000;RandomWalk;gohh}
+#action	{^????你正忙着呢，没工夫腾云驾雾} {#wa 2000;look;fly stone}
+#action	{^????你正在战斗，飞不开} {#t- CastChuQiao3;#wa 1000;#t+ CastChuQiao3;#t+ Escape;randomwalk;look;fly stone}
+#action	{^????是休想逃出去的，不过你也可以去试试扳开?break} {em;Escape1=break;Escape2=;Escape3=;Escape4=;Escape5=;Escape6=}
+#action	{^????周围没有一片云，没办法腾云驾雾} {#add mfly 1;#if (@usermp2=flyinsea) {#va mfly2 1} {#va mfly2 0};#if (@mfly<20) {#if (@usermp=fly and @mfly>3) {zaoout};#t- CastChuQiao3;#wa 1000;#t+ CastChuQiao3;#t+ Escape;randomwalk;look;fly stone} {#T- CastChuQiao3;zaooutchuqiao}}
+#action	{对你直摇头：这大喜的日子，你念哪门子咒啊} {#wa 1000;tx;s;gohh}
+#action	{你的动作还没有完成，不能移动。} {#wa 1000;tx;@escape1;gohh}
+#action	{你龟模龟样地念了几句咒语} {#wait 2000;n;u;u;u;e;gghell}
+#action	{你鸡头鸡脑地念了几句咒语} {#wait 2000;s;u;u;u;e;gghell}
+#action	{你精神太差，难以集中精力念咒} {#wait 2000;ef;gghell}
+#action	{你看样子输红了眼，想念咒语} {#wait 2000;e;e;e;w;u;u;e;gghell}
+#action	{你上一个动作还没有完成，不能念咒文。} {#wait 2000;gghell}
+#action	{你吸口气，憋红了脸念了几声咒语} {#wait 2000;out;gghell}
+#action	{你现在不能用魔法！} {#wait 2000;gghell}
+#action	{你在水中，没法施用土遁} {#if (@usermp=yaofa) {#va usermp2 yaofainsea;#va usermp sea;l}}
+#action	{你转身想跑，却被(*)一个箭步拦住。} {#wa 1000;tx;@escape1;gohh}
+#action	{请不要在拱猪房里施用法术，谢谢} {#wait 2000;n;u;s;u;w;u;e;u;gghell}
+#action	{这里不准念咒文。} {#t- CastChuQiao3;#wa 1000;#t+ CastChuQiao3;#t+ Escape;look;randomwalk;gghell}
+
+
+{killguai}
+#action	{对你直摇头：这大喜的日子} {#t- killguai;fullnext={open guancai;ca;dd1};GLgoon={#t- mpyao2;#3 north;#3 e;#3 s;se;out;#show 大哥，对不起，不是我不厉害，是敌人太狡猾！;GLfindNum=0};#t+ findpath;s;hc}
+#action	{你对着*喝道} {#wait 300;GLidle=0;kill @KGid;cast inferno on @KGid;p}
+#action	{你已经无力在对其使用地狱火了} {#t- killguai;#t- 紫竹林;#t- 百花谷;#t- 莽林;p;mprw}
+#action	{这里不准战斗} {#t- killguai;fullnext={open guancai;ca;dd1};GLgoon={#t- mpyao2;#3 north;#3 e;#3 s;se;out;tell @maleid 大哥，对不起，不是我不厉害，是敌人太狡猾！;GLfindNum=0};#t+ findpath;hc}
+#action	{这里没有这个人} {#t- killguai;#t- 紫竹林;#t- 百花谷;#t- 莽林;#wait 3000;wield tiegun;p;#if (@finish=0) {#t+ findpath;GLgoon={#3 north;#3 e;#3 s;se;out};fullnext={open guancai;zaonext};hc}}
+
+
+{莽林}
+#action	{出口是} {Zzlnum=[@Zzlnum+1]}
+#action	{你要对谁做这个动作} {#gag;dirList=;#LOOP @GLmv #exec dirList=%additem([@{f%i}],@dirList);dirmove=%item(@dirlist,%random(1,@GLmv));#wa100;#if (@mwink=0) {#exec @dirmove};#if (@mwink=1) {s;mwink=0};#wait 500;#if (@Zzlnum>79) {Zzlnum=0;#t- 莽林;zaonext} {wink @KGid}}
+#action	{你用迷人的眼眸对} {#delc temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow @KGid;look @KGid}
+#action	{这里明显的出口是(*)} {#if (%pos(south,%1) and %pos(northeast,%1)) {mwink=1}}
+
+
+{Hellfly3}
+#action	{幽司 -} {#t- hellfly5;#t+ hellfly6;#t- hellfly4;#t- hellfly;#t- hellfly2;#- CastChuQiao3;#t- hellfly3;#wa 2000;w;nu;n;n;n;w;set brief hellhell}
+
+
+{buyyinzhen}
+#action	{^????设定环境变数(*)yinzhen1} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;ed;#wa 2000;set brief yinzhen2}}
+#action	{^????设定环境变数(*)yinzhen2} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;ed;#wa 2000;set brief yinzhen3}}
+#action	{^????设定环境变数(*)yinzhen3} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;nd;#wa 2000;set brief yinzhen4}}
+#action	{^????设定环境变数(*)yinzhen4} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;nd;#wa 2000;set brief yinzhen5}}
+#action	{^????设定环境变数(*)yinzhen5} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;ed;#wa 2000;set brief yinzhen6}}
+#action	{^????设定环境变数(*)yinzhen6} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;e;#wa 2000;set brief yinzhen7}}
+#action	{^????设定环境变数(*)yinzhen7} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;se;#wa 2000;set brief yinzhen8}}
+#action	{^????设定环境变数(*)yinzhen8} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;se;#wa 2000;set brief yinzhen9}}
+#action	{^????设定环境变数(*)yinzhen9} {#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {gobuyyinzhen2;#wa 2000;set brief yinzhena}}
+#action	{^????设定环境变数(*)yinzhena} {#if (@yaonum<@yaolist) {yaomark=0} {yaomark=1};#if (@yaomark=0 or @danmark=0) {#wa 1000;sw;#t- buyyinzhen;#add yinzhen 1000;gobuyyao2} {ResetTrigger;#wa 7000;atyp=0;byaob}}
+
+
+{Hellfly4}
+#action	{%e[1;37m阴阳界%e[0m - } {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t- hellfly5;#t- findguai;#t- CastChuQiao3;#wa 5000;#t- hellfly4;#t- CastChuQiao3;#2 north;zaohellout2}
+#action	{%s这里明显的出口是%s(*)。} {#show 长度是 %len(%1);#if (%len(%1)=26 or %len(%1)=41) {#wa 2000;north};#if (%len(%1)=19 or %len(%1)=34) {#if (%len(%replace(%1,north,hellooo))>%len(%1)) {#wa 2000;north};#if (%len(%replace(%1,south,he))<%len(%1)) {#wa 2000;south}};#if (%len(%1)=20 or %len(%1)=35) {#if (%len(%replace(%1,east,hellooo))>%len(%1)) {#wa 2000;east};#if (%len(%replace(%1,west,he))<%len(%1)) {#wa 2000;west}};#if (%len(%1)>41 or (%len(%1)>35 and %len(%1)<41) or (%len(%1)>26 and %len(%1)<34) or (%len(%1)>20 and %len(%1)<26) or %len(%1)<19) {#wa 2000;#clr;#wa 2000;look}}
+
+
+{Fight1}
+#action	{%e[1;37m只听见「啪」地一声，你手中的%x已经断为两截！%e[0m} {mbreak=1;remove dun;unwield zhua;wield zhua;wield @Weapon;wear dun;#math sticknum @sticknum-1;#if (@sticknum<1) {mying4=1;mbreak=1;sticknum=0;drop @weapon;unwield zhua;#t- BackUp;mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 release;#3 @escape1;tx;#t- BackUp;#t+ fight1;gohh;precover}}
+#action	{%e[31m@YaoName道：也叫你尝尝这无敌三板斧的厉害！%e[0m} {hpp}
+#action	{%e[31m@YaoName狂笑道：就凭你这点本事，也来跟我斗？%e[0m} {hpp}
+#action	{%e[31m这无敌三板斧一气呵成，你被攻了个措手不及，伤势甚为可怕！%e[0m} {txx;eayao 2 0;er;hpp;kg}
+#action	{@yaoname被混天绫的法力定住了} {exert refresh;#wa 2000;bg}
+#action	{@yaoname只觉得手中(*)把持不定} {#CW White;ek;mbreak=0}
+#action	{^????@yaoname运足精神(*)霹雳间连续向你攻出了三招} {eayao 2 0}
+#action	{^????结果「嗤」地一声，金光从你身上透体而过，} {eayao 2 0}
+#action	{^????结果长箭从你身上透体而过，顿时血花飞溅} {eayao 2 0}
+#action	{^????结果你被烧得焦头烂额！} {eayao 1 1}
+#action	{^????结果你手足被冻的11僵硬，动弹不得} {#if (@usermp=yaofa) {#if (@location=龙宫 or @location=碧波潭) {} {mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#if (@usermp=gouhun) {#2 release};#t+ Escape;#t- BackUp;#t+ fight1;gohh}}}
+#action	{^????结果你手足僵11硬，果然动弹不得} {#if (@usermp=yaofa) {#if (@location=龙宫 or @location=碧波潭) {} {mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#if (@usermp=gouhun) {#2 release};#t+ Escape;#t- BackUp;#t+ fight1;gohh}}}
+#action	{^????看来该找机会逃跑了} {#t- BackUp;mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#if (@usermp=gouhun) {#2 release};#t+ Escape;randomwalk;#t- BackUp;#T+ fight1;#T+ Fight3;gohh}
+#action	{^????你受到@yaoname影响，显然有点魂不守舍了} {eayao 0 1}
+#action	{^????你听到「喀啦」一声轻响，竟似是骨碎的声音！} {eayao 1 1}
+#action	{^???结果砸个正着，差点没把你砸扁！} {eayao 1 0}
+#action	{^???你被@yaoname的内力一震(*)} {txx;eayao 3 0;exert recover;#file 1 @userid-mieyaoreport.txt;#write 1 怪反击： @Location  @yaoidd  @YaoNeili 年内力     @weekday  @month  @day  @hour:@minute;#write 1 你被@yaoname的内力一震%1;#close 1;hpp;kg}
+#action	{^???你被@yaoname以内力反震(*)} {txx;eayao 2 0;exert recover;#file 1 @userid-mieyaoreport.txt;#write 1 怪反击： @Location  @yaoidd  @YaoNeili 年内力     @weekday  @month  @day  @hour:@minute;#write 1 你被@yaoname以内力反震%1;#close 1;hpp;kg}
+#action	{^???你被@yaoname以内力一震(*)} {txx;eayao 2 0;exert recover;#file 1 @userid-mieyaoreport.txt;#write 1 怪反击： @Location  @yaoidd  @YaoNeili 年内力     @weekday  @month  @day  @hour:@minute;#write 1 你被@yaoname的内力一震%1;#close 1;hpp;kg}
+#action	{^???你的确有点迷糊了} {txx;eayao 0 1;exert refresh;hpp;kg}
+#action	{^???你动作似乎开始有点不太灵光} {txx;exert recover;kg}
+#action	{^???你看起来可能受了点轻伤} {txx;eayao 1 0;exert recover;kg}
+#action	{^???你看起来可能有些累了} {txx;exert recover;kg}
+#action	{^???你看起来已经力不从心了} {txx;exert recover;kg}
+#action	{^???你看起来有些迷糊了} {txx;eayao 0 1;ef;kg}
+#action	{^???你两眼发直} {txx;eayao 0 1;exert refresh;hpp;kg}
+#action	{^???你迷迷糊糊} {txx;eayao 0 1;exert refresh;hpp;kg}
+#action	{^???你拍了拍自己的脑} {txx;eayao 0 1;ef;hpp;kg}
+#action	{^???你气喘嘘} {txx;exert recover;kg}
+#action	{^???你气息粗重} {txx;eayao 2 0;exert recover;hpp;kg}
+#action	{^???你伤重之下已经难以支撑} {txx;eayao 4 0;exert recover;hpp;kg}
+#action	{^???你神智已经处在极度混乱中} {txx;eayao 0 2;exert refresh;hpp;kg}
+#action	{^???你受了几处伤} {txx;eayao 1 0;er;kg}
+#action	{^???你受了相当重的伤} {txx;eayao 4 0;exert recover;hpp;kg}
+#action	{^???你受伤不轻} {txx;eayao 3 0;exert recover;hpp;kg}
+#action	{^???你受伤过重} {txx;eayao 4 0;exert recover;hpp;kg}
+#action	{^???你似乎十分疲惫} {txx;exert recover;kg}
+#action	{^???你似乎受了点轻伤} {txx;eayao 1 0;kg}
+#action	{^???你似乎有些疲惫} {txx;exert recover;kg}
+#action	{^???你心智已经完全迷失} {txx;exert refresh;eayao 0 3;hpp;kg}
+#action	{^???你摇头晃脑} {txx;exert recover;kg}
+#action	{^???你已经伤痕累累} {txx;eayao 3 0;exert recover;hpp;kg}
+#action	{^???你已经陷入半昏迷状态} {txx;exert recover;kg}
+#action	{^???你已经一副头重脚轻的模样} {txx;exert recover;kg}
+#action	{^???你只觉得手中*把持不定，脱手飞出！} {mbreak=1;remove dun;unwield zhua;wield zhua;wield @Weapon;wear dun;#math sticknum @sticknum-1;#if (@sticknum<1) {mying4=1;mbreak=1;sticknum=0;drop @weapon;unwield zhua;#t- BackUp;mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 release;#3 @escape1;tx;#t- BackUp;#t+ fight1;gohh;precover}}
+#action	{^??你要吃什么药} {#t- BackUp;#t- fight1;mying4=1;mying=1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;southwest;gghell;tx;#t- BackUp;#wa 1200;#t+ fight1;#wa 14000;gohh;precover}
+#action	{bak__%e[1;37m只听见「啪」地一声，你手中的%x已经断为两截！%e[0m} {mbreak=1;remove dun;unwield zhua;wield zhua;wield @Weapon;wear dun;#math sticknum @sticknum-1;#if (@sticknum<1) {mying4=1;mbreak=1;sticknum=0;drop @weapon;unwield zhua;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 @escape1;tx;ec;#T+ WeaponBroken;#T+ WeaponBroken2;#T+ WeaponBroken3;gghell;CBC:WeaponBroken=1;pbreak}}
+#action	{bak__^???你只觉得手中*把持不定，脱手飞出！} {mbreak=1;remove dun;unwield zhua;wield zhua;wield @Weapon;wear dun;#math sticknum @sticknum-1;#if (@sticknum<1) {mying4=1;mbreak=1;sticknum=0;drop @weapon;unwield zhua;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 @escape1;tx;ec;#T+ WeaponBroken;#T+ WeaponBroken2;#T+ WeaponBroken3;gghell;CBC:WeaponBroken=1;pbreak}}
+#action	{和你的*相击，冒出点点的火星} {#CW White;mbreak=1;1enable stick none}
+#action	{精11神：%s-%d/%s%d%s~(*~%~)} {exert refresh}
+#action	{精bak神：%s(%d)/%s(%d)%s~(%s(%d)~%~)} {NoCast=1;Js=%1;JsMax=%2;JsPercent=%3;#if (@JsPercent<100) {txx;eayao 0 1;exert refresh;hp;kg} {#if (%1<%2) {txx;ef;kg}}}
+#action	{精神2：%s(%d)/%s(%d)%s} {NoCast=1;js=%1;jsMax=%2;#if (@jsmax<@jsr) {#math jsmax @jsr-@jsmax;#math js ((@jsmax/100)*100);#if (@jsmax>@js) {#math js ((@jsmax/100)+1)} {#math js (@jsmax/100)};txx;#if (@js>3) {js=3};eayao 0 @js;ef;hp;kg} {#math jsrr (%2-%1);#if (@jsrr>9) {txx;ef;kg}}}
+#action	{精神：%s(%d)/%s(%d)%s} {NoCast=1;js=%1;jsMax=%2;#if (@jsmax<@jsr) {#math jsmax @jsr-@jsmax;#math js ((@jsmax/50)*50);#if (@jsmax>@js) {#math js ((@jsmax/50)+1)} {#math js (@jsmax/50)};jsy=@js;meatyao=1} {#math jsrr (%2-%1);#if (@jsrr>9) {txx;ef;kg}}}
+#action	{你xxxxxxxxx现在不能用魔法} {#if (@castmark=1) {#wa 2000;cmm};#if (@castmark=2) {#wa 2000;gghell}}
+#action	{你促不击防，被@YaoName的长鼻高高卷起} {txx;#wait 2000;exert recover;#wait 500;txx;exert recover;#wait 500;exert recover;txx;#wait 2000;exert recover;#wait 500;exert recover;txx;#wait 500;exert recover;txx;#wait 2000;exert recover;txx;#wait 500;exert recover;#wait 500;exert recover}
+#action	{你的(*)和(*)相击，冒出点点的火星} {#CW White;mbreak=1;1enable stick none}
+#action	{你略一111凝神，吸了口气，精神看起来清醒多了。} {#al DoExert {exert recover}}
+#action	{你略一凝神，吸了口气，精bak神看起来清醒多了。} {#al DoExert {exert recover};#wa 1000;txx;DoExert;kg}
+#action	{你拿起一根(*)，顺手舞了个棍花} {ek;#if (@mbreak=1) {1enable stick none}}
+#action	{你上一xxxxxx个动作还没有完成，不能念咒文。} {#wa 2000;#if (@castmark=1) {#wa 1000;cmmm};#if (@castmark=2) {tx;ResetTrigger;@escape1;gohh}}
+#action	{你深深吸1111了几口气，脸色看起来好多了。} {#al DoExert {exert refresh}}
+#action	{你深深吸了几口气，脸色看起来好多bak了。} {#al DoExert {exert refresh};#wa 1000;txx;DoExert;kg}
+#action	{你一次输入太多命令了。} {#wait 6000;exert recover;#wait 2000;exert refresh;hp}
+#action	{你只有在战斗中才能使用复活术} {#wa 2000;cmm}
+#action	{气11血：%s-%d/%s%d%s~(*~%~)} {exert recover}
+#action	{气1血：%s(%d)/%s(%d)%s~((%d)~%~)} {NoCast=1;Qx=%1;QxMax=%2;QxPercent=%3;#if (@QxPercent<100) {txx;eayao 1 0;er;hp;kg} {#if (%1<%2) {txx;er;kg}}}
+#action	{气bak2血：%s(%d)/%s(%d)%s~(%s(%d)~%~)} {NoCast=1;Qx=%1;QxMax=%2;QxPercent=%3;#math qxmax @qxr-@qx;#math qx ((@qxmax/100)*100);#if (@qxmax>@qx) {#math qx ((@qxmax/100)+1)} {#math qx (@qxmax/100)};#if (@QxPercent<100) {txx;eayao @qx 0;er;hp;kg} {#if (%1<%2) {txx;er;kg}}}
+#action	{气bak血：%s(%d)/%s(%d)%s~(%s(%d)~%~)} {NoCast=1;Qx=%1;QxMax=%2;QxPercent=%3;#if (@QxPercent<90) {txx;eayao 2 0;er;hp;kg} {#if (@QxPercent<100) {txx;eayao 1 0;er;hp;kg} {#if (%1<%2) {txx;er;kg}}}}
+#action	{气血2：%s(%d)/%s(%d)%s} {NoCast=1;Qx=%1;QxMax=%2;#if (@qxmax<@qxr) {#math qxmax @qxr-@qxmax;#math qx ((@qxmax/100)*100);#if (@qxmax>@qx) {#math qx ((@qxmax/100)+1)} {#math qx (@qxmax/100)};txx;#if (@qx>4) {qx=4};eayao @qx 0;er;hp;kg} {#math qxrr (%2-%1);#if (@qxrr>9) {txx;er;kg}}}
+#action	{气血：%s(%d)/%s(%d)%s} {NoCast=1;Qx=%1;QxMax=%2;#if (@qxmax<@qxr) {#math qxmax @qxr-@qxmax;#math qx ((@qxmax/50)*50);#if (@qxmax>@qx) {#math qx ((@qxmax/50)+1)} {#math qx (@qxmax/50)};qxy=@qx;meatyao=1} {#math qxrr (%2-%1);#if (@qxrr>9) {txx;er;kg}}}
+#action	{设定环境变数??brief(*)hphp} {#if (@meatyao>0) {#if (@qxy>4) {qxy=4};#if (@jsy>4) {jsy=4};eayao @qxy @jsy;#if (@qxy>0) {er};#if (@jsy>0) {ef};hpp}}
+#action	{这里不准念咒文。} {#if (@castmark=2) {%item(@escape1|@escape2|@escape3|@escape4|@escape5|@escape6,%random(1,6));gohh}}
+#action	{只听见(*)地一声，@yaoname手中的} {#CW White;ek;mbreak=0}
+
+
+{SheLiTa}
+#action	{%s这里明显的出口是*out*} {out}
+#action	{%x舍利子~(Sheli zi~)} {get sheli zi}
+#action	{你大叫一声，从天而降！} {l}
+#action	{你一个跟头从杂草中飞了过来，满脸的迷茫。} {l}
+#action	{囚洞 -} {zuan}
+#action	{舍利塔 - } {bury sheli zi;ResetTrigger;mieyao=0;#wa 5000;inkgd=0;gohh}
+#action	{舍利子~(Sheli zi~)} {get sheli zi}
+#action	{这里明显的出口是 (%w) 和 (%w)。} {#wait 100;%item(%1|%2,%random(1,2))}
+#action	{这里明显的出口是 (%w)、(%w) 和 (%w)。} {#wait 100;%item(%1|%2|%3,%random(1,3))}
+#action	{这里明显的出口是 (%w)、(%w)、(%w) 和 (%w)。} {#wait 100;%item(%1|%2|%3|%4,%random(1,4))}
+#action	{这里唯一的出口是 (%w)。} {#wait 100;%1}
+
+
+{Recover}
+#action	{^%s(*)包金创药} {yao=%1;convertyao;#if (@yaonum<@yaolist) {yaomark=0} {yaomark=1}}
+#action	{^%s(*)根银针} {#if (@mcf>0 and @helpskill=cf) {yinzhen=%1;convertyinzhen}}
+#action	{^%s(*)颗百霜丹} {dan=%1;convertdan;#if (@dannum<@danlist) {danmark=0} {danmark=1}}
+#action	{^%s(*)颗丹桂丸} {yao=%1;convertyao;#if (@yaonum<@yaolist) {yaomark=0} {yaomark=1}}
+#action	{^%s(*)颗混元丹} {dan=%1;convertdan;#if (@dannum<@danlist) {danmark=0} {danmark=1}}
+#action	{^%s内功*摄气诀} {mpw=1}
+#action	{^%s内功*有效等级：%s(%d)} {#va maxenf %eval(%1/2)}
+#action	{^????你感觉身体一点点虚弱下去} {reset;dazuo 0;mingsi 0;#wa 10000;quit;#di}
+#action	{法力：%s(%d)%s/%s(%d)} {fali=%1;falii=%1;maxfali=%2;mying=1;#math temprf (((2*@maxfali-@fali)/80)*20);#if (@qxFull=1 and @jsFull=1 and @faliMaximized=0) {#if (@temprf>@js) {meditate @js} {meditate @temprf}}}
+#action	{精神：%s(%d)/%s(%d)%s~(%d~%~)} {js=%1;#va jsr %2;jsFull=1}
+#action	{精神：%s(%d)/%s(%d)%s~(%s%d~%~)} {js=%1;jsFull=0;#if (@qxFull=1) {eayao 0 1}}
+#action	{内力：%s(%d)%s/%s(%d)} {nl=%1;nll=%1;maxnl=%2;mying=1;#math tempre (((2*@maxnl-@nl)/80)*20);#if (@qxFull=1 and @jsFull=1 and @faliMaximized=1) {#if (@tempre>@qx) {exercise @qx} {exercise @tempre}}}
+#action	{你吃下一包金创药} {#math yaonum @yaonum-1;#if (@yaonum<@yaolist) {yaomark=0};hp}
+#action	{你吃下一颗百霜丹} {#math dannum @dannum-1;#if (@dannum<@yaolist) {danmark=0};hp}
+#action	{你吃下一颗混元丹} {#math dannum @dannum-1;#if (@dannum<@yaolist) {danmark=0};hp}
+#action	{你的内力不够} {#wa 3000;dazuo 80}
+#action	{你的真气不够} {dazuo 100}
+#action	{你将丹桂丸在掌心里碾碎} {#math yaonum @yaonum-1;#if (@yaonum<@yaolist) {yaomark=0};hp}
+#action	{你略一凝神，吸了口气，精神看起来清醒多了。} {RecoverBusy=0;hp}
+#action	{你盘膝而坐，静坐冥思了一会儿。} {RecoverBusy=1}
+#action	{你全身放松，坐下来开始运功疗伤} {hp}
+#action	{你上一个动作还没有完成，不能施用内功} {#wa 2000;hp}
+#action	{你深深吸了几口气，脸色看起来好多了。} {RecoverBusy=0;hp}
+#action	{你现在的气太少了，无法产生内息运行全身经脉。} {#wait 5000;exert recover}
+#action	{你现在精神饱满，不需吸气。} {RecoverBusy=0;hp}
+#action	{你现在气力充沛，不需吸气。} {RecoverBusy=0;hp}
+#action	{你现在神智不清,不能再想入非非了。} {}
+#action	{你行功完毕，从冥思中回过神来。} {RecoverBusy=0;#wait 3000;exert refresh}
+#action	{你行功完毕，吸一口气} {RecoverBusy=0;#wait 3000;exert recover}
+#action	{你一次输入太多命令了。} {#wait 10000;hp}
+#action	{你最少要花 20 点「精神」才能冥思。} {faliMaximized=1;mpw=0;bian me;#if (@autodecode=1) {dt;1;#wa 4000;dt;2;#wa 3000;dt 2;#wa 3000;dt;1};#wa 2000;hp;enable;#va maxenc %eval(@maxfali/20+1);#va hbnl %eval((@maxnl*14)/1000);#va hbnl2 %eval((@maxnl*7)/1000);#va hbnls %eval((@maxnl*115)/10000);#va mynl %eval(@maxnl/100);#wa 2000;hp}
+#action	{你最少要花 20 点「气」才能练功。} {#TI on;Reset;RecoverBusy=0;bian me;#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {yaomark=0};#if (@mying2=0) {ttaa {武学: @Wx  潜能:@Qn    @Location  @yaoidd  @YaoNeili 年内力  搞顶了}} {ttaa {武学: @Wx  潜能:@Qn    @Location  @yaoidd  @YaoNeili 年内力  搞砸了}};#if (@lunci=1 and @mying2=0) {#if (@buduo=0 and @yaomark=1 and @danmark=1) {kxmb}};#if (@lunci=1 and @mying2=1 and @yaomark=1 and @danmark=1) {al};#if (@lunci>1) {#if (@yaomark=1 and @danmark=1) {al} {ya;#show %ansi(yellow) 药都不够，灭什么妖，灭你自己吧。;ttaa {药都不够，灭什么妖，灭你自己吧。}}};#if (@yaomark=0 or @danmark=0) {#t+ buyyao;#t- downsq;gobuyyao}}
+#action	{你坐下来运气用功，一股内息开始在体内流动。} {RecoverBusy=1}
+#action	{气血：%s(%d)/%s%d%s~(%s(%d)~%~)} {qx=%1;qxFull=0;#if (%2>50) {exert heal} {eayao 1 0}}
+#action	{气血：%s(%d)/%s(%d)%s~(%d~%~)} {qx=%1;#va qxr %2;qxFull=1}
+#action	{潜能：%s(%d)} {Qn=%1}
+#action	{全身发出股青气} {hp}
+#action	{什么？} {#if (@yaomark=0 or @danmark=0) {#t+ buyyao;#t- downsq;#t- recover;dazuo 0;mingsi 0;#wa 5000;gobuyyao}}
+#action	{武1学： %e[1;33m(%d)%e[0m} {Wx=%1;#if (@wx>990000000) {#t- Recover;#ig off;#ts 370;#ti off;lunci=1;meditate 0;dazuo 0;mypwd=wxenough;#save;#wa 8000;quit}}
+#action	{武学： %e[1;33m(%d)%e[0m} {Wx=%1}
+#action	{现在时间%s(%w)%s(%w)%s(%d)%s(%d):(%d):(%d)%sC(%w)T%s(%d)$} {#CW White;WeekDay=%1;Month=%2;Day=%3;Hour=%4;Minute=%5;second=%6;year=%8;#if (@Hour="23" and @DailyReportDone=0) {DailyReport};#if (@Hour!=23) {DailyReportDone=0}}
+#action	{现在时间%s(%w)%s(%w)%s(%d)%s(%d):(%d):(%d)%s中国标准时间%s(%d)$} {#CW White;WeekDay=%1;Month=%2;Day=%3;Hour=%4;Minute=%5;second=%6;year=%7;#if (@Hour="23" and @DailyReportDone=0) {DailyReport};#if (@Hour!=23) {DailyReportDone=0}}
+
+
+{khellbing}
+#action	{鬼兵(*)死了} {#math hbnum2 @hbnum2-1;#if (@hbnum2<1) {ResetTrigger;#wa 6000;gohh;precover} {#t+ khellbing;enforce 10;khellbing}}
+#action	{这里没有这个人。} {#math hbnum3 @hbnum3+1;#wa 3000;#if (@hbnum3>3) {#t- khellbing;#wa 8000;hbnum3=0;enforce 1;gohh;precover}}
+
+
+{DuDi}
+#action	{%x精~(Yao jing~)} {#add yaojing 1}
+#action	{%x精拉拉扯扯揪住你不放。} {yaojing=0;l}
+#action	{%x精死了。} {#add yaojing -1;#if (@yaojing>0) {kill yao jing} {l}}
+#action	{洞厅 -} {#wait 2000;#if (@found=0) {s}}
+#action	{二洞门 -} {#wait 2000;#if (@found=0 and @yaojing>0) {enforce 1;kill yao jing};#if (@found=0 and @yaojing=0) {remove dun;wield blade;wield bang;break;s;unwield bang;unwield blade;wear all}}
+#action	{花亭子 -} {#wait 2000;#if (@found=0) {e}}
+#action	{内宫 - } {#wait 5000;#if (@found=0) {ResetTrigger;mieyao=0;#wa 4000;gohh}}
+#action	{乓地一声门开了！} {}
+#action	{三洞门 -} {#wait 2000;#if (@found=0 and @yaojing>0) {enforce 1;kill yao jing};#if (@found=0 and @yaojing=0) {remove dun;wield blade;wield bang;break;se;unwield bang;unwield blade;wear all}}
+#action	{一洞门 -} {#wait 2000;#if (@found=0 and @yaojing>0) {enforce 1;kill yao jing};#if (@found=0 and @yaojing=0) {remove dun;wield blade;wield bang;break;sw;unwield bang;unwield blade;wear all}}
+
+
+{findguai}
+#action	{%s%x百霜丹~(Baishuang dan~)} {get baishuang dan}
+#action	{%s%x丹桂丸~(Dangui wan~)} {get dangui wan}
+#action	{%s%x金1创药~(Jinchuang yao~)} {get jinchuang yao}
+#action	{%x~(@KGid1~)} {#CW White;#if (@FGfound=1) {FGcount=0} {FGfound=1;found=1};#if (@GLslowrun=1) {#stop;fguaia}}
+#action	{%x~(@useridcg~)} {#CW White;#if (@FGfound=1) {FGcount=0} {FGfound=1;found=1};#if (@GLslowrun=1) {#stop;fguaia}}
+#action	{{这里唯一的出口是|这里明显的出口是|你将*打开。|什么？|*已经是开着的了。|这个方向没有出路|这里没有任何明显的出|乌鸦先生说道：请吧}} {#ADD FGsum 1;#if (@FGfound=1) {#ADD FGcount 1} {FGcount=0};#if (@GLslowrun=1) {#if (@FGsum=@FGslowsum) {time} {}} {}}
+#action	{看起来@KGname想杀死你} {#cw 11;#if (@FGfound=1) {FGcount=0} {FGfound=1};#if (@GLslowrun=1) {#stop;fguaia}}
+#action	{你的反五行摄气诀运行一周天完毕，将内力收回丹田。} {#if (@found=0) {exert powerup}}
+#action	{你的龙神心法运行一周天完毕，龙鳞渐渐消去了。} {#if (@found=0) {exert shield}}
+#action	{你身后的白莲渐渐隐去了} {#if (@found=0) {cast lianhua}}
+#action	{你手捻口诀，念动真言，摇身一变，变得和%x一模一样！} {bian=1}
+#action	{设定环境变数??brief(*)haha} {#gag;GLslowrun=0;mtime=1;#add mfg2 1;#wait 500;
+#if (@FGfound=0) {#t- findguai;#exec @GLexecNO} 
+else  {FGcount=[@FGcount];
+#if (@FGcount>0) {
+#LOOP @FGcount #BACK;FGfound=0
+} {FGfound=1};FGcount=0;#t- findguai;#T+ Fight1;#T+ fight3;found=1;ResetTrigger2;#T+ backup;enforcemax;follow @KGid;look @KGid}}
+
+
+{RefreshAll}
+#action	{%e[1;36m你口中喷出一股黑风，整个人也随着黑风散去。。。%e[0m} {#wait 2000;#3 north;#2 w}
+#action	{黑暗之中 - } {}
+#action	{你觉得自己的精神气血一下子都恢复了。} {#T- refreshall;#slow .outofhell;#wait 2000;#T+ refreshall}
+#action	{请不要在拱猪房里施用法术，谢谢。} {%item(@escape1|@escape2|@escape3|@escape4|@escape5|@escape6,%random(1,6));#wait 2000;ResetTrigger;mieyao=0;CastChuQiao}
+#action	{太白金星对你摇摇头：这位异样的眼神，天堂非同下界，怎可随便乱施法术！} {d;CastChuQiao}
+#action	{这里不准念咒文。} {%item(@escape1|@escape2|@escape3|@escape4|@escape5|@escape6,%random(1,6));#wait 2000;CastChuQiao}
+
+
+{Hellfly2}
+#action	{????殿 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;w;w;e;#10 s}
+#action	{背阴小道 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;w;w;w;s;s}
+#action	{壁斗崖 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;#3 n;w;w;w;s;s}
+#action	{超生贵道门 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;nw;#3 n;w;w;w;s;s}
+#action	{翠云宫 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;sd;#10 s}
+#action	{奉祭场 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;s}
+#action	{鬼门关 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;s}
+#action	{荒郊草野 -} {#t- hellfly2;#t- hellfly3;#t- hellfly5;#t- hellfly;#t+ hellfly4;#t- CastChuQiao3;#t- hellfly6}
+#action	{寂灭司 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;s;w;s}
+#action	{轮回司 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;s;e;s}
+#action	{奈何桥 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;#3 n;w;w;w;s}
+#action	{平阳大路 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;#3 n;w;w;w;s}
+#action	{司房 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;w;w;w;e;n;#7 w;e;e;s}
+#action	{阎罗宝殿 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;#5 s}
+#action	{阴司 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;w;w;w;e;n;#7 w;e;e;s}
+#action	{阴阳界 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;north}
+#action	{阴阳塔 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t- CastChuQiao3;#t+ hellfly5;#t- hellfly6;#wa 2000;e;e;s}
+#action	{招魂司 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- CastChuQiao3;#t- hellfly6;#wa 2000;l}
+#action	{泗鬼门 -} {#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly;#t+ hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 2000;w;w;s}
+
+
+{CastChuQiao4}
+#action	{@useridc趁着火影逃跑了。} {#t- CastChuQiao4;#wa 8000;put bag in kuang;er;ef;#wa 2000;gohh}
+#action	{@useridc没跑掉} {#wa 4200;tx;gohh3}
+#action	{你附近没有这样东西。} {drop bag;gohh2}
+
+
+{Hellfly6}
+#action	{^????设定环境变数(*)hellhell} {#t- CastChuQiao3;#wa 1000;#t- CastChuQiao3;#t+ hellfly2;#t+ fight1;#t- hellfly3;#t- hellfly4;#t- hellfly6;#t- hellfly5;l}
+
+
+{Outbaihudong}
+#action	{%s这里明显的出口是*out*} {out}
+#action	{^????洞口} {#T- Outbaihudong;#t+ fight;#t+ fight1;#t+ fight2;inkgd=0;#wa 2000;zaobaihu3}
+#action	{这里明显的出口是 (%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=;Escape4=;Escape5=;Escape6=;RandomWalk}
+#action	{这里明显的出口是 (%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=;Escape5=;Escape6=;RandomWalk}
+#action	{这里明显的出口是 (%w)、(%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=%4;Escape5=;Escape6=;RandomWalk}
+#action	{这里明显的出口是 (%w)、(%w)、(%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=%4;Escape5=%5;Escape6=;RandomWalk}
+#action	{这里明显的出口是 (%w)、(%w)、(%w)、(%w)、(%w) 和 (%w)。} {Escape1=%1;Escape2=%2;Escape3=%3;Escape4=%4;Escape5=%5;Escape6=%6;RandomWalk}
+#action	{这里唯一的出口是 (%w)。bak} {Escape1=%1;Escape2=;Escape3=;Escape4=;Escape5=;Escape6=;escapeall="";#var escapeall %addItem(%1,@escapeall);#var escapeall %addItem(%2,@escapeall);#var escapeall %addItem(%3,@escapeall);#var escapeall %addItem(%4,@escapeall);#var escapeall %addItem(%5,@escapeall);#var escapeall %addItem(%6,@escapeall)}
+#action	{这里唯一的出口是 (%w)。} {Escape1=%1;Escape2=;Escape3=;Escape4=;Escape5=;Escape6=;RandomWalk}
+
+
+{Fight}
+#action	{%e[1;33m你口念咒语，身形一晃，现了真身。%e[0m} {bian=0}
+#action	{%x怪脚下一个不稳，跌在地上一动也不动了。} {akill}
+#action	{@useridc向(%x)追去。} {#2 release;#T+ find;#T+ backup;hp;er;ef;#wa 1000;#if (%1="北") {s};#if (%1="南") {n};#if (%1="东") {w};#if (%1="西") {e};#if (%1="北边") {su;sd};#if (%1="南边") {nu;nd};#if (%1="东边") {wd;wu};#if (%1="西边") {eu;ed};#if (%1="东北") {sw};#if (%1="西北") {se};#if (%1="东南") {nw};#if (%1="西南") {ne};#if (%1="上") {d};#if (%1="下") {u};#if (%1="外") {enter};#if (%1="里") {out};l @yaoidd;akill}
+#action	{@yaoname脚下一个11不稳} {kill @yaoidd;#wa 2000;kill @yaoidd}
+#action	{@yaoname推开一堆野草，往地下钻了进去。} {yaoescaped=1;guaiesca=enter;#t+ fightesc;#if (@mduo=1 or @mduo=8) {drop @gweapon} {mduo=2};akill;l;l @yaoidd;#if (@usermp=gouhun) {release}}
+#action	{@yaoname往%x离开。} {yaoescaped=1;guaiesc=%1;convertguaiesc;#t+ fightesc;#if (@mduo=1 or @mduo=8) {drop @gweapon} {mduo=2};l;l @yaoidd;#if (@usermp=gouhun) {release};#if (@location=乌鸡国) {er}}
+#action	{@yaoname往(%x)落荒而逃了。} {yaoescaped=1;guaiesc=%1;convertguaiesc;#t+ fightesc;#if (@mduo=1 or @mduo=8) {drop @gweapon} {mduo=2};akill;l;l @yaoidd;#if (@usermp=gouhun) {release};#if (@location=乌鸡国) {er}}
+#action	{@yaoname已被旧白布搭包装了进去} {#wa 8000;#3 release;w;w;sw;s;s;get %lower(@yaoid) from jin nao;drop %lower(@yaoid);akill}
+#action	{^??????@YaoName大叫一声} {mieyaoover}
+#action	{^??????@YaoName死了} {mieyaoover}
+#action	{^??????@YaoName无可奈何} {mieyaoover}
+#action	{^??????@YaoName眼见无奈} {mieyaoover}
+#action	{^??????@YaoName一看不是} {mieyaoover}
+#action	{^????@yaoname退后两步，深深地吸一口气，猛然发出股如山崩海啸般的龙} {#if (@helpskill=qianshou) {mduo=110}}
+#action	{^????从天上徐徐11飘下几页天书，落入你的怀中} {mtianshu=1;mpause=1;surrender;noneili=1;Busy=0;#cw white;#T- Fight;#T- Fight1;#T- Fight2;#T- Fight3;qngain=%2;getwx=%1;tta 从天上徐徐飘下几页天书落入怀中;#add mieyaosum 1;hbnum=0;hbnum3=0;looknum=0;checkmark=0;hbt=0;mying2=0;mying4=0;#if (@bian=1) {bian me;bian=0};#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#if (@location=乌鸡国) {drop axe};#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@hbneed>0 and @usermp=gouhun) {#2 release;@helldi;#2 release};#2 release;#if (@usermp=gouhun) {kill zombie};ResetTrigger;#wa 7000;surrender;enforce 1;#if (@hbnum2<1) {gohh};#if (@hbnum2>0 and @usermp=gouhun) {#t+ khellbing;@helldi;khellbing};CBC:WeaponBroken=0 }
+#action	{^????各手掌中心的眼睛缓缓打量着(%x)。} {#if (@helpskill=qianshou) {qyman=%1;#if (%pos(@yaoname,%1)) {}}}
+#action	{^????可是@yaoname的看破了你的企图，立刻采取守势，飘身躲开你的攻} {tta 没有夺到@yaoname的兵器}
+#action	{^????你吃下一颗百霜丹} {#math dannum @dannum-1;#if (@dannum<15) {#t- BackUp;mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#if (@usermp=gouhun) {#2 release};#t+ Escape;randomwalk;#t- BackUp;#t+ fight1;gohh}}
+#action	{^????你得到了(%x)点11武学经验和(%x)点潜能} {surrender;noneili=1;Busy=0;mpause=0;mtianshu=0;#cw white;#T- Fight;#T- Fight1;#T- Fight2;qngain=%2;getwx=%1;tta 得到了%1点武学经验和%2点潜能;convertgetwx;#add mieyaosum 1;hbnum=0;hbnum3=0;looknum=0;checkmark=0;hbt=0;mying2=0;mying4=0;#if (@bian=1) {bian me;bian=0};#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#if (@location=乌鸡国) {drop axe};#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@hbneed>0 and @usermp=gouhun) {#2 release;@helldi;#2 release};#2 release;#if (@usermp=gouhun) {kill zombie};ResetTrigger;#wa 7000;surrender;enforce 1;#if (@hbnum2<1) {gohh};#if (@hbnum2>0 and @usermp=gouhun) {#t+ khellbing;@helldi;khellbing};CBC:WeaponBroken=0 }
+#action	{^????你鬼鬼祟祟地一运气} {s;s;gohh}
+#action	{^????你将丹桂丸在掌心里碾碎} {#math yaonum @yaonum-1;#if (@yaonum<15) {#t- BackUp;mying4=1;mying=1;#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#if (@usermp=gouhun) {#2 release};#t+ Escape;randomwalk;#t- BackUp;#t+ fight1;gohh}}
+#action	{^????你脸色不大对，好象动了杀机} {kill @yaoidd}
+#action	{^????你内力不继，难以} {#if (@helpskill=cf and @mcf>0) {noneili=1;mying4=1;#t- fight;#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 @escape1;tx;#if (@location=乌鸡国) {drop axe};gohh}}
+#action	{^????你双臂飞舞，两只手掌宛似化成了千手千掌，竟把@yaoname困住} {#if (@helpskill=qianshou) {#if (@mduo=5 and @falii>300) {pfmduo @yaoidd}}}
+#action	{^????你只觉@yaoname手中的(%x)如同铸在铁中一般} {#if (@helpskill=qianshou) {tta 没有夺到@yaoname的兵器;gweaponc=%1}}
+#action	{^????如果你愿意11和对方进行比试，请你也对(%x)下一次 fight 指令} {#cw white;#T- Fight;#T- Fight1;#T- Fight2;tt 如果你愿意和对方进行比试，请你也对%1下一次 fight 指令;#if (@bian=1) {bian me;bian=0};#if (@location=金兜山) {bian me};#if (@location=无底洞) {bian me};#if (@location=宝象国) {bian me};#if (@location=乌鸡国) {drop axe};#if (@mduo=1 or @mduo=8) {drop @gweapon};release;gohh}
+#action	{^????谁知@yaoname混若不见，后发先至一个进招挡住了你的攻势} {#if (@helpskill=qianshou) {tta 没有夺到@yaoname的兵器}}
+#action	{^????只见你手中凤凰琴急颤，幻出满天剑芒，无数剑气有如百鸟投林般向@yaoname扑来} {#if (@helpskill=cf and @mcf>0) {mcf=8}}
+#action	{no~( 你上一个动1111作还没有完成，不能施用内功。~)} {#add tempcounter 1;#if (@tempcounter<3) {#wait 2000;DoExert};#if (@tempcounter>5) {tempcounter=0;#wait 2000;DoExert}}
+#action	{法力：%s(%d)%s/%s(%d)} {falii=%1}
+#action	{鬼兵(*)死了} {#if (@usermp=gouhun) {#math hbnum2 @hbnum2-1;#if (@hbmark=1) {kill @yaoidd;cm;cmm};#if (@guainl>@hbnl or @guainl=@hbnl) {#if (@hbnum<2) {hell_bing}}}}
+#action	{鬼兵(*)向(*)追去。} {#if (@usermp=gouhun) {#T+ find;er;re;#if (%2="北") {helldi=n};#if (%2="南") {helldi=s};#if (%2="东") {helldi=e};#if (%2="西") {helldi=w};#if (%2="北边") {helldi=nu|nd};#if (%2="南边") {helldi=su|sd};#if (%2="东边") {helldi=ed|eu};#if (%2="西边") {helldi=wu|wd};#if (%2="东北") {helldi=ne};#if (%2="西北") {helldi=nw};#if (%2="东南") {helldi=se};#if (%2="西南") {helldi=sw};#if (%2="上") {helldi=u};#if (%2="下") {helldi=d};#if (%2="外") {helldi=out};#if (%2="里") {helldi=enter}}}
+#action	{哗啦啦一阵碎石头响，@yaoname从山壁上斜滑了下来！
+} {#wa 1000;#3 release;sd;drop %lower(@yaoid);kill %lower(@yaoid)}
+#action	{加油！加油！加油} {mying3=1;muptime=1;guaiescm=1;#t+ fight2;#t+ fight1}
+#action	{九头狮将一只狮子头伸长，一口把@yaoname含在嘴里！} {ResetTrigger;mieyao=0;#wa 4000;gohh}
+#action	{慢慢地从地下浮起一位鬼兵，站到你身后。} {#math hbnum @hbnum+1;#math hbnum2 @hbnum2+1;wg}
+#action	{内力：%s(%d)%s/%s%d} {nll=%1;#math nnl @shaqi+100;#if (@nll<500) {noneili=1;mying4=1;#t- fight;#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 @escape1;tx;#if (@location=乌鸡国) {drop axe};gohh}}
+#action	{你大喝一声，开始对@yaoname发动攻击} {mying3=1;muptime=1;guaiescm=1;#t+ fight2;#t+ fight1}
+#action	{你的内力不够。} {noneili=1;mying4=1;#t- fight;#math nescape @nescape+1;#t- CastChuQiao;#t- CastChuQiao3;#t- CastChuQiao2;#3 @escape1;tx;#if (@location=乌鸡国) {drop axe};gohh}
+#action	{你对着@yaoname喝道} {mying3=1;muptime=1;guaiescm=1;#t+ fight2;#t+ fight1}
+#action	{你略一凝神，吸了口气，精神看起来清醒多了。} {#va mef 1;#wait 2000;#al DoExert {exert recover};DoExert}
+#action	{你深深吸了几口气，脸色看起来好多了。} {#va mer 1;#wait 2000;#al DoExert {exert refresh};DoExert}
+#action	{你说道*不打了*不打了} {mtx=1;#wa 4000;mtx=0}
+#action	{你现在不可以领鬼兵} {#if ((@guainl>@hbnl or @guainl=@hbnl) and @hbnum<2) {hell_bing}}
+#action	{你现在精神饱满，不需吸气。} {Busy=0;#va mef 1;#alias DoExert {exert recover};#if (@mcf=1) {#if (@mef=1 and @mer=1) {cfg;#va mef 8;#va mer 8}}}
+#action	{你现在气力充沛，不需吸气。} {Busy=0;#va mer 1;#if (@mcf=1) {#if (@mer=1 and @mef=1) {cfg;#va mef 8;#va mer 8}}}
+#action	{你在鬼兵(*)的耳边悄声说道} {hbt=1}
+#action	{牛魔王现了大白牛的原形向@yaoname扑来} {#wa 8000;#3 release;nw;ne;nw;kill @yaoidd}
+#action	{设定环境变数??brief(*)加油啊} {#if (@muptime=0) {#T- find;#t+ fight2;#t+ fight1;#if (@location=乌鸡国) {drop lumber axe};#if (@mying2=1) {EnforceMax;akill;#if (@helpskill=cf) {#if (@mcf=1) {cfg}};cmm;#if (@hbmark=1 and @hbnum=0) {hell_bing};#if (@hbmark=1 and @hbnum>0) {wg}};#wa 8000;#if (@mying2=1) {#if (@hbt=0) {akill;cmm}};#wa 10000;#if (@mying2=1) {akill}}}
+#action	{死了} {#if (@usermp=gouhun) {cm}}
+#action	{西游11记已经运行了} {#if (@muptime=0) {#T- find;#t+ fight2;#t+ fight1;#if (@location=乌鸡国) {drop lumber axe};#if (@mying2=1) {EnforceMax;akill;cmm;#if (@hbmark=1 and @hbnum=0) {hell_bing};#if (@hbmark=1 and @hbnum>0) {wg}};#wa 8000;#if (@mying2=1) {#if (@hbt=0) {akill;cmm}};#wa 10000;#if (@mying2=1) {akill}}}
+#action	{小妖死了。} {#if (@usermp=gouhun) {akill;cm}}
+#action	{子的僵(*)向(*)追去} {#if (@usermp=gouhun) {#T+ find;er;re;#if (%2="北") {helldi=n};#if (%2="南") {helldi=s};#if (%2="东") {helldi=e};#if (%2="西") {helldi=w};#if (%2="北边") {helldi=nu|nd};#if (%2="南边") {helldi=su|sd};#if (%2="东边") {helldi=ed|eu};#if (%2="西边") {helldi=wu|wd};#if (%2="东北") {helldi=ne};#if (%2="西北") {helldi=nw};#if (%2="东南") {helldi=se};#if (%2="西南") {helldi=sw};#if (%2="上") {helldi=u};#if (%2="下") {helldi=d};#if (%2="外") {helldi=out};#if (%2="里") {helldi=enter}}}
+
+
+{hell3}
+#action	{幽司 -} {#t- hell5;#t+ hell6;#t- hell4;#t- hell;#t- hell2;#t- hell3;#wa 2000;w;nu;n;n;n;w;set brief hellhell}
+
+
+{withdraw}
+#action	{你从银号里取出(*)两黄金。} {#t- withdraw;#t+ buyyao;#T- buyyao2;#wa 4000;e;gobuyyao}
+#action	{您在敝银庄共存有(*)两黄金} {gold=%1;convertgold}
+#action	{杨记钱庄 -} {#wa 3000;account;qq @yaogold gold}
+
+
+{BackUp}
+#action	{%x~(@KGid1~)} {#CW White}
+#action	{^>%s一头@yaoname} {#CW White;#T+ fight;#T+ fight1;#T+ fight2;#T+ fight3;#if (@bian=1) {bian me};#t- backup;#wa 300;#t+ backup;cha @yaoidd}
+#action	{^>%s一只%x} {#CW White;#T+ fight;#T+ fight1;#T+ fight2;#T+ fight3;#if (@bian=1) {bian me};#t- backup;#wa 300;#t+ backup;cha @yaoidd}
+#action	{^一头@yaoname} {#CW White;#T+ fight;#T+ fight1;#T+ fight2;#T+ fight3;#if (@bian=1) {bian me};#t- backup;#wa 300;#t+ backup;cha @yaoidd}
+#action	{^一只%x} {#CW White;#T+ fight;#T+ fight1;#T+ fight2;#T+ fight3;#if (@bian=1) {bian me};#t- backup;#wa 300;#t+ backup;cha @yaoidd}
+#action	{你要看什么？} {#math looknum @looknum+1;#if (@looknum>5) {lunci=2;#T- backup;mying=0;ResetTrigger;#wa 6000;gohh;precover};#if (@Found=1 and @looknum<6) {#T- fight;#T- hellbing;#wait 2000;#backup;look %lower(@yaoid)}}
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;31m(%x)年%e[0m的火候。} {YaoNeili2=%2;CheckYaoNeili2;#wait 1000;#if (@YaoNeili2=@YaoNeili) {#T- backup;#T+ fight;follow @yaoidd;kready};#if (@YaoNeili2>@YaoNeili or @YaoNeili2<@YaoNeili) {#t- BackUp;found=0;mying4=1;mying1=1;@escape1;@escape1;ResetTrigger;gghell;#wa 5000;gohh}}
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;34m不到一年%e[0m的火候。} {YaoNeili2=0;#if (@YaoNeili2=@YaoNeili) {#T- backup;#T+ fight;follow @yaoidd;kready};#if (@YaoNeili2>@YaoNeili or @YaoNeili2<@YaoNeili) {#t- BackUp;found=0;mying4=1;mying1=1;@escape1;@escape1;ResetTrigger;gghell;#wa 5000;gohh}}
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;37m(%x)%e[0m又%e[1;31m(%x)年%e[0m的火候。} {#va YaoNeili2j 1;YaoNeili2j=%2;YaoNeili2=%3;CheckYaoNeili2;CheckYaoNeili2j;#math YaoNeili2 @YaoNeili2+@YaoNeili2j;#wa 1000;#if (@YaoNeili2=@YaoNeili) {#T- backup;#T+ fight;follow @yaoidd;kready};#if (@YaoNeili2>@YaoNeili or @YaoNeili2<@YaoNeili) {#t- BackUp;found=0;mying4=1;mying1=1;@escape1;@escape1;ResetTrigger;gghell;#wa 5000;gohh}}
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;37m(%x)甲子%e[0m的火候。} {#va YaoNeili2j 1;YaoNeili2j=%2;CheckYaoNeili2j;#math YaoNeili2 @YaoNeili2j*60 ;#wa 1000;#if (@YaoNeili2=@YaoNeili) {#T- backup;#T+ fight;follow @yaoidd;kready};#if (@YaoNeili2>@YaoNeili or @YaoNeili2<@YaoNeili) {#t- BackUp;found=0;mying4=1;mying1=1;@escape1;@escape1;ResetTrigger;gghell;#wa 5000;gohh}}
+
+
+{百花谷}
+#action	{出口是} {Zzlnum=[@Zzlnum+1]}
+#action	{你要对谁做这个动作} {#gag;dirList=;dirmove=%item(s|w|e|n,%random(1,4));#wa100;#exec @dirmove;#wait 500;#if (@Zzlnum>79) {#t- 百花谷;Zzlnum=0;zaonext} {wink @KGid}}
+#action	{你用迷人的眼眸对} {#delc temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow @KGid;look @KGid}
+
+
+{Check}
+#action	{(%x)一把抓住了你！} {#t- Check;#if (%len(%replace(%1,@yaoname,好))=%len(%1)) {#stop;#wait 1000;#step} {l @yaoidd};#wa 500;#t+ Check}
+#action	{^????你急忙掐指算去，似乎(%x)~((%w)~)正在探听你的行踪。$} {#cap rewards;ttb 你急忙掐指算去，似乎%1~(%2~)正在探听你的行踪。;#t- check;#wa 1500;#t+ check}
+#action	{^????你急忙掐指算去，心中却只是一片茫然。} {#cap rewards;ttb 你急忙掐指算去，心中却只是一片茫然。,,,,find;#t- check;#wa 1500;#t+ check}
+#action	{^????你急忙掐指一算，心中却只是一片茫然} {#cap rewards;ttb 你急忙掐指一算，心中却只是一片茫然,,,check;#t- check;#wa 1500;#t+ check}
+#action	{^????你急忙掐指一算，原来是(%x)~((%w)~)正在打听你的道行。$} {#cap rewards;ttb 你急忙掐指一算，原来是%1~(%2~)正在打听你的道行。;#t- check;#wa 1500;#t+ check}
+
+
+{ShiYue}
+#action	{你从银号里取出(*)两黄金。} {#wa 4000;e;s;se;#11 w;n}
+#action	{你只觉得嗓子眼发咸，张嘴吐出一口五彩斑斓的鲜血。} {tell @tellid 好了，shiyue治好了。;tell @tellid2 好了，shiyue治好了。;shiyue=0;ResetTrigger;#wait 5000;s;gohh}
+#action	{清虚观 - } {#wait 2000;#if (@wuyuandaozhang=1) {#8 eat yao;#8 eat dan;er;ef;ask daozhang about cure} {#wait 10000;#3 eat yao;#3 eat dan;l}}
+#action	{雾渊道长~(Wuyuan daozhang~)} {wuyuandaozhang=1}
+#action	{杨记钱庄 -} {wuyuandaozhang=0;#wa 3000;account;qq 50 gold}
+#action	{一共需要(%x)两白银。} {cureshiyue=%1;cureshiyue;#wait 1000;#if (@cureshiyue\100!=0) {#math cureshiyue @cureshiyue/100+1} {#math cureshiyue @cureshiyue/100};#wait 3000;wuyuandaozhang=0;give @cureshiyue gold to daozhang}
+
+
+{}
+#action	{%e[1;31m你象只没头苍蝇般撞来撞去，可就是找不着北。%e[0m} {tta { 进了奇门了};st}
+#action	{%e[1;33m你口念咒语，身形一晃，现了真身。%e[0m} {bian=0}
+#action	{%s@gweaponc~((*)~)} {#CW White;gweapon=%lower(%1)}
+#action	{%x~(@KGid1~)} {#CW White;found=1}
+#action	{(%x)只觉一股劲力自(%x)传了过来，手腕一麻，手中(%x)脱手而出} {#if (@helpskill=qianshou) {#if (@mduo=5) {gweaponc=%2;#if (%pos(@yaoname,%1)) {mduo=1} {mduo=8};i;help adfaifdasf;tta %1脱手而出@gweaponc}}}
+#action	{(*)胆小鬼} {#cw yellow}
+#action	{^????????????你一次输入太多命令了} {ts;#va mtbusy 1;ResetTrigger;#T- recover;#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#wa 40000;#va mtbusy 0;#T- recover;gohh}
+#action	{^??????你双眉紧蹙，千手千掌的威力好像发挥不出来} {#if (@helpskill=qianshou) {abandon sword;abandon blade;abandon stick;abandon throwing}}
+#action	{^?????你只觉得天地仿佛都塌陷下来，你被猛地甩了出去} {inkgd=0;bury sheli zi;ResetTrigger;mieyao=0;#wa 5000;inkgd=0;gohh}
+#action	{^????@helpedrhhc决定开始跟随你一起行动} {#CW White;#if (@mduo=168) {mduo=5};mduo=55}
+#action	{^????从地下冲出一股腥气，将你顶了出来} {#T- Outbaihudong;#wa 2000;#T+ Outbaihudong;l}
+#action	{^????从天上徐徐飘下几页天书，落入你的怀中} {#cw white;mtianshu=1;mpause=0;mying2=0;mying4=0;tta 从天上徐徐飘下几页天书落入怀中}
+#action	{^????黑暗中只见你跌跌撞撞地摔了下来} {#stop;inkgd=1;ResetTrigger;tta 黑暗中只见你跌跌撞撞地摔下来;#T- temp;#delc temp;#t- findguai;#t- nextmove;#t- Escape;inkgd=1;#wa 10000;#T+ Outbaihudong;l}
+#action	{^????火，火，火！！} {st;gohh}
+#action	{^????没有针对这项主题的说明文件} {#if (@mduo=1 or @mduo=8) {drop @gweapon}}
+#action	{^????你得到了(%x)点武学经验和(%x)点潜能} {#cw white;#cap rewards;qngain=%2;getwx=%1;mying2=0;mying4=0;tta 得到了%1点武学经验和%2点潜能;convertgetwx}
+#action	{^????你得到了一级(%x)} {#file 1 @userid-mieyaoreport.txt;#write 1 你得到了一级%1 @Location  @yaoidd  @YaoNeili 年内力     @weekday  @month  @day  @hour:@minute;#close 1;tta 你得到了一%1;#cap rewards}
+#action	{^????你丢下一*@gweaponc。} {#CW White;#if (@mduo=1) {mduo=2};#if (@mduo=8) {mduo=5};tta 你丢下@gweaponc。}
+#action	{^????你渐感气力不支，身后手掌中心的眼睛缓缓闭上} {#if (@helpskill=qianshou) {mduo=166}}
+#action	{^????你灭妖得到了*点潜能} {mpause=0;mtianshu=0;hp}
+#action	{^????你灭妖得到了} {#cap rewards}
+#action	{^????你在天上转了半天也不知该往那边飞} {#if (@location=蓬莱仙岛 or @location=大雪山) {ResetTrigger;#wa 8000;gohh}}
+#action	{^????如果你愿意加入，请用 team with (%w)。} {#if (%ismember(%1,@TeamList)) {team with %1}}
+#action	{^????现在是西游(%x)年(%x)月(%x)日(%x)时(%x)刻} {#va mnight 1;#va mnight1 %4;#if (%4=酉 and %5=四) {#va mnight2 {戌|亥|子|丑|寅|酉}} {#va mnight2 {戌|亥|子|丑|寅}};#if %ismember(@mnight1,@mnight2) {#va mnight 1} {#va mnight 0};#if (@mnight=0) {#show %ansi(yellow)现在是白天！！！！！} {#show %ansi(yellow)现在是晚上！！！！！}}
+#action	{^????只听有人喊道：公主早已吩咐，请@useridc去见国王陛下} {#CW White;ResetTrigger;dazuo 0;mingsi 0;#stop;#wa 8000;gohh}
+#action	{^??【水陆大会】} {tune sldh}
+#action	{^??忽然一阵黄风呼啸而来，你身不由己被卷了进去} {#stop;zuan;tta 然一阵黄风呼啸而来;inkgd=1;ResetTrigger}
+#action	{^??你被嘭地一声摔在地上} {#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#T- SheLiTa;#T- findguai;zuan;inkgd=1;#ts 370;#wa 20000;#T- findguai;#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#T+ SheLiTa;look}
+#action	{^??你正111要离开，忽然看见什么东西在眼前一晃，不由得停了下来。} {#stop;#wait 100;#step}
+#action	{^??奇1111门(*)阵} {#t+ qimen;tell @tellid 进了奇门遁甲阵了;tt 进了奇门遁甲阵了;st;st;st;st;st;bseal}
+#action	{^｜%s短兵刃 ?dagger(*)%s(%d)/} {#show 短兵刃   %2;#if (%2<10) {abandon dagger}}
+#action	{^｜%s基本剑术 ?sword(*)%s(%d)/} {#if (@helpskill=qianshou) {#show 基本剑术   %2;#if (%2<10) {abandon sword}}}
+#action	{【队伍】(%x)：(%d)-(%d)for(%d)} {#if (%4>40) {tt* bug} {#if (%2>=%3) {tt* 拍着%1的肩膀说：可怜的%1，你不必太为生活担忧，一切都会好起来的。} {#if (%3>1023) {tt %1，你以为你是老妖怪啊，嘁，懒得理你。} {llvl=0;#math llvl %2+1;nqn=0;lp=0;#math lp %4/2;#if (@lp=0) {lp=1};#math nqn (%3*(%3+1)*(2*%3+1))/6;#math nqn @nqn-(@llvl-1)*@llvl*(2*@llvl-1)/6;#math nqn @nqn/@lp+%abs(%3-%2);#math llvl 4*@nqn;#if (%3>100) {lp=，@nqn乘4等于@llvl，小样，这还想难倒我？} {lp=，小朋友要加油啊。};tt %1，%5的智慧从%2级到%3级约需@nqn点潜能@lp}}}}
+#action	{【队伍】(%x)：skills(%d)} {#if (%2>1023) {tt %1，你这个老不死的怎么还不死？} {#if (%2<1) {tt %1，唉，怎么说呢，你活着还有什么意思？} {#math nwx (%2-1)*(%2-1)*(%2-1)/10;tt %1，%2　级的技能需要　@nwx　点武学经验支持。}}}
+#action	{法11力：%s(%d)%s/%s(%d)} {fali=%1;maxfali=%2;#math temp (((2*@maxfali-@fali)/80)*20);#if (@temp>@js) {meditate @js} {exert refresh;exert recover;meditate @temp};#wa 60000;hp}
+#action	{分你一块*。} {eat cake}
+#action	{观1礼台 -} {put bag in kuang;challenge xiaoma}
+#action	{混天绫红光一暗，松开了} {jg}
+#action	{火焰山 -} {#wa 2000;l}
+#action	{锦镧袈裟凌空而起，消失在空中} {wear all}
+#action	{荆棘被推到两旁，闪出一条道路} {remove dun;unwield @weapon2;wear all}
+#action	{里面已经装了(*)根银针，想拆掉用uninstall} {}
+#action	{卢生死了。} {get pillow from corpse}
+#action	{买下一包{大黄|巴豆|白芷}} {#CW White;put yao in kuang}
+#action	{你的反五行摄气诀运行一周天完毕，将内力收回丹田。} {hp}
+#action	{你的魂魄已经出壳了} {}
+#action	{你觉得头脑不大清醒，身子轻飘飘的} {eat dan}
+#action	{你想用手去扯那荆棘，却扎了满手鲜血} {remove dun;wield @weapon2;wear all;push jingji}
+#action	{杀气：%s(%d)} {shaqi=%1}
+#action	{食物：%s(%d)/%s%d} {Food=%1}
+#action	{天书上面的字缓缓隐去，无声无息地消失了} {autodecode=1}
+#action	{五彩天衣凌空而起，消失在空中。} {remove all;wield zhua;wield @Weapon;wear all}
+#action	{现在时间} {#cap rewards}
+#action	{饮水：%s(%d)/%s%d} {Water=%1}
+#action	{在你的耳边悄声说道：我来连@mypwd} {#ig off;#disconnect}
+#action	{只见锦镧袈裟凌空而去，霎时间不见了踪影\} {wear zhan pao}
+#action	{紫色缎带飘进你的怀中。} {drop zishou lu}
+#action	{癞头11和尚死了} {get silver from corpse;get xie from corpse;tear xie}
+
+
+{global}
+#action	{法力：%s(%x)%s/%s(%x)} {GLfali=%1;GLmaxfali=%2;maxjf=[@GLmaxfali/20+1];cha1=[@GLmaxfali*2-@GLfali];mingsi=[@cha1*20/@managain]}
+#action	{精神：%s(%x)/%s(%x)%s~((*)~%)} {GLjs=%1;GLmaxjs=%2;GLjshurt=%3}
+#action	{内力：%s(%x)%s/%s(%x)} {GLneili=%1;GLmaxneili=%2;cha=[@GLmaxneili*2-@GLneili];dazuo=[@cha*20/@forcegain]}
+#action	{气血：%s(%x)/%s(%x)%s~((*)~%)} {GLqixue=%1;GLmaxqixue=%2;GLqixuehurt=%3}
+#action	{杀气：%s(%d)} {shaqi=%1}
+#action	{食物：%s(%x)/} {food=%1}
+#action	{饮水：%s(%x)/(*)} {water=%1;#if (@food<@water) {} {food=@water}}
+
+
+{Fight2}
+#action	{你上一个动作还没有完成，不能施用内功。} {#t- fight2;#wait 500;#t+ fight2;DoExert}
+
+
+{fightesc}
+#action	{^????一头@yaoname} {#CW White;akill}
+#action	{^????一只%x} {#CW White;akill}
+#action	{你要看什么？} {#add guaiescm 1;#if (@guaiescm<3) {idle;#wa 2000;#EXEC @guaiesca;l;l @yaoidd} {#T- fightesc;mying=0;ResetTrigger;#wa 6000;gohh}}
+
+
+{GuaiBlockWay}
+#action	{@BlockWayGuaiName*死了} {#T- GuaiBlockWay;#T+ XiaoXiaoGuai;BlockWayGuaiName="";BlockWayGuaiID="";#wait 3000;gohh}
+#action	{^%s{十年|小小}%s(%x)~((*)~)} {#va BlockWayGuaiName %1;kill %lower(%2);mypf2 %lower(%2)}
+#action	{^@BlockWayGuaiName%s=%s(*),} {BlockWayGuaiID=%1;check @BlockWayGuaiID}
+#action	{顺风耳告诉你：@BlockWayGuaiName的内力修为已有%e[1;31m(%x)年%e[0m的火候。} {BlockWayGuaiNeiLi=%1;ConvertBlockWayGuaiNeiLi;#if (@BlockWayGuaiNeiLi<20) {kill @BlockWayGuaiID} {TimeOutAction}}
+#action	{顺风耳告诉你：@BlockWayGuaiName的内力修为已有%e[1;37m(%x)%e[0m又%e[1;31m(%x)年%e[0m的火候。} {BlockWayGuaiNeiLi=%1;ConvertBlockWayGuaiNeiLi;temp=@BlockWayGuaiNeiLi;BlockWayGuaiNeiLi=%2;ConvertBlockWayGuaiNeiLi;#math BlockWayGuaiNeiLi @temp+@BlockWayGuaiNeiLi;#if (@BlockWayGuaiNeiLi<20) {kill @BlockWayGuaiID} {TimeOutAction}}
+#action	{顺风耳告诉你：@BlockWayGuaiName的内力修为已有%e[1;37m一甲子%e[0m的火候。
+} {BlockWayGuaiNeiLi=60;#if (@BlockWayGuaiNeiLi<20) {kill @BlockWayGuaiID} {TimeOutAction}}
+
+
+{Autolog}
+#action	{^为维护和发展本游戏，巫师有时需要监听玩家。所以希望$} {NoMieYao=1}
+#action	{西游记欢迎您来访} {gb;n;@userid;@userpwd;y;drop linen;#time 1;#T- Directions;#T- DirectionsDiag;#T- mieyaopathbak;#T+ randomdirenone;#T+ radomvarnone;#T+ radomnone;#T+ global;#T+ radompathnone;#T+ mieyao;#wa 15000;#T- autolog}
+#action	{重新连线完毕。} {#TI on;ResetTrigger;mieyao=0;ts;#wa 3000;#t- xjb;#if (@buduo=0) {safeout};gohh}
+
+
+{Hell5}
+#action	{%e[1;37m阴阳界%e[0m - } {#t+ temp;#t- findguai;#t- hell2;#t- hell3;#t- hell4;#t- hell5;#t+ hell;#wa 5000;#if (@found=0) {zaohell1}}
+#action	{招魂司 -} {#t- temp;#t- findguai;#t- hell2;#t- hell3;#t- hell4;#t- hell5;#t+ hell;#wait 5000;#if (@Found=0) {zaohell2}}
+
+
+{yinwudong}
+#action	{^%s%x~(Xiao yao~)
+$} {#add mxiaoyao 1}
+#action	{^%s%x~(Xiao yao~)
+????昏迷不醒} {#add mxiaoyao 1}
+#action	{^%s水老鼠~(Xiao yao~)
+$} {#add mxiaoyao 1}
+#action	{飞蚂蚁%s=%s(*)} {shuifly=%1;shuifly=%lower(@shuifly);#if (%left(@shuifly,8)=xiao yao) {} {bian @shuifly}}
+#action	{水老鼠%s=%s(*)} {shuimou=%1;shuimou=%lower(@shuimou);#if (%left(@shuimou,8)=xiao yao) {} {bian @shuimou}}
+
+
+{read}
+#action	{^｜□惊魂掌 ?jinghun-zhang(*)%s(%d)/} {#show %2 jinghun-zhang %2;#if (%2>280) {#t- read;reset;dazuo 0;mingsi 0;#wa 10000;gohh}}
+#action	{必须空手} {#t- read;unwield bbang;unwield sword;unwield bang;unwield blade;unwield stick;unwield dao;#wa 10000;#t+ read;hp}
+#action	{精神} {#gag}
+#action	{内力：%s(%d)%s/%s(%d)} {nlread=%1;#if (@nlread>1500) {uptime} {dazuo 500;skills}}
+#action	{你按着所学练了一遍} {#gag}
+#action	{你必须先找一根棒子才能练} {#t- read;unwield bbang;unwield sword;unwield bang;unwield blade;unwield stick;unwield dao;wield bbang;#wa 10000;#t+ read;hp}
+#action	{你的「*」进步了} {skills}
+#action	{你的鬼影迷踪进步了} {#gag}
+#action	{你的惊魂掌进步了} {#gag}
+#action	{你的哭丧棒进步了} {#gag}
+#action	{你的千钧棒法进步了} {#gag}
+#action	{你略11一凝神，吸了口气} {#gag}
+#action	{你深深吸了几口气} {#gag}
+#action	{你行功完毕，吸一口气} {#wa 3000;er;ef;hp}
+#action	{你研读有关} {#gag}
+#action	{你一次输入太多命令了} {#t- read;#wa 30000;#t+ read;hp}
+#action	{你正专心地研读} {#gag}
+#action	{气1血} {#gag}
+#action	{潜能} {#gag}
+#action	{食物} {#gag}
+#action	{西游记已经运行了learn} {#gag;#t- read;#wa 1000;#5 {ef;learn taiyi from linmeng for 100};#t+ read;hp}
+#action	{西游记已经运行了lianxi} {#gag;#t- read;#wa 1000;#15 study book;ef;#t+ read;hp}
+#action	{西游记已经运行了read} {#gag;#t- read;#wa 1000;#15 study book;ef;#t+ read;hp}
+#action	{西游记已经运行了} {#gag;#t- read;#wa 1000;#15 lian unarmed;er;ef;#t+ read;hp}
+#action	{饮水} {#gag}
+
+
+{CastChuQiao2}
+#action	{%e[1;37m阴阳界%e[0m - } {#if (@usermp=gouhun) {#t- CastChuQiao2;#t- fight;#t- fight1;#t- fight2;#wa 3000;#12 north;nu}}
+#action	{^???> 花园 -} {#if (@usermp=sea) {#t- CastChuQiao2;s}}
+#action	{^????暗室 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;climb off;out;u;#6;s;fly stone}}
+#action	{^????碧波潭水晶宫 -} {#if (@usermp=sea) {#t- CastChuQiao2;sd;s;sd}}
+#action	{^????兵器库 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;w;s;s;u;fly stone}}
+#action	{^????彩楼 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;w;s;s;s;u;fly stone}}
+#action	{^????餐房 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;nw;n;n;w;wd;#2 se;s}}
+#action	{^????厨房 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;e;s;u;fly stone}}
+#action	{^????村中小路 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????大殿 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;s;s;s;s;u;fly stone}}
+#action	{^????大路 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????地保家 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;fly stone}}
+#action	{^????殿门 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;s;s;s;u;fly stone}}
+#action	{^????洞门 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;u;fly stone}}
+#action	{^????洞穴 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;su;u;w;s;s;s;u;fly stone}}
+#action	{^????供室 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;climb off;out;u;#6;s;fly stone}}
+#action	{^????广场 -} {#if (@usermp=sea) {#t- CastChuQiao2;#2 se;s}}
+#action	{^????过道 -} {#if (@usermp=sea) {#t- CastChuQiao2;sw;sw;#2 se;s}}
+#action	{^????海底 -} {#if (@usermp=sea or @usermp2=yaofainfly or @usermp2=flyinfly) {#t- CastChuQiao2;#wa 1500;#2 e;#2 ne;#2 e;#2 sw;#2 se;w;#2 sw;#2 se;s}}
+#action	{^????海底莽林 -} {#if (@usermp2=yaofainsea) {#va usermp2 yaofainfly;#va usermp fly;fly stone} {#if (@usermp2=flyinsea) {#va usermp2 flyinfly;#va usermp fly;fly stone} {#if (@usermp=sea) {#wa 3000;gghell}}}}
+#action	{^????寒玉堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;sd;s;sd}}
+#action	{^????黑松林 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????后殿 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;n;n;fly stone}}
+#action	{^????后洞 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;s;s;u;fly stone}}
+#action	{^????后花园 -} {#if (@usermp=sea) {#t- CastChuQiao2;#2 sw;#2 se;#2 sw;s;open door;#wa 2000;s;open door;#wa 2000;s;open door;s;s;sd;s;sd}}
+#action	{^????华严寺 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;n;fly stone}}
+#action	{^????回廊 -} {#if (@usermp=sea) {#t- CastChuQiao2;#2 w;#6 s;#3 n;wd;#2 se;s}}
+#action	{^????假山 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;s;n;w;w;#2 wd;#2 w;wd;#2 se;s}}
+#action	{^????井底 -} {#if (@usermp=sea) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#wa 3000;#2 u;out;#5 s;hp;er;ef;atgc=1;fly stone}}
+#action	{^????静性堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;s;w;wd;#2 se;s}}
+#action	{^????客房 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;n;n;fly stone}}
+#action	{^????老张家 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;n;fly stone}}
+#action	{^????冷香殿 -} {#if (@usermp=sea) {#t- CastChuQiao2;e;sd;s;sd}}
+#action	{^????练功堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;sw;sw;#2 se;s}}
+#action	{^????林11道 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????龙宫大门 -} {#if (@usermp=sea) {#t- CastChuQiao2;e;#2 se;s}}
+#action	{^????龙宫前厅 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;wd;#2 se;s}}
+#action	{^????龙宫正殿 -} {#if (@usermp=sea) {#t- CastChuQiao2;#2 wd;#2 w;wd;#2 se;s}}
+#action	{^????龙沙台 -} {#if (@usermp=sea) {n}}
+#action	{^????秘洞 -} {#if (@usermp=yaofa) {#wa 5000;gohh}}
+#action	{^????明察堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;w;wd;#2 se;s}}
+#action	{^????幕府 -} {#if (@usermp=sea) {e}}
+#action	{^????内堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;#2 wd;#2 w;wd;#2 se;s}}
+#action	{^????偏洞 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;e;s;s;u;fly stone}}
+#action	{^????前洞 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;u;fly stone}}
+#action	{^????寝室 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;w;w;s;s;s;u;fly stone}}
+#action	{^????沁玉殿 -} {#if (@usermp=sea) {#t- CastChuQiao2;sw;sw;#2 se;s}}
+#action	{^????清心堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;n;n;w;wd;#2 se;s}}
+#action	{^????取经路 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????散华台 -} {#if (@usermp=sea) {#t- CastChuQiao2;se;s;s;w;wd;#2 se;s}}
+#action	{^????山顶 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????山腹 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;sw;su;fly stone}}
+#action	{^????山谷 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????慎言堂 -} {#if (@usermp=sea) {#t- CastChuQiao2;n;w;wd;#2 se;s}}
+#action	{^????石屋 -} {#if (@usermp=sea) {#t- CastChuQiao2;#3 w;#2 wd;#2 w;wd;#2 se;s}}
+#action	{^????石屋内 -} {#if (@usermp=sea) {#wa 3000;gghell}}
+#action	{^????霜雨轩 -} {#if (@usermp=sea) {#t- CastChuQiao2;out;w;w;s;s;sd;s;sd}}
+#action	{^????水晶宫 -} {#if (@usermp=sea) {#wa 3000;gghell}}
+#action	{^????睡房 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;sw;s;s;w;wd;#2 se;s}}
+#action	{^????铁匠铺 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;fly stone}}
+#action	{^????卧房 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;w;s;u;fly stone}}
+#action	{^????卧龙阁 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;sw;sw;#2 se;s}}
+#action	{^????吸真台 -} {#if (@usermp=sea) {#t- CastChuQiao2;ne;n;n;w;wd;#2 se;s}}
+#action	{^????小村口 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????小庙前殿 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;n;fly stone}}
+#action	{^????小山头 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;fly stone}}
+#action	{^????休息室 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;s}}
+#action	{^????绣房 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;s}}
+#action	{^????学堂 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;fly stone}}
+#action	{^????仪道 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;w;#2 wd;#2 w;wd;#2 se;s}}
+#action	{^????玉阶 -} {#if (@usermp=sea) {l}}
+#action	{^????御花园 -} {#if (@usermp=sea) {#t- CastChuQiao2;#4 w;#6 s;#4 w;#3 n;wd;#2 se;s}}
+#action	{^????月门 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;s;sd;s;sd}}
+#action	{^????月台小径 -} {#if (@usermp=sea) {#t- CastChuQiao2;w;w;s;s;sd;s;sd}}
+#action	{^????张家老店 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;n;n;n;s;fly stone}}
+#action	{^????紫云宫 -} {#if (@usermp=sea) {#t- CastChuQiao2;se;s}}
+#action	{^????芙蓉亭 -} {#if (@usermp=sea) {#t- CastChuQiao2;s;s;s;s;#2 sw;#2 se;#2 sw;s;open door;#wa 2000;s;open door;#wa 2000;s;open door;s;s;sd;s;sd}}
+#action	{^????甬道 -} {#if (@usermp=yaofa) {#t- CastChuQiao2;s;s;u;fly stone}}
+#action	{^花园 -} {#if (@usermp=sea) {#t- CastChuQiao2;s}}
+#action	{一条白玉铺成的玉阶将龙沙台和水晶宫连起} {#if (@usermp=sea) {#t- CastChuQiao2;s;sd}}
+#action	{由此向上是龙宫正殿} {#if (@usermp=sea) {#t- CastChuQiao2;#2 wd;#2 w;wd;#2 w;#2 e;#2 se;s}}
+#action	{这里明显的出口是 (%w)、(%w) 和 (%w)。} {#if (@usermp=gouhun) {#if (%1!=east and %2!=east and %3!=east) {#wa 2000;west};#if (%1!=west and %2!=west and %3!=west) {#wa 2000;east};#if (%1!=north and %2!=north and %3!=north) {#wa 2000;south};#if (%1!=south and %2!=south and %3!=south) {#wa 2000;north}}}
+#action	{这里明显的出口是 (%w)、(%w)、(%w) 和 (%w)。} {#if (@usermp=gouhun) {#wa 2000;north}}
+
+
+{buyyao2}
+#action	{你的钱不够。} {#t- buyyao;#T- buyyao2;#t+ withdraw;#wa 3000;w;s;fly kaifeng;nw;n;w}
+#action	{你向(*)买下一些百霜丹。} {#math dannum @dannum+1;#if (@dannum<@danup) {#wa 100;buy dan from doctor} {danmark=1;ResetTrigger;#wa 7000;atyp=0;byaob}}
+#action	{你向(*)买下一些丹桂丸。} {#math yaonum @yaonum+1;#if (@yaonum<@yaoup) {#wa 100;buy wan from doctor} {yaomark=1};#if (@yaomark=1 and @danmark=1) {ResetTrigger;#wa 7000;atyp=0;byaob};#if (@yaomark=1 and @danmark=0) {#wa 100;buy dan from doctor}}
+#action	{你向(*)买下一些混元丹。} {#math dannum @dannum+1;#if (@dannum<@danup) {#wa 100;buy dan from boss} {danmark=1;ResetTrigger;#wa 7000;atyp=0;byaob}}
+#action	{你向(*)买下一些金创药。} {#math yaonum @yaonum+1;#if (@yaonum<@yaoup) {#wa 100;buy yao from boss} {yaomark=1};#if (@yaomark=1 and @danmark=1) {ResetTrigger;#wa 7000;atyp=0;byaob};#if (@yaomark=1 and @danmark=0) {#wa 100;buy dan from boss}}
+#action	{你一次输入太多命令了} {#t- buyyao2;#wa 10000;#t+ buyyao2;buy yao from boss}
+#action	{指令格式} {#t- buyyao2;#t- buyyao;buying=1;mying=0;#show %ansi(yellow) yp没有boss了 ：（...............;#show %ansi(yellow) yp没有boss了 ：（...............;#wa 2000;w;#5 s;atyp=0;yaomark=0;danmark=0;#ts 300;toepr;#wa 3000;#if (@buduo=0) {safego}}
+
+
+{downsq}
+#action	{城隍庙里香火极盛} {#t- downsq;#10 {give 10 silver to miao zhu};#math shaqi @sqhh-1;hp;#wa 1000;s;e;e;e;e;#wa 1000;byaob}
+#action	{你从银号里取出(*)两黄金。} {#wa 4000;convert 1 gold to silver;#wa 4000;e;s;se;#10 w;n;l}
+#action	{您在敝银庄共存有(*)两黄金} {gold=%1;convertgold}
+#action	{杨记钱庄 -} {#wa 3000;account;qq 1 gold}
+
+
+{Hellfly5}
+#action	{%e[1;37m阴阳界%e[0m - } {#t- temp;#t- findguai;#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly5;#t- hellfly6;#t- CastChuQiao3;#wa 5000;#t- CastChuQiao3;#2 north;zaohellout2}
+#action	{招魂司 -} {#t- temp;#t- findguai;#t- hellfly2;#t- hellfly3;#t- hellfly4;#t- hellfly5;#t- hellfly6;#t- CastChuQiao3;#wait 5000;#t- CastChuQiao3;zaohellout2}
+
+
+{JingJiLing}
+#action	{赤身鬼使死了。} {#if (@Found=0) {#step}}
+#action	{赤身鬼使一挺手中钢叉，挡住了你的去路。} {#stop;enforce 1;kill guard}
+#action	{荆棘被推到两旁，闪出一条道路。} {#if (@Found=0) {jingji=0;#wait 2000;remove dun;unwield blade;uwield bang;wear all;exert recover;#step}}
+#action	{你想用手去扯那荆棘，却扎了满手鲜血} {remove dun;wield blade;wield bang;push jingji}
+#action	{千里眼告诉你：@yaoname~(%lower(@yaoid)~)在(%x)。} {location=%1;gomieyao}
+#action	{这里唯一的出口是 %x。} {#stop;#wait 1000;#if (@found=0) {enforcemax;jingji=1;push jingji}}
+#action	{只见荆棘如潮水般退后。} {#wait 500;#if (@jingji=1) {push jingji} {#if (@found=0 and @jingji=0) {#wait 2000;#step}}}
+
+
+{AfterWakeUp}
+#action	{(%x) - } {RoomName=%1;#if (@RoomName!="东海之滨") {Reset;#wa 9000;gohh} {QuitAction}}
+#action	{^%s兵器伤害力：~[(%d)~]%s盔甲保护力：~[(%d)~]} {AttackPoint=%1;DefensePoint=%2;#if (@DefensePoint>@aarmor) {};exert recover;exert refresh;l }
+#action	{精神：%s(%d)/%s(%d)%s~(%s(%d)~%~)} {js=%1;jsmax=%2;jspercent=%3;#if (@jspercent<50) {#5 eat dan;#wait 2000;ef}}
+#action	{精神：%s(%d)/%s(%d)%s~((%d)~%~)} {js=%1;jsmax=%2;jspercent=%3;#if (@jspercent<50) {#5 eat dan;#wait 2000;ef}}
+#action	{气血：%s(%d)/%s(%d)%s~(%s(%d)~%~)} {qx=%1;qxmax=%2;qxpercent=%3;#if (@qxpercent<50) {#4 fu wan;#wait 2000;er}}
+#action	{气血：%s(%d)/%s(%d)%s~((%d)~%~)} {qx=%1;qxmax=%2;qxpercent=%3;#if (@qxpercent<50) {#4 fu wan;#wait 2000;er}}
+#action	{千里眼告诉你：%x~(@userid~)在(%x)。} {}
+
+
+{qimen}
+#action	{@useridc趁着火影逃跑了。} {#t- qimen;#TS 370;lunci=3;put bag in kuang;#wa 8000;s;s;s;e;e;e;sw;se;s}
+#action	{@useridc没跑掉} {#wa 4200;tx;bseal2}
+#action	{你附近没有这样东西。} {drop bag;bseal}
+
+
+{紫竹林}
+#action	{出口是} {Zzlnum=[@Zzlnum+1]}
+#action	{你要对谁做这个动作} {#gag;#t- 紫竹林;dirList=;#LOOP @GLmv #exec dirList=%additem([@{f%i}],@dirList);dirmove=%item(@dirlist,%random(1,@GLmv));#wa100;#t+ 紫竹林;#if (@mwink=0) {#exec @dirmove};#if (@mwink=1) {mwink=0;#exec %item(nw|ne,%random(1,2))};#wait 500;#if (@Zzlnum>99) {Zzlnum=0;#t- 紫竹林;zaonext} {wink @KGid}}
+#action	{你用迷人的眼眸对} {#delc temp;#t- 百花谷;#t- 紫竹林;#t- 莽林;#t- findguai;#T+ Fight1;found=1;ResetTrigger2;#T+ backup;enforcemax;follow @KGid;look @KGid}
+#action	{这里明显的出口是 southwest、north、south 和 southeast} {n}
+#action	{这里明显的出口是 southwest、southeast 和 north} {n}
+#action	{这里明显的出口是(*)} {#if (%pos(southwest,%1)) {} {#if (%pos(south,%1) and %pos(northeast,%1) and %pos(northwest,%1)) {mwink=1}}}
+
+
+{LiJing}
+#action	{^%s>%s李靖对你说道：近有(%x)~((*)~)在(%x)为非作歹，请速去降服！$} {#CW White;#if (@mnoguai=1) {mnoguai2=0;#add timerr 10} {#add mnoguai2 1;#if (@mnoguai2>@mnoguai2s and @timerr>240) {mnoguai2=0;#add timerr -10}};ts;mask=1;mask2=1;#T- LiJing2;#if (@usermp=gouhun and @houzi=1) {gcorpse} {fly lingshan;w;w;w;s;wu};#wa 3000;mweapon=0;mnoguai=0;hbnum=0;hbnum2=0;mduo=0;checkmark=0;YaoName=%1;YaoID=%2;yaoidd=%lower(@yaoid);Location=%3;KGname=@YaoName;KGid1=@YaoID;KGid=@yaoidd;KGaddress=@Location;thelper;cha @yaoidd;#save;mieyaodone=0;mieyao=0;mying=1;mying2=1;mying3=0;mying4=0;lunci=1;found=0}
+#action	{^%s兵11111器伤害力：~[%e[1;31m(%d)%e[0m~]%s盔甲保护力：~[%e[1m(%d)%e[0m~]} {w;s;AttackPoint=%1;DefensePoint=%2;#VA useridcg %concat(%upper(%left(@userid,1)),%delete(@userid,1,1),"'s ",@yaoidd);hbt=0;get gold from @bag;get silver from @bag;looknum=0;helldi=nn;mbreak=0;#if (@guainl>@mynl) {hbmark=1}  {hbmark=0};#if (@hbneed=0) {hbmark=0};#t+ Escape;enforce 1;#if (@DefensePoint<@aarmor) {#T- LiJing;amark=0;mpause=1;#if (@buduo=0) {safego} {toepr};#wa 5000;#show %ansi(yellow)衣服都不穿，想去送死啊;#show %ansi(yellow)衣服都不穿，想去送死啊;#show %ansi(yellow)衣服都不穿，想去送死啊};#t- findpath;#t+ findguai;#t+ global;GLidle=0;sbkc=0;GLslowrun=0;KGnum=%ismember(@KGaddress,@GLitem);FGfound=0;GLfindNum=0;#if (@DefensePoint>@aarmor or @DefensePoint=@aarmor) {amark=1};#if (@amark=1 and @houzi=0) {1#T- LiJing;#if (@ShaQi<@sqhh) {exert powerup;er;ef};gomieyao2k};#if (@amark=1 and @houzi=1)  {#t+ lijing2;gcorpse2;l hou zi}}
+#action	{^%s兵器伤害力：~[(%d)~]%s盔甲保护力：~[(%d)~]} {w;s;AttackPoint=%1;DefensePoint=%2;#VA useridcg %concat(%upper(%left(@userid,1)),%delete(@userid,1,1),"'s ",@yaoidd);hbt=0;get gold from @bag;get silver from @bag;looknum=0;helldi=nn;mbreak=0;#if (@guainl>@mynl) {hbmark=1}  {hbmark=0};#if (@hbneed=0) {hbmark=0};#t+ Escape;enforce 1;#if (@DefensePoint<@aarmor) {#T- LiJing;amark=0;mpause=1;#if (@buduo=0) {safego} {toepr};#wa 5000;#show %ansi(yellow)衣服都不穿，想去送死啊;#show %ansi(yellow)衣服都不穿，想去送死啊;#show %ansi(yellow)衣服都不穿，想去送死啊};#t- findpath;#t+ global;GLidle=0;sbkc=0;GLslowrun=0;KGnum=%ismember(@KGaddress,@GLitem);FGfound=0;GLfindNum=0;#if (@DefensePoint>@aarmor or @DefensePoint=@aarmor) {amark=1};#if (@amark=1 and @houzi=0) {1#T- LiJing;gomieyao2k};#if (@amark=1 and @houzi=1)  {#t+ lijing2;#T- LiJing;gcorpse2;l hou zi}}
+#action	{^>%s李靖对你说道：近有(%x)~((*)~)在(%x)为非作歹，请速去降服！$} {#CW White;#if (@mnoguai=1) {mnoguai2=0;#add timerr 10} {#add mnoguai2 1;#if (@mnoguai2>@mnoguai2s and @timerr>240) {mnoguai2=0;#add timerr -10}};ts;mask=1;mask2=1;#T- LiJing2;#if (@usermp=gouhun and @houzi=1) {gcorpse} {fly lingshan;w;w;w;s;wu};#wa 3000;mweapon=0;mnoguai=0;hbnum=0;hbnum2=0;mduo=0;checkmark=0;YaoName=%1;YaoID=%2;yaoidd=%lower(@yaoid);Location=%3;KGname=@YaoName;KGid1=@YaoID;KGid=@yaoidd;KGaddress=@Location;thelper;cha @yaoidd;#save;mieyaodone=0;mieyao=0;mying=1;mying2=1;mying3=0;mying4=0;lunci=1;found=0}
+#action	{^??????你要接受谁的公开11邀请} {#show %ansi(yellow) 武器@weapon有 @sticknum 个;#va stick2num 0;#if (@sticknum>@snum2) {score} {remove dun;unwield zhua;unwield @weapon;unwield @weapon 2;unwield @weapon 3;bweapon}}
+#action	{^????但是很显然的，李靖现在的状况没有办法给你任何答覆。} {#t- lijing;#t- lijing2;toepr;#if (@buduo=0) {safego};mying=0;#ts 60}
+#action	{^????猴子死了。} {#T- LiJing;#T- LiJing2;tx;#wa 1000;get corpse;#wa 4000;w;#if (@ShaQi<@sqhh) {exert powerup;er;re};gomieyao}
+#action	{^????李靖对手中照妖镜一看，说：这位@selfnick,妖魔已除尽,不妨先去歇息。} {#wa 5000;mask2=1;#if (@mask=0) {#t- lijing;#t- lijing2;mnoguai=1;#if (@buduo=0) {safego} {toepr};mying=0;#if (@lunci>2) {lunci=2};#ts 60}}
+#action	{^????李靖说道：老夫不是派你去降服@yaoname吗} {mask2=1;#if (@houzi=1) {gcorpse} {fly sky;s;s};#wa 3000;mduo=0;mweapon=0;find @yaoidd}
+#action	{^????你的钱不够} {#wa 2000;get gold from @bag;get silver from @bag;buy @Weapon from boss;buy @Weapon from xiao xiao}
+#action	{^????你没有足够的钱} {#wa 2000;get gold from @bag;get silver from @bag;buy @Weapon from boss;buy @Weapon from xiao xiao}
+#action	{^????你向(*)买下一} {#math sticknum @sticknum+1;#if (@sticknum>@snum2) {remove dun;unwield zhua;wield @Weapon;wield zhua;wear all;#wa 4000;bweaponout;#if (@houzi=1) {gcorpse;look @Weapon} {fly stone;sd;wd;sd;look @Weapon}} {#wa 4000;bweapon2}}
+#action	{^????你向李靖打听有关『kill』的消息} {#VA mask2 0;#wa 20000;#if (@mask2=0) {ask li about kill}}
+#action	{^????你向李靖打听有关『newkill』的消息} {#VA mask2 0;#wa 20000;#if (@mask2=0) {ask li about newkill}}
+#action	{^????你向李靖打听有关『oldkill』的消息} {#VA mask2 0;#wa 20000;#if (@mask2=0) {ask li about oldkill}}
+#action	{^????你要看什么？} {mweapon=1;sticknum=0;#math snum2 @snum-1;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{^????千里眼告诉你：(*)(@yaoidd~)在(*)。} {Location=%2;KGaddress=@Location;#math checkmark @checkmark+1;#if (@checkmark<5) {thelper;cha @yaoidd};#if (@checkmark>4) {#t- LiJing;#t- find;#math lost @lost+1;#file 1 @userid-mieyaoreport.txt;#write 1 丢怪： @Location  @yaoidd  @YaoNeili 年内力     @weekday  @month  @day  @hour:@minute;#close 1;w;s;#if (@buduo=0) {safego} {toepr}};mieyaodone=0;mieyao=0;mying=1;found=0}
+#action	{^????千里眼告诉你：奇怪} {#t- lijing;#t- lijing2;mying=0;#if (@mying4=0) {w;s;#if (@buduo=0) {safego} {toepr}} ;#if (@mying4>0) {#T+ find;#t+ Escape;#math mying4 @mying4+1;enforce 1;#t+ lijing;#t+ lijing2;thelper;l @Weapon};#if (@mying4>2) {mying4=0}}
+#action	{^????这里没有这个人。} {#t- lijing;#t- lijing2;#if (@buduo=0) {safego} {toepr};mying=0}
+#action	{^李靖对你说道：近有(%x)~((*)~)在(%x)为非作歹，请速去降服！$} {#CW White;#if (@mnoguai=1) {mnoguai2=0;#add timerr 10} {#add mnoguai2 1;#if (@mnoguai2>@mnoguai2s and @timerr>240) {mnoguai2=0;#add timerr -10}};ts;mask=1;mask2=1;#T- LiJing2;#if (@usermp=gouhun and @houzi=1) {gcorpse} {fly lingshan;w;w;w;s;wu};#wa 3000;mweapon=0;mnoguai=0;hbnum=0;hbnum2=0;mduo=0;checkmark=0;YaoName=%1;YaoID=%2;yaoidd=%lower(@yaoid);Location=%3;KGname=@YaoName;KGid1=@YaoID;KGid=@yaoidd;KGaddress=@Location;thelper;cha @yaoidd;#save;mieyaodone=0;mieyao=0;mying=1;mying2=1;mying3=0;mying4=0;lunci=1;found=0}
+#action	{长剑?Sword} {#math sticknum @sticknum+1}
+#action	{此1棒两头以金为箍，中间乃一段乌铁} {mweapon=1;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;score}
+#action	{对不起，你的交谈指令被暂时关闭了} {#wa 10000;ask li jing about newkill}
+#action	{凤111凰琴?Fenghuang qin} {#math sticknum @sticknum+1}
+#action	{给1你一把降魔棒} {#math sticknum @sticknum+1;mxmb=0;Weapon=@BuyWeaponID;#if (@sticknum>@snum2) {remove dun;unwield zhua;weapon=@BuyWeaponID;wield @Weapon;wield zhua;wear all;ss;#wa 4000;w;d;d;e;#if (@houzi=1) {gcorpse;look @Weapon} {fly stone;eu;look @Weapon}} {#wa 4000;buy @BuyWeaponID;whisper @giveid 给@userid我bang}}
+#action	{降魔棒?Xiangmo bang?} {#math sticknum @sticknum+1}
+#action	{盘龙棍?Dragon} {#math sticknum @sticknum+1}
+#action	{杀气：%s(%d)} {shaqi=%1}
+#action	{设定环境变数??brief(*)accept} {#show {%ansi(yellow) 武器@weapon有 @sticknum 个};#va stick2num 0;#if (@sticknum<@snum) {remove dun;unwield zhua;unwield @weapon;unwield @weapon 2;unwield @weapon 3;bweapon} {score}}
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;31m(%x)年%e[0m的火候。} {YaoNeili=%2;yaoname=%1;KGname=@YaoName;CheckYaoNeili;#wa 1000;remove dun;unwield zhua;#wait 2000;#if ((@YaoNeili<@hbnl or @YaoNeili=@hbnl) and (@YaoNeili>@hbnl2 or @YaoNeili=@hbnl2)) {l @Weapon} {#t- lijing;#t- lijing2;#if (@buduo=0) {safego} {toepr}};#if (@YaoNeili>@hbnl or @YaoNeili<@hbnl2) {tta {@Location  @yaoidd  @YaoNeili 年内力  别人的怪，，，，，怕怕哦}} }
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;34m不到一年%e[0m的火候。} {yaoname=%1;KGname=@YaoName;YaoNeili=0;remove dun;unwield zhua;#wa 1000;remove dun;unwield zhua;#wait 2000;#if ((@YaoNeili<@hbnl or @YaoNeili=@hbnl) and (@YaoNeili>@hbnl2 or @YaoNeili=@hbnl2)) {l @Weapon} {#t- lijing;#t- lijing2;#if (@buduo=0) {safego} {toepr}};#if (@YaoNeili>@hbnl or @YaoNeili<@hbnl2) {tta {@Location  @yaoidd  @YaoNeili 年内力  别人的怪，，，，，怕怕哦}} }
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;37m(%x)%e[0m又%e[1;31m(%x)年%e[0m的火候。} {#va YaoNeilij 1;yaoname=%1;YaoNeilij=%2;YaoNeili=%3;KGname=@YaoName;CheckYaoNeilij;CheckYaoNeili;#math YaoNeili @YaoNeilij+@YaoNeili;#wa 1000;remove dun;unwield zhua;#wait 2000;#if ((@YaoNeili<@hbnl or @YaoNeili=@hbnl) and (@YaoNeili>@hbnl2 or @YaoNeili=@hbnl2)) {l @Weapon} {#t- lijing;#t- lijing2;#if (@buduo=0) {safego} {toepr}};#if (@YaoNeili>@hbnl or @YaoNeili<@hbnl2) {tta {@Location  @yaoidd  @YaoNeili 年内力  别人的怪，，，，，怕怕哦}} }
+#action	{顺风耳告诉你：(*)的内力修为已有%e[1;37m(%x)甲子%e[0m的火候。} {#va YaoNeilij 1;yaoname=%1;YaoNeilij=%2;KGname=@YaoName;CheckYaoNeilij;#math YaoNeili @YaoNeilij*60 ;remove dun;unwield zhua;#wa 1000;remove dun;unwield zhua;#wait 2000;#if ((@YaoNeili<@hbnl or @YaoNeili=@hbnl) and (@YaoNeili>@hbnl2 or @YaoNeili=@hbnl2)) {l @Weapon} {#t- lijing;#t- lijing2;#if (@buduo=0) {safego} {toepr}};#if (@YaoNeili>@hbnl or @YaoNeili<@hbnl2) {tta {@Location  @yaoidd  @YaoNeili 年内力  别人的怪，，，，，怕怕哦}} }
+#action	{无常棒?Wuchang bang} {#math sticknum @sticknum+1}
+#action	{一把淡青色的短棒，上面有暗红流动，如同一条火蛇般绕在棒上} {mweapon=1;sticknum=0;#math snum2 @snum-1;unwield xdao;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{一把精巧的短棒，一头是白色，一头是黑色} {mweapon=1;sticknum=0;#math snum2 @snum-1;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{一根沉甸甸雕着盘龙的长棍。} {mweapon=1;sticknum=0;#math snum2 @snum-1;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{一根沉甸甸黑黝黝的镔铁棍} {mweapon=1;sticknum=0;#math snum2 @snum-1;unwield xdao;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{一张颜色暗旧的古琴，刻着两只飞舞的凤凰，看上去少说也是上百年的宝贝了} {mweapon=1;sticknum=0;#math snum2 @snum-1;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{云中落下如意黄金宝塔，雾气散后，李靖缓缓出现。} {alli}
+#action	{在你的耳边悄111声说道：没有搞头了} {#T+ LiJing;#T- LiJing2;ss;#wa 1000;w;d;d;e;fly lingtai;open door;n;e;kill zhang men}
+#action	{这是一柄长长的精钢剑} {mweapon=1;sticknum=0;#math snum2 @snum-1;wield zhua;wield @Weapon;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{终极法宝
+} {mweapon=1;sticknum=0;#math snum2 @snum-1;ss;set brief_message;helldi=nn;ek;wear all;i;set brief accept}
+#action	{镔11铁棍?Bintiegun?} {#math sticknum @sticknum+1}
+
+
+{hell4}
+#action	{%e[1;37m阴阳界%e[0m - } {#t- hell4;#t- hell2;#t- hell3;#t- hell5;#t+ hell;#t+ temp;#t- findguai;#wa 5000;#if (@found=0) {zaohell1}}
+#action	{%s这里明显的出口是%s(*)。} {#show 长度是 %len(%1);#if (%len(%1)=26 or %len(%1)=41) {#wa 2000;north};#if (%len(%1)=19 or %len(%1)=34) {#if (%len(%replace(%1,north,hellooo))>%len(%1)) {#wa 2000;north};#if (%len(%replace(%1,south,he))<%len(%1)) {#wa 2000;south}};#if (%len(%1)=20 or %len(%1)=35) {#if (%len(%replace(%1,east,hellooo))>%len(%1)) {#wa 2000;east};#if (%len(%replace(%1,west,he))<%len(%1)) {#wa 2000;west}};#if (%len(%1)>41 or (%len(%1)>35 and %len(%1)<41) or (%len(%1)>26 and %len(%1)<34) or (%len(%1)>20 and %len(%1)<26) or %len(%1)<19) {#wa 2000;#clr;#wa 2000;look}}
+
+
+{pkhere}
+#action	{^????设定环境变数??brief(*)pkerpk} {#t- pkhere;#wa 2000;#if (@mbigdan=0) {#if (@mmieyao=1) {algo};#if (@mmieyao=0) {#show %ansi(yellow)有pker ,,,不敢mieyao咯;lunci=2;tta {有pker ,,,不敢mieyao咯};#al timer {al};#if (@mhome=0) {safego}}};#if (@mbigdan=1) {#show %ansi(yellow)管他有没有pker，老子照mieyao;#wa 2000;algo}}
+#action	{现在并没有公开邀请别人。} {mmieyao=0}
+
+
+{thelper1}
+#action	{^????【队伍】@helpedrc：近有(*)就是(*)在(*)点} {#if (@inkgd=0) {#CW White;ts;mask=1;mask2=1;#T- LiJing2;#T+ LiJing;#t- thelper1;#t- fight;#t- figh1;#t- figh2;#wa 200;mweapon=0;hbnum=0;hbnum2=0;checkmark=0;YaoName=%1;YaoID=%2;yaoidd=%lower(@yaoid);Location=%3;KGname=@YaoName;KGid1=@YaoID;KGid=@yaoidd;KGaddress=@Location;safeout;l @Weapon;#save;mieyaodone=0;mieyao=0;mying=1;mying2=1;mying3=0;mying4=0;lunci=1;found=0}}
+
+
+{人物数据}
+#action	{*弟子%s(%x)~((*)~)} {Myname=%1;Myid=%lower(%2)}
+#action	{法术%s~(spells~)%s-%s%x%s(%x)/} {spellslev=%1;enable}
+#action	{根骨：~[%s(%x)~]} {con=%1}
+#action	{灵性：~[%s(%x)~]} {spi=%1;skills}
+#action	{内功%s~(force~)%s：%s%x%s有效等级：%s(%x)} {maxjl=[%1/2];forcegain=[[@forcelev/10+@con/3+3]*2+6];managain=[[@spellslev/10+@spi/3+3]*2+6];#if (@forcegain>86) {forcegain=86};#if (@managain>86) {managain=86};#t- 人物数据}
+#action	{内功心法%s~(force~)%s-%s%x%s(%x)/} {forcelev=%1}
+
+
+{CastChuQiao}
+#action	{(*)一把抓住了你} {#wa 2000;gohh}
+#action	{^%s(*)包金创药} {yao=%1;convertyao;#if (@yaonum<@yaolist) {yaomark=0} {yaomark=1}}
+#action	{^%s(*)根银针} {#if (@mcf>0 and @helpskill=cf) {yinzhen=%1;convertyinzhen}}
+#action	{^%s(*)颗百霜丹} {dan=%1;convertdan;#if (@dannum<@danlist) {danmark=0} {danmark=1}}
+#action	{^%s(*)颗丹桂丸} {yao=%1;convertyao;#if (@yaonum<@yaolist) {yaomark=0} {yaomark=1}}
+#action	{^%s(*)颗混元丹} {dan=%1;convertdan;#if (@dannum<@danlist) {danmark=0} {danmark=1}}
+#action	{^%s断掉的凤凰琴?Fenghuang qin} {drop fenghuang qin}
+#action	{^????傲1来国 -} {#if (@usermp=sea or @usermp=fly or @usermp=yaofa) {#t- CastChuQiao;#t+ Recover;atgc=0;buying=0;mrecover=0;#wa 3000;#if (@yaomark=1 and @danmark=1) {buying=0} {buying=1};#if (@Food<300) {bdan;ResetTrigger;#wa 8000;s;ToRecoverPlace} {s;ToRecoverPlace}}}
+#action	{^????花1果山 -} {#if (@usermp=sea or @usermp=fly or @usermp=yaofa) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#wa 2000;put 5 gold in @bag;put 3 gold in @bag;put 20 silver in @bag;put 5 silver in @bag;put bag in kuang;er;ef;#if (@ShaQi>@sqhh and @mpw=1) {exert powerfade;er;ef};yaonum=0;dannum=0;danmark=0;yaomark=0;i;skills;put @yaolist dan in @bag;put @yaolist wan in @bag;get dan from @bag;get wan from @bag;#wa 5000;w;get dan from @bag;get wan from @bag}}
+#action	{^????灵山脚 -} {#if (@usermp2=yaofainsea or @usermp2=yaofainfly) {#va usermp yaofa;#va usermp2 yaofaaa};#if (@usermp2=flyinsea or @usermp2=flyinfly) {#va usermp fly;#va usermp2 flyaaa};#if (@usermp=sea or @usermp=fly or @usermp=yaofa) {#t- fight;#t- fight1;#t- fight2;#t- Recover;castnum=0;#t- BackUp;#t- Escape;#t- CastChuQiao3;tta 好咯好咯搞定咯;wu;#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@location=乌鸡国) {drop lumber axe};set brief first}}
+#action	{^????你被定住了，哪里飞得起来} {#if (@usermp=sea or @usermp=gouhun or @usermp=yaofa or @usermp=fly) {#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#wa 40000;#t+ Escape;gohh}}
+#action	{^????你将一些百霜丹放进} {danmark=1}
+#action	{^????你将一些丹桂丸放进} {yaomark=1}
+#action	{^????你将一些混元丹放进} {danmark=1}
+#action	{^????你将一些金创药放进} {yaomark=1}
+#action	{^????你现在头脑不太清醒，当心掉下来摔死} {#wa 5000;eat dan;er;ef;fly lingshan;w;w;w;s}
+#action	{^????你现在无法移动} {#if (@usermp=sea or @usermp=gouhun or @usermp=yaofa or @usermp=fly) {#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#wa 40000;#t+ Escape;gohh}}
+#action	{^????你想飞起来，可是体力似乎有点不支} {#wa 5000;fu wan;eat yao;er;ef;fly lingshan;w;w;w;s}
+#action	{^????你正忙着呢，没工夫腾云驾雾} {#if (@usermp=sea or @usermp=gouhun or @usermp=yaofa) {#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#wa 2000;#t+ Escape;gohh}}
+#action	{^????你正在战斗，飞不开} {#if (@usermp=sea or @usermp=gouhun or @usermp=yaofa) {#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#wa 2000;#t+ Escape;gohh}}
+#action	{^????仙石 -} {#wa 2000;fly lingshan;w;w;w;s}
+#action	{^????阳明道 - 
+} {#if (@usermp=seal) {#t- CastChuQiao;#t+ Recover;atgc=0;buying=0;mrecover=0;#wa 3000;#if (@yaomark=1 and @danmark=1) {buying=0} {buying=1};#if (@Food<300) {bdan;ResetTrigger;#wa 8000;ToRecoverPlace} {ToRecoverPlace}}}
+#action	{^????正厅 -} {#if (@usermp=seal) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#if (@lunci>5) {ts};#wa 2000;put 5 gold in @bag;put 3 gold in @bag;put 20 silver in @bag;put 5 silver in @bag;put bag in kuang;er;re;#if (@ShaQi>@sqhh) {exert powerfade;er;re};yaonum=0;dannum=0;danmark=0;yaomark=0;i;skills;put @yaolist dan in @bag;put @yaolist wan in @bag;get dan from @bag;get wan from @bag;#wa 5000;n}}
+#action	{^????只见11狂风大作，你从里面走了出来} {#if (@usermp=sea or @usermp=fly or @usermp=yaofa) {#t- fight;#t- fight1;#t- fight2;castnum=0;#t- BackUp;#t- Escape;#t- CastChuQiao3;sd;wd;sd}}
+#action	{^????周围没有一片云，没办法腾云驾雾} {#if (@usermp=sea or @usermp=gouhun or @usermp=yaofa) {#T- CastChuQiao;#T- CastChuQiao1;#T- CastChuQiao2;#T- CastChuQiao3;#T- CastChuQiao4;#wa 2000;#t+ Escape;gohh}}
+#action	{^???你行功完毕，从冥思中回过神来。} {#wait 3000;ef;er;#wa 3000;gohh}
+#action	{^??后111山 -} {#if (@usermp=sea or @usermp=fly) {#t- CastChuQiao;#t+ Recover;atgc=0;buying=0;mrecover=0;#wa 3000;#if (@yaomark=1 and @danmark=1) {buying=0} {buying=1};#if (@Food<300) {bdan;ResetTrigger;#wa 8000;ToRecoverPlace} {ToRecoverPlace}}}
+#action	{^??后山111树丛 -} {#if (@usermp=sea or @usermp=fly) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#wa 2000;put 5 gold in @bag;put 3 gold in @bag;put 20 silver in @bag;put 5 silver in @bag;put bag in kuang;er;re;#if (@ShaQi>@sqhh) {exert powerfade;er;re};yaonum=0;dannum=0;danmark=0;yaomark=0;i;skills;put @yaolist dan in @bag;put @yaolist wan in @bag;get dan from @bag;get wan from @bag;#wa 5000;n}}
+#action	{^??你的法力不够} {er;ef;meditate 100}
+#action	{^??你的法力不够了} {er;ef;meditate 100}
+#action	{^??你的法力不足！} {er;ef;meditate 100}
+#action	{^??你的精神无法集中} {ef;meditate 100}
+#action	{^??你没有那么多的百霜丹。} {danmark=0}
+#action	{^??你没有那么多的丹桂丸。} {yaomark=0}
+#action	{^??你没有那么多的混元丹。} {danmark=0}
+#action	{^??你没有那么多的金创药。} {yaomark=0}
+#action	{^??你目前法力不够充盈。} {er;ef;meditate 100}
+#action	{厨11房 -} {#if (@usermp=yaofa) {ResetTrigger;#wa 2000;#t- CastChuQiao3;#t- CastChuQiao2;#t- CastChuQiao1;#t- CastChuQiao;#t- CastChuQiao4;e;e;w;s;s;u;fly changan;e;e;s;answer 拜师;s;s;s;save;s;#wa 3000;gohh}}
+#action	{翠云宫 -} {#if (@usermp=gouhun) {#wa 2000;sd;#8 s;#3 e;#wa 2000;put 5 gold in @bag;put 3 gold in @bag;put 20 silver in @bag;put 5 silver in @bag;get @dann from @bag;get @yaon from @bag;#3 s;se;out;atgc=1;yaonum=0;dannum=0;danmark=0;yaomark=0;i;skills}}
+#action	{黑暗之中 -} {escape1=open guancai}
+#action	{你的脚下突然涌起一股水波，水流过后，你随之不见了} {#t- fight;#t- fight1;#t- fight2;castnum=0;#t- BackUp;#t- Escape;#t- CastChuQiao3;#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@location=乌鸡国) {drop lumber axe}}
+#action	{你的身影突然出现在一阵尘土中} {#if (@usermp2=yaofainsea or @usermp2=yaofainfly) {#va usermp yaofa;#va usermp2 yaofaaa};#t- fight;#t- fight1;#t- fight2;castnum=0;#t- BackUp;#t- Escape;#t- CastChuQiao3;#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@location=乌鸡国) {drop lumber axe}}
+#action	{你飞起一脚踢开棺材，爬了出去。} {#if (@usermp=gouhun) {#t- CastChuQiao;#t+ Recover;tt 好咯好咯搞定咯;drop corpse;drop skeleton;#if (@mduo=1 or @mduo=8) {drop @gweapon};atgc=0;buying=0;#if (@yaomark=1 and @danmark=1) {buying=0} {buying=1};#if (@Food<300) {bdan;ResetTrigger;#wa 8000;ToRecoverPlace} {ToRecoverPlace}}}
+#action	{你觉得自己的精神气血一下子都恢复了。} {#if (@usermp=gouhun) {#wa 2000;open guancai;er;re;#if (@ShaQi>@sqhh) {exert powerfade;er;re}}}
+#action	{你口中喷出一股黑风，整个人也随着黑风散去} {#t- fight;#t- fight1;#t- fight2;castnum=0;#t- BackUp;#t- Escape;#t- CastChuQiao3;#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@location=乌鸡国) {drop lumber axe}}
+#action	{设定环境变数??brief(*)first} {#if (@usermp=sea or @usermp=fly or @usermp=yaofa) {#t- CastChuQiao1;#t- CastChuQiao2;#t- CastChuQiao3;#t- CastChuQiao4;#t- Recover;#wa 2000;put 5 gold in @bag;put 3 gold in @bag;put 20 silver in @bag;put 5 silver in @bag;put bag in kuang;get @dann from @bag;get @yaon from @bag;er;ef;#if (@ShaQi>@sqhh and @mpw=1) {exert powerfade;er;ef};yaonum=0;dannum=0;danmark=0;yaomark=0;i;skills;#wa 3000;set brief second}}
+#action	{设定环境变数??brief(*)second} {#if (@usermp=sea or @usermp=fly or @usermp=yaofa) {#t- CastChuQiao;#t+ Recover;atgc=0;buying=0;mrecover=0;#if (@helpskill=cf and @mcf>0 and @yinzhen<500) {yaomark=0};#wa 3000;#if (@yaomark=1 and @danmark=1) {buying=0} {buying=1};#if (@Food<300) {bdan;ResetTrigger;#wa 8000;ToRecoverPlace} {ToRecoverPlace}}}
+#action	{书帖} {drop shu tie}
+#action	{只听你喝了一声(*)走(*)人影已经不见了} {#if (@usermp2=yaofainsea or @usermp2=yaofainfly) {#va usermp yaofa;#va usermp2 yaofaaa};#t- fight;#t- fight1;#t- fight2;castnum=0;#t- BackUp;#t- Escape;#t- CastChuQiao3;#if (@mduo=1 or @mduo=8) {drop @gweapon};#if (@location=乌鸡国) {drop lumber axe}}
+#action	{紫授录} {drop zishou lu}
+
+
+{hell6}
+#action	{^????设定环境变数(*)hellhell} {#wa 1000;#t+ hell2;#t+ fight1;#t- hell6;#t- hell3;#t- hell4;#t- hell5;l}
+
+
+{buyyao}
+#action	{(*)%s=%s(*),(*)} {#if (@mypboss=0) {#if (%pos("boss",%2) and %pos("boss",%3)) {mypboss=1};#if (%pos("doctor",%2) and %pos("doctor",%3)) {mypboss=1}}}
+#action	{^%s(*)包金创药} {yao=%1;convertyao}
+#action	{^%s(*)颗百霜丹} {dan=%1;convertdan}
+#action	{^%s(*)颗丹桂丸} {yao=%1;convertyao}
+#action	{^%s(*)颗混元丹} {dan=%1;convertdan}
+#action	{^????回春22药铺 -} {buying=1;atyp=1;get @dann from @bag;get @yaon from @bag;i;#wa 1000;buy yao from boss}
+#action	{^????回春药铺 -} {buying=1;atyp=1;#va mypboss 0;get @dann from @bag;get @yaon from @bag;i;#wa 1000;id here;set brief yaopu}
+#action	{^????设定环境变数??brief(*)yaopu} {#if (@mypboss=0) {#t- buyyao;#t- buyyao2;buying=1;mying=0;tta {yp没有boss了 ：（};#wa 2000;s;w;atyp=0;yaomark=0;danmark=0;ts;#wa 3000;#if (@buduo=0) {safego} {toepr}} {list}}
+#action	{^????药2铺 -} {buying=1;atyp=1;get @dann from @bag;get @yaon from @bag;i;#wa 1000;buy wan from doctor}
+#action	{^????药铺 -} {buying=1;atyp=1;#va mypboss 0;get @dann from @bag;get @yaon from @bag;i;#wa 1000;id here;set brief yaopu}
+#action	{丹桂丸(*)：(*)两黄金} {yaojia=2000;#if {@yaojia=@yaojia2 or @yaojia<@yaojia2} {#t- buyyao;#t+ buyyao2;#if (@yaomark=0) {#5 buy wan from doctor} {#5 buy dan from doctor}};#if {@yaojia>@yaojia2} {#t- buyyao;#t- buyyao2;buying=1;mying=0;tta 药太贵了;#wa 2000;s;atyp=0;yaomark=0;danmark=0;ts;ResetTrigger;#if (@buduo=0) {safego} {toepr}}}
+#action	{丹桂丸(*)：(*)两银子} {yaojia=%2;convertyaojia;#if {@yaojia=@yaojia2 or @yaojia<@yaojia2} {#t- buyyao;#t+ buyyao2;#if (@yaomark=0) {#5 buy wan from doctor} {#5 buy dan from doctor}};#if {@yaojia>@yaojia2} {#t- buyyao;#t- buyyao2;buying=1;mying=0;tta 药太贵了;#wa 2000;s;atyp=0;yaomark=0;danmark=0;ts;ResetTrigger;#if (@buduo=0) {safego} {toepr}}}
+#action	{金创药(*)：(*)两黄金} {yaojia=2000;#if {@yaojia=@yaojia2 or @yaojia<@yaojia2} {#t- buyyao;#t+ buyyao2;#if (@yaomark=0) {#5 buy yao from boss} {#5 buy dan from boss}};#if {@yaojia>@yaojia2} {#t- buyyao;#t- buyyao2;buying=1;mying=0;tta 药太贵了;#wa 2000;w;#5 s;atyp=0;yaomark=0;danmark=0;ts;ResetTrigger;#if (@buduo=0) {safego} {toepr}}}
+#action	{金创药(*)：(*)两银子} {yaojia=%2;convertyaojia;#if {@yaojia=@yaojia2 or @yaojia<@yaojia2} {#t- buyyao;#t+ buyyao2;#if (@yaomark=0) {#5 buy yao from boss} {#5 buy dan from boss}};#if {@yaojia>@yaojia2} {#t- buyyao;#t- buyyao2;buying=1;mying=0;tta 药太贵了;#wa 2000;w;#5 s;atyp=0;yaomark=0;danmark=0;ts;ResetTrigger;#if (@buduo=0) {safego} {toepr}}}
+#action	{你的钱11不够。} {#t- buyyao;#t+ withdraw;#wa 3000;s;fly kaifeng;nw;n;w}
+#action	{你向(*)买下一11些丹桂丸。} {danmark=0;yaomark=0;#math yaonum @yaonum+1;#if (@dannum>@yaoup) {danmark=1};#wa 500;list}
+#action	{你向(*)买下一11些金创药。} {danmark=0;yaomark=0;#math yaonum @yaonum+1;#if (@dannum>@yaoup) {danmark=1};#wa 500;list}
+#action	{你要跟谁11买东西？} {#t- buyyao;#t- buyyao2;buying=1;mying=0;#show %ansi(yellow) yp没有boss了 ：（...............;#show %ansi(yellow) yp没有boss了 ：（...............;#wa 2000;s;w;atyp=0;yaomark=0;danmark=0;#ts 300;#wa 3000;#if (@buduo=0) {safego} {toepr}}
+#action	{指令11格式} {#t- buyyao;#t- buyyao2;buying=1;mying=0;#show %ansi(yellow) yp没有boss了 ：（...............;#show %ansi(yellow) yp没有boss了 ：（...............;#wa 2000;s;w;atyp=0;yaomark=0;danmark=0;#ts 300;toepr;#wa 3000;#if (@buduo=0) {safego}}
+
+

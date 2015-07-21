@@ -1,0 +1,67 @@
+#PATHDIR          {n}  {s}  {1}
+#PATHDIR          {e}  {w}  {2}
+#PATHDIR          {s}  {n}  {4}
+#PATHDIR          {w}  {e}  {8}
+
+#PATHDIR          {u}  {d}  {16}
+#PATHDIR          {d}  {u}  {32}
+#PATHDIR	  {out} {enter} {64}
+#PATHDIR	  {enter} {out} {128}
+
+#PATHDIR          {nu}  {sd}  {17}
+#PATHDIR          {sd}  {nu}  {36}
+#PATHDIR          {nd}  {su}  {33}
+#PATHDIR          {su}  {nd}  {20}
+#PATHDIR          {wu}  {ed}  {24}
+#PATHDIR          {ed}  {wu}  {34}
+#PATHDIR          {wd}  {eu}  {40}
+#PATHDIR          {eu}  {wd}  {18}
+
+#PATHDIR          {ne}  {sw}  {3}
+#PATHDIR          {se}  {nw}  {6}
+#PATHDIR          {nw}  {se}  {9}
+#PATHDIR          {sw}  {ne}  {12}
+
+#DIR ns {n|north} other {randomdirenone}
+#DIR sn {s|south} other {randomdirenone}
+#DIR we {w} other {randomdirenone}
+#DIR ew {e} other {randomdirenone}
+#DIR ud {u|up} u {randomdirenone}
+#DIR du {d|down} d {randomdirenone}
+#DIR hl {nw|northwest} nw {randomdirenone}
+#DIR jk {ne|northeast} ne {randomdirenone}
+#DIR kj {sw|southwest} sw {randomdirenone}
+#DIR ` {get zhou from @bag;dive;put zhou in @bag} other {mieyaopathbak}
+#DIR & {give 2 silver to ma dao;give 3 silver to xiaoer;give 2 silver to boss;give 2 silver to waiter} other {mieyaopathbak}
+#DIR * {#wa 10000;#if (@found=0) {ResetTrigger;#wa 6000;gohh}} other {randomdirenone}
+#DIR fg {nu|northup} other {randomdirenone}
+#DIR gf {sd|southdown} other {randomdirenone}
+#DIR pq {su|southup} other {randomdirenone}
+#DIR qp {nd|northdown} other {randomdirenone}
+#DIR mo {wu|westup} other {randomdirenone}
+#DIR om {ed|eastdown} other {randomdirenone}
+#DIR rt {eu|eastup} e {randomdirenone}
+#DIR tr {wd|westdown} other {randomdirenone}
+#DIR lh {se|southeast} se {randomdirenone}
+#DIR ai {enter} other {randomdirenone}
+#DIR ia {out} other {randomdirenone}
+#DIR !! {open door} other {randomdirenone}
+#DIR && {climb wall} other {randomdirenone}
+#DIR vv {jump} other {randomdirenone}
+#DIR $i {bed} other {randomdirenone}
+#DIR | {jump bridge} other {randomdirenone}
+#DIR \\ {climb pine} other {randomdirenone}
+#DIR ( {jump shi bi} other {randomdirenone}
+#DIR )- {climb left} other {randomdirenone}
+#DIR -) {climb right} other {randomdirenone}
+#DIR =, {climb up} other {randomdirenone}
+#DIR _+ {backyard} other {randomdirenone}
+#DIR +_ {frontyard} other {randomdirenone}
+#DIR [] {right} other {randomdirenone}
+#DIR ][ {left} other {randomdirenone}
+#DIR ` {dive dong} other {randomdirenone}
+#DIR ? {answer 1} other {randomdirenone}
+#DIR ,= {climb down} other {randomdirenone}
+#DIR < {sink} other {randomdirenone}
+#DIR %u {dive;put bishui zhou in @bag} other {randomdirenone}
+#DIR x {look} other {randomdirenone}

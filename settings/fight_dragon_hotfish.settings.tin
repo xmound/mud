@@ -14,8 +14,8 @@
 #VARIABLE         {path_one_step_move}  {#2 sw}
 #VARIABLE         {previous_wx}  {0}
 #VARIABLE         {previous_qn}  {-1}
-#VARIABLE         {skill_to_learn}  {parry}
+#VARIABLE         {skill_to_learn}  {force}
 #VARIABLE         {skill_to_learn2}  {force}
 #VARIABLE         {target_skill_level}  {999}
 #VARIABLE         {weapon_for_fight}  {rake}
-#VARIABLE         {weapon_for_practice}  {}
+#VARIABLE         {weapon_for_practice}  {sword}

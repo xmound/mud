@@ -172,10 +172,10 @@ basic_unarmed = 518
 basic_parry = 523
 
 dragonsteps = 0
-dragonfights = 499
-attack_enableds = 466
-special_parrys = 0
-special_dodges = c(0)
+dragonfights = c(499,520)
+attack_enableds = c(0, 421/2, 336/2)
+special_parrys = c(0,410)
+special_dodges = c(0, 517)
 
 
 ######################## start simulation ##################
@@ -259,7 +259,7 @@ basic_dodge = 413
 basic_unarmed = 342
 basic_parry = 413
 
-dragonstep = 290#seq(0,400,5)
+dragonstep = 240#seq(0,400,5)
 dragonfight = 342#seq(0,400,5) # seq(0,800,50) #seq(100,800,50)
 attack_enabled = 410 #c(0,171,200,300,400,500,seq(714,800,10))# c(171,400,713,760) #c(171,309,344,408, 713, 760) #c(171,300,400,700,800)
 special_parry = 0

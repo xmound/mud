@@ -76,14 +76,14 @@
 }
 
 #action {^SUCCESSFULLY GOT OUT FROM SHELITA.} {
-	#delay 5 {relocate};
+	#delay 5 {reset};
 }
 
 #alias reset {
 	stop;
-	treload fight_dragon_$login_id;
+	treload fight_dragon;
 	hp;
-	start_fight;
+	start;
 }
 
 #alias stop {
@@ -185,7 +185,7 @@
 			};
 			
 			#if {"$weapon_for_practice" == "sword"} {
-				#if {"%%%2" == "¹ðÊ÷Ö¦" || "%%%2" == "Ìú½£"} {
+				#if {"%%%2" == "¹ðÊ÷Ö¦" || "%%%2" == "Åå½£"} {
 					#math num_weapons {$num_weapons + 1};
 					#loop 1 5 cnt {unwield $weapon_wielding $cnt};
 				};
@@ -262,7 +262,7 @@
 		#if {"$weapon_for_practice" == "rake"} {
 			fly tianzhu;#8 e;w;w;w;n;buy zhupa;s;unwield bang;unwield sword;unwield fork;
 		}; #elseif {"$weapon_for_practice" == "sword"} {
-			fly changan;s;w;buy Ìú½£;#delay 3 {e;};
+			fly changan;s;w;buy Åå½£;#delay 3 {e;};
 		}; #elseif {"$weapon_for_practice" == "bang"} {
 			fly changan;s;w;buy dragon stick;#delay 3 {e;};
 		}; elseif {"$weapon_for_practice" == "fork"} {

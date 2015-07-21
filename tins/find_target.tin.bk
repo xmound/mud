@@ -1,0 +1,564 @@
+#class find_target open
+#var target_spotified 0;
+#var target_found 0;
+#var target_followed 0;
+#var body_guard_ready 0;
+#nop var correct_target_found 0;
+#nop var target_name_lower {};
+#nop format {target_name_upper} {%n} {$target_name_lower};
+#nop var target_name_chinese {};
+
+
+#nop alias {go_find_target_with_known_location %1 in %2} {
+	#var target_name_lower %1;
+	#format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	
+	go_search_target $target_name_lower in $target_location;
+}
+
+#action {^千里眼告诉你：%1($target_name_lower)在%2。} {
+	#nop var target_name_chinese %1;
+	#nop format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	
+	#nop if {&{body_guard}} ;
+	#nop {tell $body_guard TASK:gofindnpcwithknownlocation $target_name_lower, in $target_location;};
+	#nop delay 2 {go_search_target $target_name_chinese $target_name_lower $target_location};
+	#delay 2 {go_search_target};
+	hi;
+}
+#ALIAS fguai {
+	#nop var target_name_chinese {%1};
+	#nop var target_name_lower {%2};
+	#nop var target_location {%3};
+	#nop format {target_name_upper} {%n} {$target_name_lower};
+	
+	#nop var GLpath {$target_location};
+	#var FGcount 0;
+	#var FGfound 0;
+	#var FGsum 0;
+	
+	#nop {
+		hi;
+		GLpath=%3;
+		GLidle=0;
+		mtime=0;
+		#t+ findguai;
+		FGid=%1;
+		FGname=%2;
+		FGcount=0;
+		FGfound=0;
+		FGsum=0;
+	};
+	
+	#if {$GLslowrun==1} {
+		#slow $GLpath;
+	}; #else {
+		$GLpath
+	};
+	#nop if {$GLslowrun != 1} {
+		fguaia
+	}; #else {};
+};
+
+#nop ALIAS fguaia {#add mfg 1;set brief h11aha;set brief haha};
+
+#alias go_search_target {
+	#class find_target_search_inner open;
+	
+	/*#nop {
+		#action	{看起来@KGname想杀死你} {#cw 11;#if (@FGfound=1) {FGcount=0} {FGfound=1};#if (@GLslowrun=1) {#stop;fguaia}};
+		#action	{你的反五行摄气诀运行一周天完毕，将内力收回丹田。} {#if (@found=0) {exert powerup}};
+		#action	{你的龙神心法运行一周天完毕，龙鳞渐渐消去了。} {#if (@found=0) {exert shield}};
+		#action	{你身后的白莲渐渐隐去了} {#if (@found=0) {cast lianhua}};
+		#action	{你手捻口诀，念动真言，摇身一变，变得和%x一模一样！} {bian=1};
+	};*/
+	
+	#action	{^%?%?%?$$target_name_chinese($$target_name_upper)} {
+		#if {$FGfound == 1} {
+			#var FGcount 0;
+		}; #else {
+			#var FGfound 1;
+			#var found 1;
+		};
+		#nop {
+			if {$GLslowrun == 1}; #nop {#stop;fguaia};
+		};
+	};
+	
+	
+	#action	{{这里唯一的出口是|这里明显的出口是|你将%*打开。|什么？|%*已经是开着的了。|这个方向没有出路|这里没有任何明显的出|乌鸦先生说道：请吧}} {
+		#math FGsum {$FGsum + 1};
+		#if {$FGfound == 1} {
+			#math FGcount {$FGcount + 1};
+		}; #else {
+			#variable FGcount 0;
+		};
+		
+		#if {$GLslowrun == 1} {
+			#if (@FGsum=@FGslowsum) {time} {}
+		}; #else {};
+	};
+	
+	
+	#action	{设定环境变数%*brief%*path_check} {
+		#line {gag};
+		#var GLslowrun 0;
+		#var mtime=1;
+		#math mfg2 {$mfg2 + 1};
+		#nop wait 500;
+		#if {$FGfound == 0} {
+			tkill find_target_search_inner;
+			#PATH LOAD $GLexecNO;
+			#PATH run;
+		}; #else {
+			#nop FGcount=[@FGcount];
+			#if {$FGcount > 0} {
+				#PATH LOAD $GLexecNO;
+				#LOOP 1 $FGcount cnt {};
+				#var FGfound 0;
+			}; #else {
+				#var FGfound 1;
+			};
+			
+			#var FGcount 0;
+			#var found 1;
+			
+			enforcemax;
+			follow $target_name_lower;
+			look $target_name_lower;
+			
+			tkill find_target_search_inner;
+			
+			#nop #t- findguai;
+			#nop #T+ Fight1;
+			#nop #T+ fight3;
+			#nop ResetTrigger2;
+			#nop #T+ backup;
+		};
+	};
+	
+	
+	#class find_target_search_inner close;
+};
+
+#nop locations I will make 
+
+
+#nop alias {go_search_target %1 in %2} {
+	#var target_name_lower %1;
+	#format {target_name_upper} {%n} {$target_name_lower};
+	#var target_location %2;
+	
+	#class search_for_yutu_inner open;
+	
+	#action {设定环境变数%*brief%*path_check} {
+		#if {$target_spotified == 0} {
+			#delay 0.1 {
+				#path walk f;
+				set brief path_check;
+			};
+		}; 
+		#else {#class search_for_yutu_inner kill;};
+	};
+	
+	#event {END OF PATH} {
+		#class search_for_yutu_inner kill;
+		#nop stop;
+		#delay 10 {
+			#showme {FAILED TO FIND TARGET.};
+			
+		};
+	};
+		
+	#class search_for_yutu_inner close;
+	#var target_spotified 0;
+	#var target_found 0;
+	#var target_followed 0;
+	#var body_guard_ready 0;
+	follow none;
+	
+	tload paths;
+	#path load 月宫1;
+	fly moon;
+	set brief path_check;
+};
+
+#highlight {^%?%?%?$$target_name_chinese($$target_name_upper)} {white};
+
+#nop action {^这里没有%s$target_name_lower。} {}
+
+#nop action {^%?%?%?%?你决定开始跟随$$target_name_chinese一起行动。} {
+	#nop var target_found 1;
+	#var target_followed 1;
+	#showme {I FOUND TARGET $target_name_lower};
+	#class paths kill;
+	#class find_target kill;
+}
+
+#ALIAS prepare_guai_locations {
+	search_for_target;
+	#if {"$taget_location" == "蓬莱仙岛"} {zaopl};
+	#if {"$taget_location" == "白虎岭"} {zaobaihu};
+	#if {"$taget_location" == "毒敌山"} {zaodd};
+	#if {"$taget_location" == "开封城"} {zaokf};
+	#if {"$taget_location" == "豹头山"} {zaobt};
+	#if {"$taget_location" == "荆棘岭"} {zaojjl};
+	#if {"$taget_location" == "红楼一梦"} {zaohl};
+	#if {"$taget_location" == "月宫"} {zaomoon};
+	#if {"$taget_location" == "碧波潭"} {zaobbt};
+	#if {"$taget_location" == "凤仙郡"} {zaofx};
+	#if {"$taget_location" == "长安城西"} {zaocax};
+	#nop if {%pos(火,@KGaddress）"} {zaohys};
+	#if {"$taget_location" == "麒麟山"} {zaoqilin};
+	#if {"$taget_location" == "平顶山"} {zaopds};
+	#if {"$taget_location" == "祭赛国"} {zaojsg};
+	#if {"$taget_location" == "积雷山"} {zaojilei};
+	#if {"$taget_location" == "五庄观"} {zaowzg};
+	#if {"$taget_location" == "龙宫"} {zaosea};
+	#if {"$taget_location" == "青龙山"} {zaoql};
+	#if {"$taget_location" == "金平府"} {zaojp};
+	#if {"$taget_location" == "竹节山"} {zaozj};
+	#if {"$taget_location" == "金兜山"} {zaojindou};
+	#if {"$taget_location" == "方寸山"} {zaofc};
+	#if {"$taget_location" == "天竺国"} {zaotz};
+	#if {"$taget_location" == "通天河"} {zaotth};
+	#if {"$taget_location" == "钦法国"} {zaoqf};
+	#if {"$taget_location" == "高老庄"} {zaogao};
+	#if {"$taget_location" == "车迟国"} {zaochechi};
+	#if {"$taget_location" == "黑松林"} {zaochechi};
+	#if {"$taget_location" == "大雪山"} {zaoxs};
+	#if {"$taget_location" == "无底洞"} {zaowdd};
+	#if {"$taget_location" == "毛颖山"} {zaomy};
+	#if {"$taget_location" == "比丘国"} {zaobiqiu};
+	#if {"$taget_location" == "盘丝岭"} {zaops};
+	#if {"$taget_location" == "女儿国"} {zaoneg};
+	#if {"$taget_location" == "小西天"} {zaoxxt};
+	#if {"$taget_location" == "乌鸡国"} {zaowuji};
+	#if {"$taget_location" == "朱紫国"} {zaozz};
+	#if {"$taget_location" == "隐雾山"} {zaoyw};
+	#if {"$taget_location" == "长安城"} {zaoca};
+	#if {"$taget_location" == "观礼台"} {zaoca};
+	#if {"$taget_location" == "长安城南"} {zaocan};
+	#if {"$taget_location" == "宝象国"} {zaobx};
+	#if {"$taget_location" == "玉华县"} {zaoyh};
+	#if {"$taget_location" == "普陀山"} {zaopt};
+	#if {"$taget_location" == "梅山"} {zaoms};
+	#if {"$taget_location" == "灵山"} {zaols};
+	#if {"$taget_location" == "阴曹地府"} {e;zaohell};
+	#if {"$taget_location" == "黑水河"} {heishuihe};
+};
+
+#ALIAS zaodd {#var GLpath my_dudi;GLexectrig=dd_end;fly dudi;nw;#2 ne;#var GLexecNO zaodd0;fguai} {radomnone}
+#ALIAS zaodd0 {#var GLpath my_dudi0;#var GLexecNO zaodd00;fguai} {radomnone}
+#ALIAS zaodd00 {#var GLpath my_dudi1;#var GLexecNO zaodd5;fguai} {radomnone}
+#ALIAS zaodd1 {#ACTION {这里没有这个人} {ff;remove dun;wield $weapon;wield $weapon2;exert recover;exert refresh;break;exert recover;exert refresh;sw;tempnext} temp;#ACTION {精死了} {kill yao jing} temp;#ALIAS tempnext {#T- temp;#delc temp;GLpath=;#var GLexecNO zaodd2;fguai} temp;#t+ temp;kill yao jing} {radomnone}
+#ALIAS zaodd2 {#ACTION {这里没有这个人} {ff;remove dun;wield $weapon;wield $weapon2;exert recover;exert refresh;break;exert recover;exert refresh;s;tempnext} temp;#ACTION {精死了} {kill yao jing} temp;#ALIAS tempnext {#T- temp;#delc temp;GLpath=;#var GLexecNO zaodd3;fguai} temp;#t+ temp;kill yao jing} {radomnone}
+#ALIAS zaodd3 {#ACTION {这里没有这个人} {ff;remove dun;wield $weapon;wield $weapon2;exert recover;exert refresh;break;exert recover;exert refresh;se;tempnext} temp;#ACTION {精死了} {kill yao jing} temp;#ALIAS tempnext {#T- temp;#delc temp;GLpath=;#var GLexecNO zaodd4;fguai} temp;#t+ temp;kill yao jing} {radomnone}
+#ALIAS zaodd4 {#var GLpath my_dudi3;#var GLexecNO zaonext;fguai} {radomnone}
+#ALIAS zaodd5 {#ACTION {一洞门 -} {#if {$mdudi=1} {#wa 2000;#if {$found=0} {GLpath=;#var GLexecNO zaodd1;fguai;enforce 1;kill yao jing}};#if {$mdudi=0} {#wa 2000;cmm;#if {$found=0} {ResetTrigger;#wa 6000;#2 release;gohh}}} temp;#T+ temp;out;enter} {radomnone}
+#ALIAS zaoddout {w;n;nw;n;ne;out} {radomnone}
+
+
+
+
+#VARIABLE	my_gao	{#7 w;s;n;w;s;#2 n;s;#2 w;n;s;nw;se;}
+#VARIABLE	my_jjl	{wu;sw;w;nw;wu;nw;wu;s;}
+#VARIABLE	my_wzg4	{s;}
+#VARIABLE	my_wdd0	{#2 s;n;#5 w;#2 e;#2 s;}
+#VARIABLE	my_gao20	{bed;}
+#VARIABLE	my_jjf	{s;s;e;w;sw;#2 e;w;s;w;#2 e;#2 se;s;sw;w;}
+#VARIABLE	my_maoying0	{su;#2 se;#3 e;nd;ne;#2 nw;wd;nw;wd;}
+#VARIABLE	my_baoxiang7_bak	{sink;w;d;w;d;}
+#VARIABLE	my_yinwu	{se;sw;se;nw;ne;#2 e;#2 w;nw;ne;#2 sw;#4 w;}
+#VARIABLE	my_biqiu	{se;#3 e;s;sw;s;#2 w;s;n;#2 e;sw;ne;n;ne;se;nw;n;}
+#VARIABLE	my_zhujie10	{ne;sw;w;}
+#VARIABLE	my_kf	{#9 w;#8 e;s;n;e;}
+#VARIABLE	my_pds	{nw;ne;sw;ne;se;nw;#3 se;s;n;ne;sw;e;}
+#VARIABLE	my_zhuzi20	{e;#2 s;n;e;w;#2 n;s;}
+#VARIABLE	my_gao2000	{d;#2 e;w;n;}
+#VARIABLE	my_dudi	{sw;ne;#2 sw;se;sd;se;wd;se;ed;sw;se;ne;e;w;sw;}
+#VARIABLE	my_tianzhu	{#8 w;s;w;#2 e;w;s;e;w;s;w;e;}
+#VARIABLE	my_moon	{ne;#3 nw;w;wu;#2 su;#2 wu;nu;e;enter;out;#4 w;#3 e;}
+#VARIABLE	my_wdd01	{#2 s;#4 n;#4 e;s;}
+#VARIABLE	my_xs40	{n;e;}
+#VARIABLE	my_hell1	{w;#2 n;#2 e;#2 s;w;n;}
+#VARIABLE	my_hell2	{n;s;n;#2 w;e;n;#2 s;w;#2 e;w;n;#2 e;w;n;s;e;}
+#VARIABLE	my_hell3	{n;#2 s;w;#2 e;w;n;#2 e;#3 s;se;nw;#3 n;#3 w;n;}
+#VARIABLE	my_hell4	{n;w;#2 e;w;n;e;#2 w;e;n;e;#2 w;e;n;e;#2 w;}
+#VARIABLE	my_hell5	{e;n;w;e;n;nu;sd;s;w;e;s;e;#2 w;e;s;e;#2 w;}
+#VARIABLE	my_hell6	{e;s;e;#2 w;e;s;e;#2 w;e;#3 s;#3 e;#3 s;se;}
+#VARIABLE	my_hell7	{out;}
+#VARIABLE	my_zhujie	{#2 ne;nu;nw;ne;nu;nw;#2 ne;#3 e;}
+#VARIABLE	my_penglai2	{s;n;out;}
+#VARIABLE	my_tth	{#5 n;#5 s;#5 n;}
+#VARIABLE	my_baoxiang9	{nw;#4 w;}
+#VARIABLE	my_sea0	{#3 e;dive;put bishui zhou in @bag;}
+#VARIABLE	my_sea3	{e;#2 s;#4 w;#2 n;#2 s;#4 e;#4 n;#4 w;#2 s;}
+#VARIABLE	my_wdd20	{#2 su;wu;}
+#VARIABLE	my_pds10	{nw;#2 wu;sw;su;se;#2 sw;}
+#VARIABLE	my_ql4	{ne;sw;e;w;se;nw;w;}
+#VARIABLE	my_ql5	{#2 wu;nw;nu;#2 ne;n;nw;se;}
+#VARIABLE	my_sea2	{e;#2 eu;e;#2 n;#4 s;#2 n;e;n;#2 s;n;}
+#VARIABLE	my_ql1	{n;nw;nu;nw;ne;}
+#VARIABLE	my_pansi	{nw;sw;w;wu;#3 se;e;s;e;ne;sw;s;n;#2 w;e;n;w;nw;}
+#VARIABLE	my_tianzhu3	{#2 n;#3 s;w;e;s;w;#2 e;w;s;#3 n;w;n;s;#2 w;#2 n;}
+#VARIABLE	my_tianzhu2	{n;#2 s;n;e;n;s;e;#2 n;w;e;n;w;e;n;w;n;s;w;s;n;w;}
+#VARIABLE	my_tianzhu1	{e;n;s;e;s;n;e;se;#4 s;sw;s;se;nw;ne;#4 n;ne;e;}
+#VARIABLE	my_tianzhu0	{s;#2 w;#2 e;s;e;w;s;w;e;s;w;e;#2 s;n;}
+#VARIABLE	my_tianzhu6	{#2 e;#2 w;#2 n;e;n;e;#4 w;e;s;e;#2 s;}
+#VARIABLE	my_tianzhu5	{e;se;s;#2 se;#2 s;e;w;n;#2 sw;s;#2 w;e;se;s;#3 n;ne;}
+#VARIABLE	my_tianzhu4	{#2 n;#2 e;n;s;#3 e;n;s;#3 e;w;s;w;e;s;w;e;#2 s;}
+#VARIABLE	my_qinfa	{#3 e;ne;#6 e;#4 n;#2 e;#4 w;}
+#VARIABLE	my_wzg5	{jump bridge;}
+#VARIABLE	my_wzg6	{u;}
+#VARIABLE	my_changan	{u;#2 d;u;n;w;#3 e;#2 w;#2 n;#3 s;}
+#VARIABLE	my_wzg1	{e;su;nd;#2 n;e;w;#2 n;w;e;n;#2 w;s;e;w;#2 s;w;e;#2 s;su;nd;}
+#VARIABLE	my_wzg2	{#5 n;e;n;open door;n;ne;open door;d;u;sw;nw;}
+#VARIABLE	my_wzg3	{n;nw;n;ne;se;s;sw;s;}
+#VARIABLE	my_yuhua0	{sw;#4 w;#2 sw;#6 s;sw;}
+#VARIABLE	my_wdd0000	{s;#2 n;w;n;#2 s;n;w;n;}
+#VARIABLE	my_jjf1	{nw;w;e;ne;n;s;sw;#3 se;n;s;nw;w;sw;s;w;#2 e;w;n;}
+#VARIABLE	my_honglou0	{#5 s;d;u;#5 n;}
+#VARIABLE	my_honglou1	{s;u;d;s;w;#2 e;w;enter;out;s;e;w;s;d;u;w;e;s;w;#2 e;w;out;enter;}
+#VARIABLE	my_xue	{#2 n;answer 1;nw;n;#2 e;n;#2 w;n;#2 e;#3 n;e;#2 s;#2 n;#2 w;n;#3 climb down;#2 climb right;climb down;climb right;#2 climb down;climb right;climb down;#3 w;#3 sd;#3 nu;w;e;n;}
+#VARIABLE	my_xs41	{n;s;#2 w;#3 e;}
+#VARIABLE	my_fengxian3	{s;#3 n;s;w;n;#2 s;w;e;n;}
+#VARIABLE	my_baoxiang11	{#2 sw;w;e;}
+#VARIABLE	my_lingshan3	{#6 w;s;#3 e;}
+#VARIABLE	my_jp	{s;w;e;#2 se;#3 s;e;w;s;w;s;n;#2 e;s;n;e;}
+#VARIABLE	my_fengxian2	{w;#2 n;#2 s;u;d;#2 s;sw;se;ne;nw;#2 n;w;n;#2 s;w;}
+#VARIABLE	my_pds2	{se;wu;sw;se;s;sw;e;w;}
+#VARIABLE	my_pds1	{sw;se;s;#2 ed;se;#2 ne;#2 sw;}
+#VARIABLE	my_jsg	{se;#4 e;n;#2 s;n;e;nu;sd;}
+#VARIABLE	my_jindou	{nw;#2 w;sw;wu;sw;n;#2 nw;n;sw;w;sw;sd;wd;nw;w;}
+#VARIABLE	my_lingshan1	{s;n;#4 s;n;e;u;d;#2 w;u;d;}
+#VARIABLE	my_xs20	{s;}
+#VARIABLE	my_sea02	{#2 sw;#2 se;s;n;}
+#VARIABLE	my_neg1	{e;w;#2 e;s;#2 w;s;#2 e;n;w;n;nu;n;w;#2 e;w;n;}
+#VARIABLE	my_neg2	{se;e;n;s;w;s;su;open door;enter;out;nd;w;wu;nd;#2 nu;ed;wu;nw;se;sd;}
+#VARIABLE	my_sea01	{#2 ne;n;s;e;w;}
+#VARIABLE	my_moon2	{#2 u;enter;#2 n;e;#2 w;s;n;u;d;e;n;}
+#VARIABLE	my_moon3	{#2 w;e;n;w;#2 e;se;s;e;#2 w;s;}
+#VARIABLE	my_baotou	{nw;nu;#3 nw;#2 nu;#2 sd;#2 wu;nw;}
+#VARIABLE	my_moon1	{n;e;w;n;s;w;e;s;}
+#VARIABLE	my_gao200	{out;}
+#VARIABLE	my_dudi3	{se;s;e;w;n;}
+#VARIABLE	my_xs30	{w;s;e;n;s;#2 e;}
+#VARIABLE	my_dudi1	{se;enter;}
+#VARIABLE	my_dudi0	{nw;w;#2 nw;#2 se;e;ne;wu;nw;eu;nw;nu;nw;ne;}
+#VARIABLE	my_dudi_bak	{sw;ne;#2 sw;se;sd;se;wd;se;ed;sw;se;ne;e;se;nw;w;sw;}
+#VARIABLE	my_zhujie100	{nw;w;sw;w;}
+#VARIABLE	my_pansi3	{e;w;e;nu;ne;nu;se;s;ne;e;enter;out;se;#2 e;n;nw;w;sw;w;}
+#VARIABLE	my_pansi2	{#2 ne;e;#3 nw;wd;nw;w;e;se;eu;ne;#2 ed;#5 d;#5 u;wu;}
+#VARIABLE	my_pansi1	{nw;#2 w;nw;w;#2 s;w;e;s;sw;ne;}
+#VARIABLE	my_tth1	{e;ne;e;n;e;se;ne;}
+#VARIABLE	my_xs43	{nu;sd;#3 nu;n;s;w;#4 e;w;}
+#VARIABLE	my_zhujie2	{nw;w;sw;ne;e;se;}
+#VARIABLE	my_zhuzi40	{#2 e;w;s;sw;}
+#VARIABLE	my_zhujie0	{se;sw;sd;sw;nw;#2 w;sd;}
+#VARIABLE	my_zhujie1	{nu;e;ne;e;}
+#VARIABLE	my_putuo1	{s;se;s;su;w;s;e;}
+#VARIABLE	my_putuo0	{n;e;n;enter;out;e;nd;n;nw;sw;s;su;nd;n;ne;n;}
+#VARIABLE	my_putuo3	{#2 e;n;w;nd;n;ne;s;#2 n;}
+#VARIABLE	my_putuo2	{#4 w;}
+#VARIABLE	my_firemount	{w;#2 nw;w;n;#2 s;n;#3 w;wu;ed;#2 sw;#2 su;}
+#VARIABLE	my_wdd00	{#2 n;w;n;#2 s;n;#2 w;#4 e;#2 s;}
+#VARIABLE	my_changan99	{s;#7 w;#1 #2 e;#3 w;nu;enter;out;sd;#2 w;#3 s;e;w;#3 s;nw;#2 w;#2 e;#2 se;e;w;nw;#4 s;#3 e;}
+#VARIABLE	my_changan80	{n;s;e;w;s;w;s;w;e;s;e;w;s;w;#2 e;w;s;#2 n;}
+#VARIABLE	my_wzg	{sd;s;se;sd;s;n;nu;nw;n;#3 nu;n;nu;enter;e;n;wu;u;d;wd;s;e;out;}
+#VARIABLE	my_wuji	{#3 n;w;e;s;e;ne;#2 s;n;e;#3 w;#2 s;e;s;}
+#VARIABLE	my_fengxian1	{#5 n;w;#2 n;#4 s;n;w;n;w;s;#2 n;s;}
+#VARIABLE	my_yuhua1	{#3 w;#2 nw;#2 se;#3 e;#3 s;#2 e;#4 w;#2 e;}
+#VARIABLE	my_yuhua2	{s;e;w;s;w;e;s;e;#2 w;e;#2 s;e;s;n;#2 e;}
+#VARIABLE	my_yuhua3	{#4 w;s;n;#2 w;#3 e;#3 s;sw;ne;n;#3 e;#3 w;n;}
+#VARIABLE	my_jilei1	{w;nw;ne;nd;ne;w;nw;w;e;se;e;se;ne;sw;}
+#VARIABLE	my_jilei0	{ne;nw;ne;nw;sw;#2 ne;nd;}
+#VARIABLE	my_xs1	{jump shi bi;w;#2 e;n;#2 w;n;#2 e;w;n;}
+#VARIABLE	my_tianzhu00	{#4 e;#4 n;#8 e;}
+#VARIABLE	my_baoxiang0	{sw;s;se;sw;se;s;#2 ed;se;#2 ne;#3 se;su;se;sd;sw;}
+#VARIABLE	my_jsg2	{#2 n;e;#2 w;e;n;w;#2 e;w;nu;}
+#VARIABLE	my_jsg3	{#1 #2 u;d;}
+#VARIABLE	my_jsg0	{s;n;e;s;n;#3 e;ne;e;eu;se;e;}
+#VARIABLE	my_jsg1	{w;#4 s;#4 w;#4 n;#4 s;#2 e;open door;}
+#VARIABLE	my_cax2	{#2 n;#2 s;}
+#VARIABLE	my_cax3	{nd;#3 e;se;e;#2 su;}
+#VARIABLE	my_cax0	{sd;#2 ed;#2 nd;ed;e;#3 se;sw;se;#3 e;}
+#VARIABLE	my_cax1	{nw;w;nu;n;nu;nw;se;sd;s;sd;#2 w;e;}
+#VARIABLE	my_cax4	{su;}
+#VARIABLE	my_wdd000	{s;#2 look;}
+#VARIABLE	my_changan90	{w;s;#2 n;s;u;w;#2 e;w;s;#2 n;s;u;w;}
+#VARIABLE	my_kf0	{nw;w;e;n;w;e;#2 n;#2 w;n;}
+#VARIABLE	my_baoxiang12	{se;}
+#VARIABLE	my_pds00	{e;#2 w;#2 nw;}
+#VARIABLE	my_changan91	{e;#4 d;e;s;w;#2 e;w;#3 s;}
+#VARIABLE	my_biqiu200	{w;}
+#VARIABLE	my_maoying000	{se;sw;su;nd;#2 sw;}
+#VARIABLE	my_baoxiang13	{#2 look;}
+#VARIABLE	my_ms1	{#2 nu;}
+#VARIABLE	my_ms0	{s;#2 e;ne;se;nw;e;w;nu;nw;}
+#VARIABLE	my_zhujie20	{e;ne;e;se;sw;w;}
+#VARIABLE	my_zhuzi1	{#4 s;#3 w;e;#2 s;}
+#VARIABLE	my_lingshan	{n;#4 e;#4 w;s;wu;sw;nu;wu;nw;n;nw;wu;s;}
+#VARIABLE	my_ql	{sw;ne;sw;se;sd;se;s;}
+#VARIABLE	my_baoxiang20_bak	{w;su;w;#2 e;w;su;w;#2 e;w;su;#6 nd;}
+#VARIABLE	my_yinwu1	{nu;w;sw;sd;nu;ne;e;sd;}
+#VARIABLE	my_sea1	{e;w;#2 n;ne;e;w;sw;nw;se;#4 s;sw;ne;se;e;w;nw;#2 n;}
+#VARIABLE	my_pds0	{s;nw;sw;wd;#4 sw;#4 ne;eu;ne;s;se;}
+#VARIABLE	my_jjl0	{e;s;sw;ne;n;nw;n;s;se;w;}
+#VARIABLE	my_jjl1	{se;sw;nw;sw;nw;ne;}
+#VARIABLE	my_qinfa1	{w;#4 s;#2 n;e;#3 w;#2 e;#3 n;s;#2 w;}
+#VARIABLE	my_qinfa3	{e;n;s;#2 e;n;s;#2 e;se;#2 n;sw;#4 w;}
+#VARIABLE	my_qinfa2	{w;s;#2 n;s;w;n;s;#2 w;#5 e;w;n;e;w;n;}
+#VARIABLE	my_xxt	{s;n;s;sw;s;n;ne;e;n;}
+#VARIABLE	my_fangcun	{#2 sd;sw;e;w;sw;#2 nw;su;wu;ed;s;sd;#2 w;#2 e;s;n;e;}
+#VARIABLE	my_firemount1	{#2 ne;nd;w;nw;ne;nd;ne;se;ne;e;su;nd;w;}
+#VARIABLE	my_jp2	{eu;#2 e;n;e;s;e;se;nw;#4 w;wd;s;#3 se;}
+#VARIABLE	my_jp1	{n;s;e;#3 n;s;e;w;s;e;w;s;#3 se;s;}
+#VARIABLE	my_baoxiang20	{#6 nd;}
+#VARIABLE	my_kf30	{s;sd;#2 e;#2 se;ne;#2 nw;w;}
+#VARIABLE	my_bibotan	{e;nw;n;ne;sw;s;se;s;sw;su;wd;sd;s;n;se;ed;se;e;}
+#VARIABLE	my_neg11	{#2 s;sd;e;s;#2 w;n;#2 s;#2 e;}
+#VARIABLE	my_can0	{#5 w;#6 e;#3 s;}
+#VARIABLE	my_can1	{e;w;#4 s;#4 w;#4 e;#3 s;#3 e;w;}
+#VARIABLE	my_can2	{w;s;n;w;}
+#VARIABLE	my_tth00	{w;e;se;s;#3 e;#4 s;#2 n;}
+#VARIABLE	my_lingshan40	{#3 n;#3 w;#6 e;s;#6 w;s;#6 e;#4 s;#6 w;n;#6 e;#6 w;#4 n;#3 e;#3 n;}
+#VARIABLE	my_lingshan41	{e;#3 n;#3 w;#6 e;}
+#VARIABLE	my_lingshan42	{s;#6 w;s;#6 e;}
+#VARIABLE	my_lingshan43	{#4 s;#6 w;n;#2 e;}
+#VARIABLE	my_lingshan44	{#4 e;#6 w;#3 n;}
+#VARIABLE	my_lingshan45	{n;#3 e;#3 n;}
+#VARIABLE	my_wdd	{ne;nu;ed;se;nw;wu;sd;sw;w;n;#2 s;}
+#VARIABLE	my_yinwu0	{sw;ne;#4 e;ne;#3 nw;sw;nw;se;sw;#2 ne;#2 se;}
+#VARIABLE	my_xs2000	{out;n;e;open door;e;w;#2 n;}
+#VARIABLE	my_yinwu2	{e;w;e;se;sd;nu;}
+#VARIABLE	my_yinwu3	{w;n;s;se;nw;}
+#VARIABLE	my_yinwu4	{w;}
+#VARIABLE	my_yinwu5	{nw;}
+#VARIABLE	my_ms	{n;se;#2 e;se;e;#2 n;#2 s;e;ne;n;}
+#VARIABLE	my_chechi	{#2 sw;n;nw;w;#3 s;#3 w;#3 nu;w;e;}
+#VARIABLE	my_gao2	{w;#2 e;w;n;w;open door;u;}
+#VARIABLE	my_gao1	{#3 s;sw;ne;e;w;#3 n;#4 e;n;w;#2 e;w;n;}
+#VARIABLE	my_ql_back	{nw;#2 wu;nw;nu;#2 ne;n;ne;nw;se;s;#2 sw;sd;se;#2 ed;se;sw;se;sd;se;s;}
+#VARIABLE	my_gao4	{e;}
+#VARIABLE	my_changan1	{w;s;#2 n;s;w;#2 s;e;w;#3 n;s;w;n;s;#2 w;#2 e;}
+#VARIABLE	my_changan2	{s;e;w;se;e;#3 w;#2 e;s;#2 e;#3 w;e;s;n;e;}
+#VARIABLE	my_changan3	{se;s;n;w;#3 e;ne;#3 n;#2 s;w;enter;}
+#VARIABLE	my_changan4	{#1 #4 u;d;}
+#VARIABLE	my_changan5	{#1 #3 d;out;e;s;sw;se;s;enter;}
+#VARIABLE	my_changan6	{e;enter;#6 u;#6 d;out;}
+#VARIABLE	my_changan7	{w;out;n;nw;ne;e;n;ne;e;w;sw;s;se;ne;#2 e;#2 w;se;enter;out;}
+#VARIABLE	my_changan8	{nw;sw;nw;n;ne;#3 n;#2 s;e;#2 w;s;#2 n;s;w;s;#2 n;}
+#VARIABLE	my_changan9	{#2 w;e;s;n;u;w;#2 e;w;s;#2 n;s;u;w;#2 e;}
+#VARIABLE	my_kf2	{s;#2 w;s;e;w;#4 n;nw;n;w;sw;nw;n;ne;e;se;e;nu;}
+#VARIABLE	my_penglai	{nu;sd;su;nd;nu;}
+#VARIABLE	my_kf4	{s;w;#2 s;se;#4 s;sw;se;#2 e;#2 w;s;eu;s;su;s;}
+#VARIABLE	my_kf5	{e;s;e;w;s;w;s;n;w;n;w;e;n;e;n;nd;s;w;#2 e;w;n;}
+#VARIABLE	my_xxt0	{#2 s;n;e;#2 w;n;nw;}
+#VARIABLE	my_wuji1	{n;e;s;n;#3 e;#4 ne;eu;ne;sw;wd;#4 sw;}
+#VARIABLE	my_gao3	{#2 n;e;nu;}
+#VARIABLE	my_wdd5	{}
+#VARIABLE	my_honglou	{u;d;n;d;u;n;backyard;frontyard;#2 s;w;#2 e;w;s;w;#2 e;w;}
+#VARIABLE	my_wdd3	{dive dong;n;w;#2 e;w;n;e;#2 w;}
+#VARIABLE	my_wdd2	{sw;ne;sw;}
+#VARIABLE	my_wdd1	{se;nw;w;s;}
+#VARIABLE	my_penglai1	{#5 ne;#7 nw;#3 n;#2 ne;nw;#2 n;}
+#VARIABLE	my_fangcun2	{e;w;n;s;w;n;w;e;ne;s;n;e;w;n;}
+#VARIABLE	my_fangcun3	{u;d;s;sw;w;e;nu;}
+#VARIABLE	my_fangcun1	{d;s;sd;se;e;w;nw;nu;n;nu;#2 ne;#2 nu;n;w;#2 e;}
+#VARIABLE	my_jilei	{sw;n;s;se;sw;w;sw;ne;e;se;nw;}
+#VARIABLE	my_fangcun4	{n;nw;ne;nw;ne;enter;out;}
+#VARIABLE	my_lingshan2	{n;#6 w;#3 n;}
+#VARIABLE	my_zhuzi10	{w;n;#2 s;n;w;#2 e;}
+#VARIABLE	my_bibotan3	{nu;e;#2 w;e;n;e;w;n;#2 e;enter;out;#2 w;}
+#VARIABLE	my_bibotan2	{dive;put bishui zhou in @bag;#2 n;nu;n;}
+#VARIABLE	my_bibotan1	{#2 ne;e;#2 n;e;#3 n;#2 s;e;#2 n;e;#2 s;w;#2 sw;}
+#VARIABLE	my_kunlun	{#2 nu;wu;n;se;nw;#2 n;nw;n;s;se;#3 s;ed;sd;}
+#VARIABLE	my_lingshan30	{#4 e;n;#3 w;#2 n;}
+#VARIABLE	my_bibotan4	{#2 nw;#2 ne;#2 se;#2 sw;}
+#VARIABLE	my_zhuzi4	{#2 s;e;w;s;w;}
+#VARIABLE	my_zhuzi5	{#3 e;sw;w;#5 n;}
+#VARIABLE	my_chechi3	{#5 e;#3 s;#3 n;#3 w;}
+#VARIABLE	my_zhuzi2	{s;n;e;s;#2 n;s;#2 e;n;s;}
+#VARIABLE	my_zhuzi3	{#2 e;ne;eu;wd;sw;w;n;}
+#VARIABLE	my_wuji2	{sw;w;sw;nw;se;ne;e;ne;eu;se;eu;su;nd;e;se;ed;e;w;wu;#2 nw;}
+#VARIABLE	my_wuji3	{enter;n;w;#2 e;n;s;w;s;}
+#VARIABLE	my_chechi2	{se;#2 s;#3 sd;#3 w;#3 n;w;#2 sw;nw;se;#2 ne;e;#3 n;e;}
+#VARIABLE	my_qilin	{#7 right;}
+#VARIABLE	my_wuji4	{n;w;}
+#VARIABLE	my_wuji5	{n;e;n;s;e;s;#2 n;w;e;enter;}
+#VARIABLE	my_chechi5	{#3 e;#3 s;w;#2 s;e;w;s;e;w;#2 n;#4 w;#2 s;n;w;e;n;w;e;n;}
+#VARIABLE	my_wuji8	{#2 d;#2 u;}
+#VARIABLE	my_xs3	{jump shi bi;e;#3 w;n;e;}
+#VARIABLE	my_firemount0	{wu;#2 sd;se;sw;s;wu;su;wu;su;#2 e;#2 w;}
+#VARIABLE	my_baihu1	{ne;#2 e;#2 se;ne;se;}
+#VARIABLE	my_baoxiang5	{nw;n;#2 nw;ed;#2 e;#2 w;wu;sd;#3 nw;#2 sw;}
+#VARIABLE	my_xs4	{#2 e;s;}
+#VARIABLE	my_xs5	{climb up;climb left;#2 climb up;#2 climb left;#2 climb up;}
+#VARIABLE	my_xs6	{#3 s;w;e;s;}
+#VARIABLE	my_xs7	{sd;#2 ed;#2 nd;ed;e;#2 n;answer 1;}
+#VARIABLE	my_putuo10	{e;}
+#VARIABLE	my_baoxiang6	{#2 ne;#2 se;nu;ne;#2 e;}
+#VARIABLE	my_xs2	{jump shi bi;open door;e;#2 w;n;s;}
+#VARIABLE	my_baoxiang	{#2 s;e;w;s;e;w;s;s;}
+#VARIABLE	my_qilin4	{ne;#2 eu;se;}
+#VARIABLE	my_baoxiang7	{sink;}
+#VARIABLE	my_qilin1	{climb up;#5 right;}
+#VARIABLE	my_qilin3	{e;w;#2 nw;se;e;ne;sw;se;w;}
+#VARIABLE	my_qilin2	{climb up;nw;wu;}
+#VARIABLE	my_putuo20	{w;}
+#VARIABLE	my_jindou1	{s;#2 sw;n;e;ne;n;}
+#VARIABLE	my_maoying00	{se;}
+#VARIABLE	my_can	{#3 s;#5 e;#3 w;nu;enter;out;sd;#3 w;}
+#VARIABLE	my_xs8	{n;#2 e;n;#2 w;n;#2 e;n;}
+#VARIABLE	my_biqiu4	{s;e;sw;se;#2 s;sw;e;sw;w;nw;sw;nw;#2 e;w;}
+#VARIABLE	my_biqiu2	{e;}
+#VARIABLE	my_biqiu3	{s;sw;e;w;se;w;e;se;s;sw;s;sw;}
+#VARIABLE	my_baihu2	{ne;#2 e;#2 se;ne;se;s;eu;#2 ne;nd;ne;}
+#VARIABLE	my_biqiu1	{e;n;w;nw;se;ne;#2 e;s;n;e;w;se;#2 e;}
+#VARIABLE	my_cax	{#3 w;nw;ne;sw;#2 w;sw;su;nd;w;}
+#VARIABLE	my_lingshan10	{n;#3 w;#4 s;#6 e;}
+#VARIABLE	my_baoxiang1_bak	{w;#2 e;w;su;w;#2 e;w;su;w;#2 e;w;su;w;#2 e;}
+#VARIABLE	my_lingshan20	{#6 e;#2 n;}
+#VARIABLE	my_kf1	{#2 s;n;#2 e;n;ne;se;#2 e;#2 w;#2 s;e;w;s;#2 e;#2 n;s;}
+#VARIABLE	my_xs200	{bed;}
+#VARIABLE	my_sea	{e;w;#2 e;ne;#2 e;eu;wd;}
+#VARIABLE	my_yuhua	{w;nw;#2 w;#2 nw;se;#2 ne;#2 sw;se;}
+#VARIABLE	my_shushan	{n;#2 nu;n;e;w;n;ne;sw;n;ne;eu;wd;sw;#2 s;}
+#VARIABLE	my_jindou2	{ne;nw;}
+#VARIABLE	my_kf3	{#2 n;w;#2 e;w;s;}
+#VARIABLE	my_xs70	{nw;}
+#VARIABLE	my_cad	{e;ne;#3 n;#2 s;w;enter;#1 #4 u;}
+#VARIABLE	my_sea00	{e;w;#2 nw;eu;}
+#VARIABLE	my_biqiu20	{e;se;nw;w;nw;}
+#VARIABLE	my_tth0	{s;w;s;w;n;w;#3 s;#5 n;s;nw;}
+#VARIABLE	my_neg	{nw;w;#2 s;}
+#VARIABLE	my_putuo	{#2 sd;#2 s;#2 n;#2 nu;n;e;s;n;#2 w;s;}
+#VARIABLE	my_xs	{nu;sd;#3 nu;w;#4 e;#3 w;n;}
+#VARIABLE	my_pds20	{sw;#2 ne;n;nw;ne;nd;ne;}
+#VARIABLE	my_zhuzi30	{n;#3 w;#2 s;}
+#VARIABLE	my_wdd4	{e;n;#2 e;#2 w;n;}
+#VARIABLE	my_zhuzi	{sw;se;s;sw;#2 w;#2 nw;#2 se;#2 e;}
+#VARIABLE	my_fengxian	{#2 sw;#6 s;sw;w;nw;#2 w;#2 e;se;e;ne;}
+#VARIABLE	my_chechi8	{n;e;n;w;#2 s;w;n;e;n;e;#2 w;e;#6 s;n;s;}
+#VARIABLE	my_pansi10	{#3 n;e;se;e;sw;se;e;sd;nu;w;nw;sw;}
+#VARIABLE	my_chechi1	{e;w;n;ne;#2 e;#2 w;sw;n;nw;}
+#VARIABLE	my_baoxiang1	{su;nd;#6 su;}
+#VARIABLE	my_baoxiang2	{nd;n;sw;n;s;#2 w;s;n;w;nw;}
+#VARIABLE	my_baoxiang3	{n;ne;nu;nw;ne;se;s;se;}
+#VARIABLE	my_baoxiang4	{se;nw;}
+#VARIABLE	my_chechi4	{su;eu;sw;su;se;e;#2 n;#2 s;se;nw;#2 e;nu;sd;#3 w;nw;nd;ne;wd;nd;}
+#VARIABLE	my_chechi7	{n;#2 w;#4 n;#4 e;#4 s;#2 w;n;}
+#VARIABLE	my_chechi6	{n;w;e;n;w;e;s;#3 e;#2 n;w;e;s;w;e;s;#3 w;#2 s;#2 e;}
+#VARIABLE	my_maoying	{#4 s;sw;s;}
+#VARIABLE	my_cad2	{s;enter;e;enter;#6 u;#6 d;out;w;out;n;nw;}
+#VARIABLE	my_cad3	{ne;e;se;ne;se;enter;out;nw;#2 e;#2 w;sw;nw;n;ne;e;w;#2 n;s;w;s;#2 n;s;w;s;#2 n;e;w;s;}
+#VARIABLE	my_baihu	{sw;s;se;sw;se;s;#2 ed;se;#2 ne;#3 se;nu;ed;#2 e;#2 ne;}
+#VARIABLE	my_cad1	{#1 #4 d;out;e;s;sw;s;n;se;}
+#VARIABLE	my_biqiu2000	{#2 w;}
+#VARIABLE	my_wzgout	{sd;s;#3 sd;s;se;sd;s;sd;e;se;e;ne;#2 e;}
+#VARIABLE	my_xxt1	{nw;n;w;sw;w;sw;ne;e;ne;e;s;e;ne;#3 e;se;}
+
+#class find_target close
